@@ -1,3 +1,6 @@
+# OS Generated files
+.DS_Store
+
 # IntelliJ files
 /.idea
 /titan.iml
