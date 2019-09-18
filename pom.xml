@@ -38,7 +38,7 @@
 	<repositories>
 		<repository>
 			<id>maven-s3-release-repo</id>
-			<url>https://titan-data-maven-tmp.s3-us-west-2.amazonaws.com/</url>
+			<url>https://maven.titan-data.io/</url>
 		</repository>
 		<repository>
 			<id>jcenter</id>
@@ -123,7 +123,7 @@
 		<dependency>
 			<groupId>io.titandata</groupId>
 			<artifactId>titan-client</artifactId>
-			<version>0.4.0</version>
+			<version>0.4.1</version>
 		</dependency>
 	</dependencies>
 
