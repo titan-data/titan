@@ -1,0 +1,7 @@
+{
+  "resources":[
+    {"pattern":"VERSION"}, 
+    {"pattern":"sun/net/idn/uidna.spp"}, 
+    {"pattern":"sun/text/resources/unorm.icu"}
+  ]
+}

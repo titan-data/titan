@@ -1,2 +1,21 @@
 # OS Generated files
 .DS_Store
+
+# IntelliJ files
+/.idea
+/titan.iml
+
+# Generated files
+target
+bin
+coverage
+/titan
+/titan*.zip
+releases
+
+# Development files
+/notes
+/.env
+
+# Jenkins
+.gradle
