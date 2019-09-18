@@ -1,59 +1,18 @@
-# Titan CLI
+# Titan
+## Your Code. Your Environment. Your Data. 
+## <a id="getting-started"></a> Getting Started
 
-#### Table of Contents
-1.  [Installation](#installation)
-    *   [Requirements](#requirements)
-    *   [Local Development](#local-dev)
-    *   [Setting Up GraalVM](#set-up-graalvm)
-    *   [Native Bytecode Generation](#native-bytecode)
-2.  [Links](#links)
-3.  [Contributing](#contribute)
-4.  [License](#license)
+### <a id="requirements"></a> Requirements
+Before downloading Titan, be sure that you have the appropriate Docker Desktop Client installed and running for your operating system.
+*   [Docker Desktop Client](https://www.docker.com/products/docker-desktop)
 
-## <a id="installation"></a>Installation
+### <a id="installation"></a> Installation
+The available downloads are listed on the [releases](https://github.com/titan-data/titan/releases) tab. Please download the proper package for your operating system and architecture. 
 
-### <a id="requirements"></a>Requirements
-*  openjdk 1.8.0_202 (see notes for GraalVM)
-*  [GraalVM](https://www.graalvm.org/)
-
-### <a id="local-dev"></a>Local Development
+Titan is distributed as a binary with accompanying docker image. Install Titan by unzipping the downloaded release and moving the binary to a directory included in your system's PATH and running the following command from your CLI:
 ```bash
-./mvnw clean install
-java -jar ./target/titan-VERSION-jar-with-dependencies.jar
+titan install
 ```
-
-### <a id="set-up-graalvm"></a>Setting up GraalVM
-*  [Install GraalVM](https://www.graalvm.org/docs/getting-started/#install-graalvm)
-*  Set JAVA_HOME to be the openjdk include with GraalVM
-*  Add the GraalVM bin directory to your PATH
-
-### <a id="native-bytecode"></a>Native Bytecode Generation
-```bash
-native-image -cp ${PWD}/target/titan-VERSION-jar-with-dependencies.jar\
-    -H:Name=titan\
-    -H:Class=io.titandata.titan.Cli\
-    -H:+ReportUnsupportedElementsAtRuntime\
-    -H:ReflectionConfigurationFiles=${PWD}/config/reflect-config.json\
-    -H:ResourceConfigurationFiles=${PWD}/config/resource-config.json\
-    --allow-incomplete-classpath\
-    --enable-url-protocols=http
-``` 
-
-### Build Wrapper
-Once the jar is created, native binaries can be built with the following scripts.
-```bash
-./scripts/build-osx.sh
-./scripts/build-linux.sh
-```
-
-### Releasing New Versions
-The version for the CLI is maintained with the `VERSION` file. Bump the version in this file and then run `./scripts/compile-maven.sh` to update the version in the POM.xml file and build a new versioned jar. Currently, an OSX binary release file needs to be committed to a proper release directory. If you are on OSX, run `./scripts/build-osx.sh` to create this file. CI/CD will handle the rest of the builds. 
-
-
-## <a id="links"></a>Links
-*  [Kotlin](https://kotlinlang.org/)
-*  [GraalVM](https://www.graalvm.org/)
-*  [Clikt](https://github.com/ajalt/clikt)
 
 ## <a id="contribute"></a>Contributing
 
