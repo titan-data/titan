@@ -9,6 +9,8 @@ import io.titandata.client.apis.CommitsApi
 class Log (
     private val commitsApi: CommitsApi = CommitsApi()
 ) {
+    private val n = System.lineSeparator()
+
     fun log(container: String) {
         var first = true
         for (commit in commitsApi.listCommits(container)) {
@@ -30,7 +32,7 @@ class Log (
             }
             println("Date: ${metadata["timestamp"]}")
             if (metadata["message"] != "") {
-                println("\n${metadata["message"]}")
+                println("${n}${metadata["message"]}")
             }
         }
     }

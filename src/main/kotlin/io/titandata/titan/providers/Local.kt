@@ -26,6 +26,8 @@ class Local: Provider {
     private val docker = Docker(commandExecutor)
     private val repositoriesApi = RepositoriesApi()
 
+    private val n = System.lineSeparator()
+
     private fun exit(message:String, code: Int = 1) {
         println(message)
         exitProcess(code)
@@ -123,9 +125,9 @@ class Local: Provider {
     }
 
     override fun list() {
-        System.out.printf("%-20s  %s\n", "CONTAINER", "STATUS")
+        System.out.printf("%-20s  %s${n}", "CONTAINER", "STATUS")
         for (container in getContainersStatus()) {
-            System.out.printf("%-20s  %s\n", container.name, container.status)
+            System.out.printf("%-20s  %s${n}", container.name, container.status)
         }
     }
 
