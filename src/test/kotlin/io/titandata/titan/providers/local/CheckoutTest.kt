@@ -17,6 +17,7 @@ class CheckoutTest {
         on {exec(listOf("docker","start","container"))} doReturn "container"
     }
     private val docker = Docker(executor)
+    private val n = System.lineSeparator()
 
     @Test
     fun `can instantiate`(){
@@ -34,6 +35,6 @@ class CheckoutTest {
         command.checkout("container", "hash")
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
-        assertEquals(expected, "Stopping container container\nCheckout hash\nStarting container container\nhash checked out")
+        assertEquals(expected, "Stopping container container${n}Checkout hash${n}Starting container container${n}hash checked out")
     }
 }

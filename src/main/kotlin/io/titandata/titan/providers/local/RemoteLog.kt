@@ -15,7 +15,8 @@ class RemoteLog (
         private val remotesApi: RemotesApi = RemotesApi(),
         private val remoteUtil: RemoteUtil = RemoteUtil()
 ) {
-
+    private val n = System.lineSeparator()
+    
     private fun getRemotes(container: String, remoteName: String?): Array<Remote> {
         return try {
             when (remoteName.isNullOrBlank()) {
@@ -59,7 +60,7 @@ class RemoteLog (
                     }
                     println("Date:   ${commit.properties["timestamp"]}")
                     if (commit.properties["message"] != "") {
-                        println("\n${commit.properties["message"]}")
+                        println("${n}${commit.properties["message"]}")
                     }
                 }
             } catch (e: ClientException) {

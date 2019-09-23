@@ -13,6 +13,8 @@ import kotlin.test.assertEquals
 
 class LogTest {
 
+    private val n = System.lineSeparator()
+
     @Test
     fun `can instantiate`(){
         val command = Log()
@@ -33,6 +35,6 @@ class LogTest {
         command.log("container")
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
-        assertEquals(expected, "commit uuid\nAuthor: unknown\nDate: timestamp\n\nmessage\n\ncommit uuid2\nAuthor: unknown\nDate: timestamp")
+        assertEquals(expected, "commit uuid${n}Author: unknown${n}Date: timestamp${n}${n}message${n}${n}commit uuid2${n}Author: unknown${n}Date: timestamp")
     }
 }

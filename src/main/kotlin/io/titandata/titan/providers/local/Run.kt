@@ -26,6 +26,7 @@ class Run (
             exit("Container name cannot contain a slash",1)
         }
         val image = arguments.last()
+        docker.pull(image)
         val imageInfo = docker.inspectImage(image)
         if (imageInfo == null) {
             exit("Image information is not available",1)

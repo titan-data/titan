@@ -57,8 +57,9 @@ class Migrate (
         val arguments = mutableListOf("-d","--label","io.titandata.titan")
         val repo = Repository(name, emptyMap())
         repositoriesApi.createRepository(repo)
+        var i = 0
         for (path in volumes.keys()) {
-            val volumeName = "$name/v1"
+            val volumeName = "$name/v$i"
             println("Creating docker volume $volumeName with path $path")
             docker.createVolume(volumeName, path)
             val localSrc = getLocalSrcFromPath(path, containerInfo as JSONObject)
@@ -71,6 +72,7 @@ class Migrate (
             }
             arguments.add("--mount")
             arguments.add("type=volume,src=$volumeName,dst=$path,volume-driver=titan")
+            i++
         }
 
         val ports = containerInfo.getJSONObject("HostConfig").optJSONObject("PortBindings")

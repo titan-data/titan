@@ -15,9 +15,11 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.inSet
 import org.kodein.di.generic.provider
 
+private val n = System.lineSeparator()
+
 class Migrate : CliktCommand(
         help = "Migrate an existing docker database container to titan repository",
-        epilog = "Container becomes the new name of the docker container.\n\nExample: `titan migrate -s oldPostgres titanPostgres`"
+        epilog = "Container becomes the new name of the docker container.${n}${n}Example: `titan migrate -s oldPostgres titanPostgres`"
 ) {
     private val dependencies: Dependencies by requireObject()
     private val repository by argument()

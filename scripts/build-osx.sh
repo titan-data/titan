@@ -21,5 +21,5 @@ native-image -cp ${PWD}/target/titan-$version-jar-with-dependencies.jar\
     --enable-http\
     --enable-https
 
-mkdir -p ${PWD}/releases/${version}
-zip ${PWD}/releases/${version}/titan-cli-$version-darwin_amd64.zip titan
+mkdir -p ${PWD}/releases/
+zip ${PWD}/releases/titan-cli-$version-darwin_amd64.zip titan

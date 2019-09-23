@@ -12,19 +12,21 @@ private const val DEFAULT_COLOR = "\u001B[0m"
 
 
 class PrintStreamProgressTracker(
-        private val successMessage: String,
-        private val failureMessage: String = "Failed",
-        private val tasksPrefix: String = "",
-        private val printStream: PrintStream = System.out,
-        private val animation: Array<Char> = arrayOf('-', '\\', '|', '/', '-', '\\', '|', '/'),
-        private val refreshRateInMillis: Long = 250L): ProgressTracker {
-
+    private val successMessage: String,
+    private val failureMessage: String = "Failed",
+    private val tasksPrefix: String = "",
+    private val printStream: PrintStream = System.out,
+    private val animation: Array<Char> = arrayOf('-', '\\', '|', '/', '-', '\\', '|', '/'),
+    private val refreshRateInMillis: Long = 250L): ProgressTracker
+{
     private val tasks: MutableList<String> = ArrayList(2)
     private var clearTasks: Boolean = false
     private var isMonitorStarted: Boolean = false
     private val monitor: Thread = createMonitor()
     private var failedTask: String = ""
     private var hasFailed = false
+
+    private val n = System.lineSeparator()
 
     override fun pushTask(taskName: String) {
         tasks.add(taskName)
@@ -82,9 +84,9 @@ class PrintStreamProgressTracker(
     private fun printDone(taskName: String) {
         val taskIsSuccess = failedTask != taskName
         if (taskIsSuccess)
-            printStream.print("\r$tasksPrefix$DARK_GREEN√ $taskName$DEFAULT_COLOR\r\n")
+            printStream.print("$tasksPrefix$DARK_GREEN√ $taskName$DEFAULT_COLOR${n}")
         else
-            printStream.print("\r$tasksPrefix${DARK_RED}X $taskName$DEFAULT_COLOR\r\n")
+            printStream.print("$tasksPrefix${DARK_RED}X $taskName$DEFAULT_COLOR${n}")
     }
 
     private fun waitMillis(millis: Long): Boolean {

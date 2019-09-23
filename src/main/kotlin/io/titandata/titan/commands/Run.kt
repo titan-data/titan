@@ -14,9 +14,11 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.inSet
 import org.kodein.di.generic.provider
 
+private val n = System.lineSeparator()
+
 class Run : CliktCommand(
         help = "Create repository and start container",
-        epilog = "Containers that contain a repository are launched using docker run arguments and passed verbatim using `--` as the flag.\n\nExample: `titan run -- --name newRepo -d -p 5432:5432 postgres:10`"
+        epilog = "Containers that contain a repository are launched using docker run arguments and passed verbatim using `--` as the flag.${n}${n}Example: `titan run -- --name newRepo -d -p 5432:5432 postgres:10`"
 ) {
     private val dependencies: Dependencies by requireObject()
     private val arguments by argument().multiple()

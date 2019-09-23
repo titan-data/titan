@@ -1,0 +1,54 @@
+name: Publish
+
+on: create
+
+jobs:
+  build:
+    name: Build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, macOS-10.14]
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '8.0.212'
+    - name: Setup Env
+      run: ./scripts/setup.sh ${{ matrix.os }}
+    - name: Build Jar
+      run: ./scripts/compile-maven.sh
+    - name: Compile Binary
+      if: startsWith(github.ref, 'refs/tags/')
+      run: ./scripts/build.sh ${{ matrix.os }}
+    - name: Upload ${{ matrix.os }} Binary
+      if: matrix.os == 'macOS-10.14'
+      uses: actions/upload-artifact@master
+      with:
+        name: titan-cli-0.3.0-darwin_amd64.zip
+        path: releases
+    - name: Upload ${{ matrix.os }} Binary
+      if: matrix.os == 'ubuntu-18.04'
+      uses: actions/upload-artifact@master
+      with:
+        name: titan-cli-0.3.0-linux_amd64.zip
+        path: releases
+  release:
+    name: Draft Release
+    runs-on: ubuntu-18.04
+    needs: build
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/download-artifact@master
+      with:
+        name: titan-cli-0.3.0-darwin_amd64.zip
+        path: releases
+    - uses: actions/download-artifact@master
+      with:
+        name: titan-cli-0.3.0-linux_amd64.zip
+        path: releases
+    - name: Draft Release
+      if: startsWith(github.ref, 'refs/tags/')
+      run: ./scripts/draft-release.sh
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
