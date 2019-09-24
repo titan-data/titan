@@ -17,4 +17,4 @@ jobs:
         with:
           java-version: '8.0.212'
       - name: Run Maven Tests
-        run: ./mvnw clean verify
+        run: uname -a
