@@ -74,12 +74,12 @@ VERSION_DIR=$dest/docs/version
 #
 function check_hash() {
   local vers=$1
-  local current_hash=$(git log --pretty=format:%H -n 1 $DOCS_DIR)
+  CURRENT_HASH=$(git log --pretty=format:%H -n 1 $DOCS_DIR)
   if [[ $force = false ]]; then
     if [[ -f $VERSION_DIR/$vers/hash ]]; then
       local previous_hash=$(cat $VERSION_DIR/$vers/hash)
 
-      if [[ $previous_hash = $current_hash ]]; then
+      if [[ $previous_hash = $CURRENT_HASH ]]; then
         echo "Content hasn't changed with hash $previous_hash, skipping"
         exit 0
       fi
@@ -100,7 +100,7 @@ function copy_docs() {
   mkdir -p $VERSION_DIR
   rm -rf $dst_dir
   cp -r $SRC_DIR $dst_dir
-  echo $current_hash > $dst_dir/hash
+  echo $CURRENT_HASH > $dst_dir/hash
   cd $dst_dir && git add .
 }
 
@@ -127,3 +127,7 @@ check_hash $version
 copy_docs $version
 [[ $update_latest = true ]] && copy_docs latest
 generate_config
+
+if [[ $dry_run = false ]]; then
+   cd $dest && git commit -m "docs build $CURRENT_HASH"
+fi

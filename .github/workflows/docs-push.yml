@@ -13,4 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Build documentation
-        run: echo Hello, World
+        run: ./docs/build.sh -r development -v development
+      - name: Clone titan-data.github.io
+        run: git clone git@github.com:eschrock/titan-data.github.io
+      - name: Publish docs
+        run: ./docs/publish.sh -v development ./titan-data.github.io
