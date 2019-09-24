@@ -123,14 +123,17 @@ function generate_config() {
   for v in $(ls -1 $VERSION_DIR | sort -r --version-sort); do
     [[ $v != "development" && $v != "latest" ]] && echo "  - $v" >> $DOCS_DATA
   done
-  add $DOCS_DATA
+  git add $DOCS_DATA
+}
+
+function commit() {
+   cd $dest
+   git commit -m "docs build $CURRENT_HASH"
+   git status
 }
 
 check_hash $version
 copy_docs $version
 [[ $update_latest = true ]] && copy_docs latest
 generate_config
-
-if [[ $dry_run = false ]]; then
-   cd $dest && git commit -m "docs build $CURRENT_HASH"
-fi
+commit
