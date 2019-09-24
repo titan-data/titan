@@ -22,8 +22,8 @@
 
 set -xe
 
-WORKING_DIR=$PWD
-DOCS_DIR=$(dirname $0)
+WORKING_DIR=$(realpath $PWD)
+DOCS_DIR=$(realpath $(dirname $0))
 BUILD_DIR=$DOCS_DIR/build
 SRC_DIR=$BUILD_DIR/out
 
@@ -63,7 +63,7 @@ while getopts ":fdlv:" o; do
 done
 
 shift $((OPTIND-1))
-dest=$1
+dest=$(realpath $1)
 
 [[ -d $dest ]] || die "Missing or invalid destination directory"
 
@@ -74,12 +74,13 @@ VERSION_DIR=$dest/docs/version
 #
 function check_hash() {
   local vers=$1
-  local current_hash=$(git log --pretty=format:%H -n 1 $DOCS_DIR)
+  cd $WORKING_DIR
+  CURRENT_HASH=$(git log --pretty=format:%H -n 1 $DOCS_DIR)
   if [[ $force = false ]]; then
     if [[ -f $VERSION_DIR/$vers/hash ]]; then
       local previous_hash=$(cat $VERSION_DIR/$vers/hash)
 
-      if [[ $previous_hash = $current_hash ]]; then
+      if [[ $previous_hash = $CURRENT_HASH ]]; then
         echo "Content hasn't changed with hash $previous_hash, skipping"
         exit 0
       fi
@@ -93,6 +94,7 @@ function check_hash() {
 function copy_docs() {
   local vers=$1
   local dst_dir=$VERSION_DIR/$vers
+  cd $WORKING_DIR
   if [[ -d $dst_dir ]]; then
     cd $VERSION_DIR && git rm -rf --ignore-unmatch $vers
   fi
@@ -100,7 +102,7 @@ function copy_docs() {
   mkdir -p $VERSION_DIR
   rm -rf $dst_dir
   cp -r $SRC_DIR $dst_dir
-  echo $current_hash > $dst_dir/hash
+  echo $CURRENT_HASH > $dst_dir/hash
   cd $dst_dir && git add .
 }
 
@@ -108,7 +110,8 @@ function copy_docs() {
 # Generate docs.yml data
 #
 function generate_config() {
-  DOCS_DATA=$dest/_data/docs.yml
+  cd $dest
+  DOCS_DATA=_data/docs.yml
   if [[ $update_latest = true ]]; then
     latest=$version
   else
@@ -120,10 +123,17 @@ function generate_config() {
   for v in $(ls -1 $VERSION_DIR | sort -r --version-sort); do
     [[ $v != "development" && $v != "latest" ]] && echo "  - $v" >> $DOCS_DATA
   done
-  cd $dest && git add $DOCS_DATA
+  git add $DOCS_DATA
+}
+
+function commit() {
+   cd $dest
+   git commit -m "docs build $CURRENT_HASH"
+   git status
 }
 
 check_hash $version
 copy_docs $version
 [[ $update_latest = true ]] && copy_docs latest
 generate_config
+commit
