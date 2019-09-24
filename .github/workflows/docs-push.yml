@@ -13,14 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install virtualenv
-        run: |
-          pip3 install virtualenv
-          which virtualenv
+        run: pip3 install -v virtualenv
       - name: Test Path
         run: |
           export PATH=/usr/local/bin:$PATH
           echo $PATH
-          which virtualenv
       - name: Build documentation
         run: |
           export PATH=/usr/local/bin:$PATH
