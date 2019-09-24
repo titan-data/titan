@@ -8,11 +8,20 @@ import sphinx_rtd_theme
 
 project = u'titan'
 copyright = u'2019, Titan Project Contributors'
-author = u'Envoy Project Contributors'
+author = u'Titan Project Contributors'
+
+# -- Project configuration ---------------------------------------------------
+
+def setup(app):
+  app.add_config_value('release_type', '', 'env')
+
+release_type = "development"
+version = "latest"
+
 
 # -- General configuration ---------------------------------------------------
 
-extensions = ['recommonmark']
+extensions = ['recommonmark', 'sphinx.ext.ifconfig']
 templates_path = ['_templates']
 source_suffix = ['.rst', '.md']
 exclude_patterns = ['Thumbs.db', '.DS_Store']
