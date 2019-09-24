@@ -1,0 +1,16 @@
+name: Push to Development Docs
+on: push
+#  push:
+#    branches:
+#      - master
+#    paths:
+#      - 'docs/*'
+
+jobs:
+  build:
+    name: Build Documentation
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build documentation
+        run: echo Hello, World
