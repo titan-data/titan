@@ -24,6 +24,7 @@ jobs:
           cd ./titan-data.github.io && git log -1
       - name: Configure git
         run: |
+          cd ./titan-data.github.io
           git config user.name "titan-docs"
           git config user.email "titan-docs@users.noreply.github.com"
       - name: Publish docs

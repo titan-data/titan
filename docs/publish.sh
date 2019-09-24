@@ -94,6 +94,7 @@ function check_hash() {
 function copy_docs() {
   local vers=$1
   local dst_dir=$VERSION_DIR/$vers
+  cd $WORKING_DIR
   if [[ -d $dst_dir ]]; then
     cd $VERSION_DIR && git rm -rf --ignore-unmatch $vers
   fi
@@ -109,8 +110,8 @@ function copy_docs() {
 # Generate docs.yml data
 #
 function generate_config() {
-  cd $WORKING_DIR
-  DOCS_DATA=$dest/_data/docs.yml
+  cd $dest
+  DOCS_DATA=_data/docs.yml
   if [[ $update_latest = true ]]; then
     latest=$version
   else
@@ -122,7 +123,7 @@ function generate_config() {
   for v in $(ls -1 $VERSION_DIR | sort -r --version-sort); do
     [[ $v != "development" && $v != "latest" ]] && echo "  - $v" >> $DOCS_DATA
   done
-  cd $dest && git add $DOCS_DATA
+  add $DOCS_DATA
 }
 
 check_hash $version
