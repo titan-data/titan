@@ -12,10 +12,9 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - name: Clone titan-data.github.io
-        run: |
-          HEADER=$(echo -n "${{ secrets.GITHUB_TOKEN }}" | base64)
-          echo $HEADER
-          git -c http.extraheader="AUTHORIZATION: basic $HEADER" clone git@github.com:eschrock/titan-data.github.io
+        run: git clone git@github.com:eschrock/titan-data.github.io
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v1
       - name: Install virtualenv
         run: sudo pip3 install virtualenv
