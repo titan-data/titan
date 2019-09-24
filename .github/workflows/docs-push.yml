@@ -11,21 +11,17 @@ jobs:
     name: Build Documentation
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
-      - name: Install virtualenv
-        run: sudo pip3 install -v virtualenv
-      - name: Test Path
-        run: |
-          export PATH=/usr/local/bin:$PATH
-          echo $PATH
-      - name: Build documentation
-        run: |
-          export PATH=/usr/local/bin:$PATH
-          which virtualenv
-          ./docs/build.sh -r development -v development
       - name: Clone titan-data.github.io
         run: |
           HEADER=$(echo -n "${{ secrets.GITHUB_TOKEN }}" | base64)
+          echo $HEADER
           git -c http.extraheader="AUTHORIZATION: basic $HEADER" clone git@github.com:eschrock/titan-data.github.io
+      - uses: actions/checkout@v1
+      - name: Install virtualenv
+        run: sudo pip3 install virtualenv
+      - name: Build documentation
+        run: |
+          export PATH=/usr/local/bin:$PATH
+          ./docs/build.sh -r development -v development
       - name: Publish docs
         run: ./docs/publish.sh -v development ./titan-data.github.io
