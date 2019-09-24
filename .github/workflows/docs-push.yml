@@ -19,7 +19,9 @@ jobs:
           export PATH=/usr/local/bin:$PATH
           ./docs/build.sh -r development -v development
       - name: Clone titan-data.github.io
-        run: git clone https://${{ secrets.GITHUB_TOKEN }}@github.com/eschrock/titan-data.github.io.git
+        run: |
+          git clone https://${{ secrets.GITHUB_TOKEN }}@github.com/eschrock/titan-data.github.io.git
+          cd ./titan-data.github.io && git log -1
       - name: Configure git
         run: |
           git config user.name "titan-docs"

@@ -74,6 +74,7 @@ VERSION_DIR=$dest/docs/version
 #
 function check_hash() {
   local vers=$1
+  cd $WORKING_DIR
   CURRENT_HASH=$(git log --pretty=format:%H -n 1 $DOCS_DIR)
   if [[ $force = false ]]; then
     if [[ -f $VERSION_DIR/$vers/hash ]]; then
@@ -108,6 +109,7 @@ function copy_docs() {
 # Generate docs.yml data
 #
 function generate_config() {
+  cd $WORKING_DIR
   DOCS_DATA=$dest/_data/docs.yml
   if [[ $update_latest = true ]]; then
     latest=$version
