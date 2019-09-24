@@ -22,8 +22,8 @@
 
 set -xe
 
-WORKING_DIR=$PWD
-DOCS_DIR=$(dirname $0)
+WORKING_DIR=$(realpath $PWD)
+DOCS_DIR=$(realpath $(dirname $0))
 BUILD_DIR=$DOCS_DIR/build
 SRC_DIR=$BUILD_DIR/out
 
@@ -63,7 +63,7 @@ while getopts ":fdlv:" o; do
 done
 
 shift $((OPTIND-1))
-dest=$1
+dest=$(realpath $1)
 
 [[ -d $dest ]] || die "Missing or invalid destination directory"
 
