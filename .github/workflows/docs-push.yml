@@ -24,6 +24,8 @@ jobs:
           which virtualenv
           ./docs/build.sh -r development -v development
       - name: Clone titan-data.github.io
-        run: git clone git@github.com:eschrock/titan-data.github.io
+        run: |
+          HEADER=$(echo -n "${{ secrets.GITHUB_TOKEN }}" | base64)
+          git -c http.extraheader="AUTHORIZATION: basic $HEADER" clone git@github.com:eschrock/titan-data.github.io
       - name: Publish docs
         run: ./docs/publish.sh -v development ./titan-data.github.io
