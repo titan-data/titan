@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v1
+      - name: Install virtualenv
+        run: pip3 install virtualenv
       - name: Build documentation
         run: ./docs/build.sh -r development -v development
       - name: Clone titan-data.github.io
