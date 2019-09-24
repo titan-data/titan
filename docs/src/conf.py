@@ -11,9 +11,6 @@ copyright = u'2019, Titan Project Contributors'
 author = u'Titan Project Contributors'
 
 # -- Project configuration ---------------------------------------------------
-#
-# release_type - One of "development" or "official"
-# version - The version stirng to display
 
 def setup(app):
   app.add_config_value('release_type', '', 'env')
