@@ -20,9 +20,9 @@ jobs:
           ./docs/build.sh -r development -v development
       - name: Clone titan-data.github.io
         run: git clone https://${{ secrets.GITHUB_TOKEN }}@github.com/eschrock/titan-data.github.io.git
-      - name: Git config
+      - name: Configure git
         run: |
-          git config user.name
-          git config user.email
+          git config user.name "titan-docs"
+          git config user.email "titan-docs@users.noreply.github.com"
       - name: Publish docs
         run: ./docs/publish.sh -v development ./titan-data.github.io
