@@ -13,9 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Clone titan-data.github.io
-        run: ./docs/git-wrapper.sh clone https://github.com/eschrock/titan-data.github.io.git
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: git clone https://${{ secrets.GITHUB_TOKEN }}@github.com/eschrock/titan-data.github.io.git
       - name: Install virtualenv
         run: sudo pip3 install virtualenv
       - name: Build documentation
