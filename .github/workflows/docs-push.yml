@@ -14,7 +14,13 @@ jobs:
       - uses: actions/checkout@v1
       - name: Install virtualenv
         run: pip3 install virtualenv
+      - name: Test Path
+        env:
+          PATH: /usr/local/bin:$PATH
+        run: echo $PATH
       - name: Build documentation
+        env:
+          PATH: /usr/local/bin:$PATH
         run: ./docs/build.sh -r development -v development
       - name: Clone titan-data.github.io
         run: git clone git@github.com:eschrock/titan-data.github.io
