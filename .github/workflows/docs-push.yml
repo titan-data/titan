@@ -29,3 +29,7 @@ jobs:
           git config user.email "titan-docs@users.noreply.github.com"
       - name: Publish docs
         run: ./docs/publish.sh -v development ./titan-data.github.io
+      - name: Push docs
+        run: |
+          cd ./titan-data.github.io
+          git push
