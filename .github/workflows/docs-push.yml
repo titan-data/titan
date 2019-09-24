@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - name: Clone titan-data.github.io
-        run: git clone git@github.com:eschrock/titan-data.github.io
+        run: ./docs/git-wrapper.sh clone git@github.com:eschrock/titan-data.github.io
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v1
