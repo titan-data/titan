@@ -19,3 +19,6 @@ releases
 
 # Jenkins
 .gradle
+
+# Docs files
+/docs/build
