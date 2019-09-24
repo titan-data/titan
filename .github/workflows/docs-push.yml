@@ -13,14 +13,18 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install virtualenv
-        run: pip3 install virtualenv
+        run: |
+          pip3 install virtualenv
+          which virtualenv
       - name: Test Path
         run: |
           export PATH=/usr/local/bin:$PATH
           echo $PATH
+          which virtualenv
       - name: Build documentation
         run: |
           export PATH=/usr/local/bin:$PATH
+          which virtualenv
           ./docs/build.sh -r development -v development
       - name: Clone titan-data.github.io
         run: git clone git@github.com:eschrock/titan-data.github.io
