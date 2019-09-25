@@ -168,7 +168,7 @@ class Local: Provider {
 
     override fun clone(uri: String, container: String?) {
         val runCommand = Run(::exit,  commandExecutor, docker)
-        val cloneCommand = Clone(::remoteAdd, ::pull, ::checkout, runCommand::run, commandExecutor, docker)
+        val cloneCommand = Clone(::remoteAdd, ::pull, ::checkout, runCommand::run, ::remove, commandExecutor, docker)
         return cloneCommand.clone(uri, container)
     }
 }

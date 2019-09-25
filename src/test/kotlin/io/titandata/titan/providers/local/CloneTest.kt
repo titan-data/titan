@@ -9,7 +9,8 @@ class CloneTest {
     private fun pull(container: String, commit: String?, remoteName: String?) {}
     private fun checkout(container: String, hash: String) {}
     private fun run(arguments: List<String>, createRepo:Boolean) {}
-    private val command = Clone(::remoteAdd, ::pull, ::checkout, ::run)
+    private fun remove(container: String, force: Boolean) {}
+    private val command = Clone(::remoteAdd, ::pull, ::checkout, ::run, ::remove)
 
     @Test
     fun `can instantiate`(){

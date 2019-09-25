@@ -44,7 +44,6 @@ class Remove (
                 docker.removeVolume(volume.name)
             }
         }
-        println("Deleting repository $container")
         repositoriesApi.deleteRepository(container)
         println("$container removed")
     }
