@@ -1,9 +1,9 @@
-name: Push to Development Docs
+name: Push to Release Docs
 on: create
 
 jobs:
   build:
-    name: Build Release Documentation
+    name: Build Documentation
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v1
