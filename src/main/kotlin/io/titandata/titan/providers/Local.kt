@@ -38,11 +38,11 @@ class Local: Provider {
         val repositories = repositoriesApi.listRepositories()
         for (repo in repositories) {
             val container = repo.name
-            val containerInfo = docker.inspectContainer(container)
-            var status = "unknown"
-            if (containerInfo != null) {
+            var status = "detached"
+            try {
+                val containerInfo = docker.inspectContainer(container)!!
                 status = containerInfo.getJSONObject("State").getString("Status")
-            }
+            } catch (e: CommandException) {}
             returnList.add(Container(container, status))
         }
         return returnList
