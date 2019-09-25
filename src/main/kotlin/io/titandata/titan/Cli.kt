@@ -9,10 +9,12 @@ import io.titandata.titan.providers.ProviderFactory
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.options.versionOption
+import io.titandata.titan.exceptions.CommandException
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.setBinding
+import kotlin.system.exitProcess
 
 object Cli {
     class Titan: CliktCommand(help = "Titan CLI") {
@@ -53,6 +55,15 @@ object Cli {
             import(upgradeModule)
         }
         val commands: Set<CliktCommand> by kodein.instance()
-        Titan().subcommands(commands).versionOption(version).main(args)
+        try {
+            Titan().subcommands(commands).versionOption(version).main(args)
+        } catch (e: CommandException) {
+            println(e.message)
+            println(e.output)
+            exitProcess(e.exitCode)
+        } catch (e: Throwable) {
+            println(e.message)
+            exitProcess(1)
+        }
     }
 }
