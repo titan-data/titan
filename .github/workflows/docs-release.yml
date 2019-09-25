@@ -19,7 +19,7 @@ jobs:
           ./docs/build.sh -r official -v ${GITHUB_REF#refs/tags/}
       - name: Clone titan-data.github.io
         run: |
-          git clone git@github.com:eschrock/titan-data.github.io
+          git clone git@github.com:titan-data/titan-data.github.io
           cd ./titan-data.github.io && git log -1
       - name: Configure git user
         run: |
