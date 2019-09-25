@@ -132,8 +132,12 @@ class Docker(private val executor: CommandExecutor) {
         return executor.exec(listOf("docker", "volume", "create", "-d", driver, "-o", "path=$path", name))
     }
 
-    fun removeVolume(name: String): String {
-        return executor.exec(listOf("docker", "volume", "rm", name))
+    fun removeVolume(name: String, force: Boolean = false): String {
+        val forceCheck = when (force) {
+            true -> "-f"
+            else -> ""
+        }
+        return executor.exec(listOf("docker", "volume", "rm", forceCheck, name))
     }
 
     fun cp(source: String, target: String): String {

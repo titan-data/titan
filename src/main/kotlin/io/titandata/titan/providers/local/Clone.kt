@@ -45,7 +45,7 @@ class Clone (
             pull(repoName, commit.id, null)
             checkout(repoName, commit.id)
         } catch (e: Throwable) {
-            println("Pull failed.")
+            println("Clone failed.")
             println(e.message)
             remove(repository.name, true)
         }

@@ -8,6 +8,8 @@ import io.titandata.client.apis.RepositoriesApi
 import io.titandata.client.apis.VolumeApi
 import io.titandata.titan.clients.Docker
 import io.titandata.models.VolumeMountRequest
+import io.titandata.models.VolumeRequest
+import io.titandata.titan.exceptions.CommandException
 import io.titandata.titan.utils.CommandExecutor
 import java.lang.Exception
 
@@ -41,7 +43,12 @@ class Remove (
                 println("Deleting volume ${volume.name}")
                 val volMountRequest = VolumeMountRequest(volume.name)
                 volumeApi.unmountVolume(volMountRequest)
-                docker.removeVolume(volume.name)
+                val volRequest = VolumeRequest(volume.name)
+                try {
+                    docker.removeVolume(volume.name, force)
+                } catch (e: CommandException) {
+                    volumeApi.removeVolume(volRequest)
+                }
             }
         }
         repositoriesApi.deleteRepository(container)
