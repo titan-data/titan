@@ -13,7 +13,7 @@ global options as well::
 
     titan --help
 
-The following options are supported.
+The following options are supported:
 
 --version       Display the titan version and exit.
 --help, -h      Display available subcommands
