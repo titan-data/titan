@@ -63,6 +63,7 @@ pip3 install -r $(dirname $0)/requirements.txt
 #
 # Run sphinx
 #
+rm -rf $OUT_DIR
 sphinx-build -W --keep-going $SRC_DIR $OUT_DIR -D release_type=$release_type \
   -D version=$version
 
