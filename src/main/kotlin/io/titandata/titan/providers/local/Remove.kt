@@ -47,6 +47,13 @@ class Remove (
                 try {
                     docker.removeVolume(volume.name, force)
                 } catch (e: CommandException) {
+                    /**
+                     Docker will sometimes fail to launch a container after the
+                     volume has been created. The container does not exist, but
+                     docker thinks the volume is attached to a container and does
+                     not allow it to be removed. Falling back on the VolumeApi
+                     fixes this condition.
+                     */
                     volumeApi.removeVolume(volRequest)
                 }
             }
