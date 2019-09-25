@@ -128,7 +128,7 @@ function generate_config() {
 
 function commit() {
    cd $dest
-   git commit -m "docs build $CURRENT_HASH"
+   git commit -m "docs build $version $CURRENT_HASH"
    git status
 }
 
