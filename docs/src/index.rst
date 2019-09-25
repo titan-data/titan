@@ -16,3 +16,9 @@ Titan Documentation
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+
+   start/start
+   lifecycle/lifecycle
+   local/local
+   remote/remote
+   cli/cli
