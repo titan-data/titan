@@ -74,7 +74,6 @@ sphinx-build -W --keep-going $SRC_DIR $OUT_DIR -D release_type=$release_type \
 # or build CI/CD to publish a static site somewhere else, simply renaming these
 # directories is sufficient for now.
 #
+rm -rf $OUT_DIR/_sources
 mv $OUT_DIR/_static $OUT_DIR/static
-mv $OUT_DIR/_sources $OUT_DIR/sources
 find $OUT_DIR -name '*.html' -exec sed -i -e 's/_static/static/g' {} \;
-find $OUT_DIR -name '*.html' -exec sed -i -e 's/_sources/sources/g' {} \;
