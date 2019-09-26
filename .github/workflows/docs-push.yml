@@ -5,6 +5,9 @@ on:
       - master
     paths:
       - 'docs/*'
+      - 'docs/*/*'
+      - 'docs/*/*/*'
+      - 'docs/*/*/*/*'
 
 jobs:
   build:
