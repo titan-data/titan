@@ -26,7 +26,6 @@ templates_path = ['_templates']
 source_suffix = ['.rst', '.md']
 exclude_patterns = ['Thumbs.db', '.DS_Store']
 language = None
-html_show_sourcelink = False
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -34,3 +33,4 @@ html_theme = 'sphinx_rtd_theme'
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 html_style = 'css/titan.css'
 html_static_path = ['_static']
+html_show_sourcelink = False
