@@ -26,13 +26,33 @@ you have not configured git before, you can run
    should `titan stop` the container prior to committing state, and
    `titan start` it afterwards.
 
+Syntax
+------
+
 ::
 
     titan commit [-m message] <repository>
 
-The following options are supported:
+Arguments
+---------
 
--m, --message    Specify a human-readable message associated with the commit.
-                 This message, along with author information, will be visible
-                 in ``titan log`` output and propagate with the commit when
-                 pushed to, or pulled from, remote repositories.
+repository
+    *Required*. The name of the target repository.
+
+Options
+-------
+
+-m, --message message  Specify a human-readable message associated with the
+                       commit. This message, along with author information,
+                       will be visible in ``titan log`` output and propagate
+                       with the commit when pushed to, or pulled from, remote
+                       repositories. If not provided, then an empty string is
+                       used.
+
+Example
+-------
+
+::
+
+    $ titan commit -m "my first commit" myrepo
+    Commit 470ceb06-ebd3-486a-a4de-7f755df84309

@@ -14,13 +14,32 @@ pull commits from remote repositories, see the :ref:`remote` section.
    running. This will interrupt any active connections, and may require
    client-specific actions to reconnect.
 
+Syntax
+------
+
 ::
 
-    titan checkout [-c commit] <repository>
+    titan checkout -c <id> <repository>
 
-The following options are supported:
+Arguments
+---------
 
--c, --commit    Optional. Specify the commit ID to checkout. Must be a known
-                commit in `titan log` for the given repository. If not
-                specified, then the latest commit (based on commit timestamp)
-                will be used.
+repository
+    *Required*. The name of the target repository.
+
+Options
+-------
+
+-c, --commit id   *Required*. Specify the commit ID to checkout. Must be a known
+                  commit in `titan log` for the given repository.
+
+Example
+-------
+
+::
+
+    $ titan checkout -c 7715327e-9535-4263-870f-f5c92c18cb23 myrepo
+    Stopping container myrepo
+    Checkout 7715327e-9535-4263-870f-f5c92c18cb23
+    Starting container myrepo
+    7715327e-9535-4263-870f-f5c92c18cb23 checked out

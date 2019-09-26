@@ -5,27 +5,33 @@ Command Line Reference
 
 The ``titan`` command line is the primary tool for managing repositories and
 commits. While there are a number of detailed subcommands, there are some
-global options as well::
-
-    titan --version
-
-::
-
-    titan --help
-
-The following options are supported:
-
---version       Display the titan version and exit.
---help, -h      Display available subcommands
+global options as well.
 
 .. note::
 
   The ``--help`` option can be used to provide more detail about subcommands
   and their options, such as ``titan run --help`` or ``titan remote --help``.
 
+Syntax
+------
+
+::
+
+   titan --help
+   titan --version
+   titan subcommand ...
+
+Options
+-------
+
+--version       Display the titan version and exit.
+--help, -h      Display available subcommands.
+
+Subcommands
+-----------
+
 .. toctree::
    :maxdepth: 1
-   :caption: Subcommands
 
    cmd/abort
    cmd/checkout
