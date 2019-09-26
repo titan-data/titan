@@ -125,7 +125,7 @@ class Local: Provider {
     }
 
     override fun list() {
-        System.out.printf("%-20s  %s${n}", "CONTAINER", "STATUS")
+        System.out.printf("%-20s  %s${n}", "REPOSITORY", "STATUS")
         for (container in getContainersStatus()) {
             System.out.printf("%-20s  %s${n}", container.name, container.status)
         }
