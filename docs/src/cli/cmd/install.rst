@@ -14,3 +14,16 @@ Syntax
 ::
 
     titan install
+
+Options
+-------
+
+-r, --registry  registry    Docker Registry URL for private repositories.
+                            Defaults to titandata from docker hub.
+
+Example
+-------
+
+::
+
+    $ titan install -r your.registry.address:port
