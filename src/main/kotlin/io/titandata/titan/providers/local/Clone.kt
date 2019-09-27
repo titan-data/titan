@@ -17,6 +17,7 @@ class Clone (
     private val pull: (container: String, commit: String?, remoteName: String?) -> Unit,
     private val checkout: (container: String, hash: String) -> Unit,
     private val run: (arguments: List<String>, createRepo: Boolean) -> Unit,
+    private val remove: (container: String, force: Boolean) -> Unit,
     private val commandExecutor: CommandExecutor = CommandExecutor(),
     private val docker: Docker = Docker(commandExecutor),
     private val remotesApi: RemotesApi = RemotesApi(),
@@ -29,18 +30,24 @@ class Clone (
             else -> container
         }
         val repository = Repository(repoName, emptyMap())
-        repositoriesApi.createRepository(repository)
-        remoteAdd(repoName, uri, null)
-        val remote = remotesApi.getRemote(repoName, "origin")
-        val remoteCommits = remotesApi.listRemoteCommits(repoName, remote.name, remoteUtil.getParameters(remote))
-        val commit = remoteCommits.first()
-        docker.pull(commit.properties["container"] as String)
-        val runtime = commit.properties["runtime"] as String
-        val arguments = runtime.runtimeToArguments().toMutableList()
-        arguments[arguments.indexOf("--name") + 1] = repoName
-        arguments.add(commit.properties["container"] as String)
-        run(arguments, false)
-        pull(repoName, commit.id, null)
-        checkout(repoName, commit.id)
+        try {
+            repositoriesApi.createRepository(repository)
+            remoteAdd(repoName, uri, null)
+            val remote = remotesApi.getRemote(repoName, "origin")
+            val remoteCommits = remotesApi.listRemoteCommits(repoName, remote.name, remoteUtil.getParameters(remote))
+            val commit = remoteCommits.first()
+            docker.pull(commit.properties["container"] as String)
+            val runtime = commit.properties["runtime"] as String
+            val arguments = runtime.runtimeToArguments().toMutableList()
+            arguments[arguments.indexOf("--name") + 1] = repoName
+            arguments.add(commit.properties["container"] as String)
+            run(arguments, false)
+            pull(repoName, commit.id, null)
+            checkout(repoName, commit.id)
+        } catch (e: Throwable) {
+            println("Clone failed.")
+            println(e.message)
+            remove(repository.name, true)
+        }
     }
 }

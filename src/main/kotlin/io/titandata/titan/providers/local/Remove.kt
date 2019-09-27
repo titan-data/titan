@@ -8,6 +8,8 @@ import io.titandata.client.apis.RepositoriesApi
 import io.titandata.client.apis.VolumeApi
 import io.titandata.titan.clients.Docker
 import io.titandata.models.VolumeMountRequest
+import io.titandata.models.VolumeRequest
+import io.titandata.titan.exceptions.CommandException
 import io.titandata.titan.utils.CommandExecutor
 import java.lang.Exception
 
@@ -41,10 +43,21 @@ class Remove (
                 println("Deleting volume ${volume.name}")
                 val volMountRequest = VolumeMountRequest(volume.name)
                 volumeApi.unmountVolume(volMountRequest)
-                docker.removeVolume(volume.name)
+                val volRequest = VolumeRequest(volume.name)
+                try {
+                    docker.removeVolume(volume.name, force)
+                } catch (e: CommandException) {
+                    /**
+                     Docker will sometimes fail to launch a container after the
+                     volume has been created. The container does not exist, but
+                     docker thinks the volume is attached to a container and does
+                     not allow it to be removed. Falling back on the VolumeApi
+                     fixes this condition.
+                     */
+                    volumeApi.removeVolume(volRequest)
+                }
             }
         }
-        println("Deleting repository $container")
         repositoriesApi.deleteRepository(container)
         println("$container removed")
     }

@@ -19,6 +19,7 @@ BUILD_DIR=$(dirname $0)/build
 VENV_DIR=$BUILD_DIR/venv
 OUT_DIR=$BUILD_DIR/out
 SRC_DIR=$(dirname $0)/src
+DOCTREE_DIR=$BUILD_DIR/doctrees
 
 function usage() {
   echo "Usage: $0 [-r development|official] [-v version]" 1>&2
@@ -65,7 +66,7 @@ pip3 install -r $(dirname $0)/requirements.txt
 #
 rm -rf $OUT_DIR
 sphinx-build -W --keep-going $SRC_DIR $OUT_DIR -D release_type=$release_type \
-  -D version=$version
+  -D version=$version -d $DOCTREE_DIR
 
 #
 # Sphinx's use of _static and friends is problematic for github pages, which is
@@ -73,7 +74,6 @@ sphinx-build -W --keep-going $SRC_DIR $OUT_DIR -D release_type=$release_type \
 # or build CI/CD to publish a static site somewhere else, simply renaming these
 # directories is sufficient for now.
 #
+rm -rf $OUT_DIR/_sources
 mv $OUT_DIR/_static $OUT_DIR/static
-mv $OUT_DIR/_sources $OUT_DIR/sources
 find $OUT_DIR -name '*.html' -exec sed -i -e 's/_static/static/g' {} \;
-find $OUT_DIR -name '*.html' -exec sed -i -e 's/_sources/sources/g' {} \;

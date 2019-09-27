@@ -36,13 +36,23 @@ class CommandExecutor(val timeout: Long = 10) {
             if (process.exitValue() != 0) {
                 val errOutput = process.errorStream.bufferedReader().readText()
                 if (debug) println(errOutput)
-                throw CommandException("Command failed: $args",
+                throw CommandException("Command failed: ${args.stringify()}",
                         exitCode = process.exitValue(),
                         output = errOutput)
             }
             return output
         } finally {
             process.destroy()
+        }
+    }
+
+    companion object {
+        fun List<String>.stringify(): String {
+            var retString = ""
+            for (item in this) {
+                retString += "$item "
+            }
+            return retString
         }
     }
 }

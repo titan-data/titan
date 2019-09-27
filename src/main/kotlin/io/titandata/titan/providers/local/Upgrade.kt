@@ -25,8 +25,8 @@ class Upgrade(
     private val executor: CommandExecutor = CommandExecutor(),
     private val httpHandler: HttpHandler = HttpHandler()
 ) {
-
-    private val titanVersionURL = "https://api.github.com/repos/titan-data/titan/releases/latest"
+    //TODO revert to HTTPS when Graal has fix the windows security bug
+    private val titanVersionURL = "http://api.github.com/repos/titan-data/titan/releases/latest"
     private var assetUrl = ""
 
     private fun getLatestVersion(): String {

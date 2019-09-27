@@ -38,11 +38,11 @@ class Local: Provider {
         val repositories = repositoriesApi.listRepositories()
         for (repo in repositories) {
             val container = repo.name
-            val containerInfo = docker.inspectContainer(container)
-            var status = "unknown"
-            if (containerInfo != null) {
+            var status = "detached"
+            try {
+                val containerInfo = docker.inspectContainer(container)!!
                 status = containerInfo.getJSONObject("State").getString("Status")
-            }
+            } catch (e: CommandException) {}
             returnList.add(Container(container, status))
         }
         return returnList
@@ -68,8 +68,13 @@ class Local: Provider {
         return checkInstallCommand.checkInstall()
     }
 
-    override fun install() {
-        val installCommand = Install(titanServerVersion, dockerRegistryUrl, commandExecutor, docker)
+    override fun install(registry: String?) {
+        val regVal = if (registry.isNullOrEmpty()) {
+            dockerRegistryUrl
+        } else {
+            registry
+        }
+        val installCommand = Install(titanServerVersion, regVal, commandExecutor, docker)
         return installCommand.install()
     }
 
@@ -125,7 +130,7 @@ class Local: Provider {
     }
 
     override fun list() {
-        System.out.printf("%-20s  %s${n}", "CONTAINER", "STATUS")
+        System.out.printf("%-20s  %s${n}", "REPOSITORY", "STATUS")
         for (container in getContainersStatus()) {
             System.out.printf("%-20s  %s${n}", container.name, container.status)
         }
@@ -168,7 +173,7 @@ class Local: Provider {
 
     override fun clone(uri: String, container: String?) {
         val runCommand = Run(::exit,  commandExecutor, docker)
-        val cloneCommand = Clone(::remoteAdd, ::pull, ::checkout, runCommand::run, commandExecutor, docker)
+        val cloneCommand = Clone(::remoteAdd, ::pull, ::checkout, runCommand::run, ::remove, commandExecutor, docker)
         return cloneCommand.clone(uri, container)
     }
 }
