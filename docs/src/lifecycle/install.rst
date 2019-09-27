@@ -1,11 +1,7 @@
-.. _start_install:
+.. _lifecycle_install:
 
 Installation and Configuration
 ==============================
-
-For a high-level quick start, see the
-`Getting Started <https://titan-data.io/getting-started>`_ guide on the
-community site.
 
 Installing Docker
 -----------------

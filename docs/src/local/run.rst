@@ -1,7 +1,7 @@
-.. _start_run:
+.. _local_run:
 
-Running a Repository
-====================
+Creating a new Repository
+=========================
 
 A titan repository combines a docker container and its configuration with data
 that backs the volumes within that container. So every repository should

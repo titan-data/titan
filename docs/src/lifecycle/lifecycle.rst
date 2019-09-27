@@ -9,6 +9,7 @@ Coming Soon!
    :maxdepth: 1
    :caption: Managing Titan Software
 
+   install
    supported
    upgrade
    diagnosis

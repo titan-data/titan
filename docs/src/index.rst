@@ -21,7 +21,7 @@ of Titan, head over to `titan-data.io <https://titan-data.io>`_.
    :maxdepth: 2
    :caption: Contents:
 
-   start/start
+   start
    lifecycle/lifecycle
    local/local
    remote/remote
