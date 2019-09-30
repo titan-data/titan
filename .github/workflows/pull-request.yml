@@ -18,3 +18,14 @@ jobs:
           java-version: '8.0.212'
       - name: Run Maven Tests
         run: ./mvnw clean verify
+  docs:
+    name: Build Documentation
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install virtualenv
+        run: sudo pip3 install virtualenv
+      - name: Build documentation
+        run: |
+          export PATH=/usr/local/bin:$PATH
+          ./docs/build.sh -r development -v development

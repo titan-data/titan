@@ -44,9 +44,9 @@ to see if you can get it to work.
 
 Installation Issues
 -------------------
-When you're running ``titan install``, the server container may or may not
+When you're running :ref:`cli_cmd_install`, the server container may or may not
 be running successfully. In these cases, you can use ``docker logs titan-launch``
-to see what may be going on within the process. The lines denoted ``TITAN` are
+to see what may be going on within the process. The lines denoted ``TITAN`` are
 designed to be more user-readable, while the other error messages may be
 internal.
 
