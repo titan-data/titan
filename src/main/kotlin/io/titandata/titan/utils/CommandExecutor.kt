@@ -27,7 +27,6 @@ class CommandExecutor(val timeout: Long = 10) {
         builder.command(args)
         val process = builder.start()
         try {
-            process.waitFor(timeout, TimeUnit.MINUTES)
             val output = process.inputStream.bufferedReader().readText()
             if (process.isAlive) {
                 throw IOException("Timed out waiting for command: $args")
@@ -40,6 +39,7 @@ class CommandExecutor(val timeout: Long = 10) {
                         exitCode = process.exitValue(),
                         output = errOutput)
             }
+            process.waitFor(timeout, TimeUnit.MINUTES)
             return output
         } finally {
             process.destroy()
