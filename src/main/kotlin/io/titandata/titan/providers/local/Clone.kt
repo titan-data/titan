@@ -11,6 +11,7 @@ import io.titandata.titan.clients.Docker.Companion.runtimeToArguments
 import io.titandata.models.Repository
 import io.titandata.titan.utils.CommandExecutor
 import io.titandata.serialization.RemoteUtil
+import io.titandata.titan.exceptions.CommandException
 
 class Clone (
     private val remoteAdd: (container:String, uri: String, remoteName: String?) -> Unit,
@@ -44,9 +45,10 @@ class Clone (
             run(arguments, false)
             pull(repoName, commit.id, null)
             checkout(repoName, commit.id)
-        } catch (e: Throwable) {
+        } catch (e: CommandException) {
             println("Clone failed.")
             println(e.message)
+            println(e.output)
             remove(repository.name, true)
         }
     }
