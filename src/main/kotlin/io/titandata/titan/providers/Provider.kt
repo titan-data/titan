@@ -23,5 +23,5 @@ interface Provider {
     fun start(container: String)
     fun remove(container: String, force: Boolean)
     fun cp(container: String, driver: String, source: String, path: String)
-    fun clone(uri: String, container: String?)
+    fun clone(uri: String, container: String?, commit: String?)
 }

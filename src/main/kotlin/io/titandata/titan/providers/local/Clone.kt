@@ -6,6 +6,7 @@ package io.titandata.titan.providers.local
 
 import io.titandata.client.apis.RemotesApi
 import io.titandata.client.apis.RepositoriesApi
+import io.titandata.models.Commit
 import io.titandata.titan.clients.Docker
 import io.titandata.titan.clients.Docker.Companion.runtimeToArguments
 import io.titandata.models.Repository
@@ -25,18 +26,27 @@ class Clone (
     private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
     private val remoteUtil: RemoteUtil = RemoteUtil()
 ) {
-    fun clone(uri: String, container: String?) {
+    fun clone(uri: String, container: String?, guid: String?) {
         val repoName = when(container){
-            null -> uri.split("/").last()
+            null -> uri.split("/").last().substringBefore('#')
             else -> container
+        }
+        val commitId = when {
+            guid.isNullOrEmpty() && uri.contains('#') -> uri.split("#").last()
+            else -> guid
         }
         val repository = Repository(repoName, emptyMap())
         try {
             repositoriesApi.createRepository(repository)
-            remoteAdd(repoName, uri, null)
+            remoteAdd(repoName, uri.substringBefore('#'), null)
             val remote = remotesApi.getRemote(repoName, "origin")
-            val remoteCommits = remotesApi.listRemoteCommits(repoName, remote.name, remoteUtil.getParameters(remote))
-            val commit = remoteCommits.first()
+            var commit = Commit("id", emptyMap())
+            if (commitId.isNullOrEmpty()) {
+                val remoteCommits = remotesApi.listRemoteCommits(repoName, remote.name, remoteUtil.getParameters(remote))
+                commit = remoteCommits.first()
+            } else {
+                commit = remotesApi.getRemoteCommit(repoName, remote.name, commitId, remoteUtil.getParameters(remote))
+            }
             docker.pull(commit.properties["container"] as String)
             val runtime = commit.properties["runtime"] as String
             val arguments = runtime.runtimeToArguments().toMutableList()

@@ -171,9 +171,9 @@ class Local: Provider {
         return cpCommand.cp(container, driver, source, path)
     }
 
-    override fun clone(uri: String, container: String?) {
+    override fun clone(uri: String, container: String?, commit: String?) {
         val runCommand = Run(::exit,  commandExecutor, docker)
         val cloneCommand = Clone(::remoteAdd, ::pull, ::checkout, runCommand::run, ::remove, commandExecutor, docker)
-        return cloneCommand.clone(uri, container)
+        return cloneCommand.clone(uri, container, commit)
     }
 }
