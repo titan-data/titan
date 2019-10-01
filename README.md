@@ -1,5 +1,10 @@
 # Titan
 ## Your Code. Your Environment. Your Data. 
+
+![](https://github.com/titan-data/titan/workflows/Publish/badge.svg)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/titan-data/titan)
+![GitHub All Releases](https://img.shields.io/github/downloads/titan-data/titan/total)
+
 ## <a id="getting-started"></a> Getting Started
 
 ### <a id="requirements"></a> Requirements
