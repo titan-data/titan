@@ -3,4 +3,32 @@
 S3 Provider
 ===========
 
-Coming Soon!
+The S3 provider uses S3 to store commits remotely in a S3 bucket. Each commit
+is stored as an tar archive, with the commit metadata attached as object
+metadata. The URI format is::
+
+    s3://<bucket>/<key>
+
+Commits will be created at ``<key>/<commitid>/<archive>.tar.gz``. The commit
+metadata will be stored at the ``<commitid>`` level.
+
+The AWS credentials are pulled using the default AWS credential chain at
+the time you do the push or pull operation. So you must have the
+``AWS_*`` environment variables set, or use your ``~/.aws`` configuration.
+Because the S3 provider uses the standard AWS SDK, all variations of credentials
+should be supported, including specifying a profile with ``AWS_PROFILE``.
+To pull a commit, you will need ``s3:GetObject`` permissions. To push a commit,
+you will need ``s3:PutObject`` permissions.
+
+.. note::
+
+   The S3 provider doesn't currently support MFA (multi factor authentication).
+   If you have a ``session_token`` in your AWS config, then operations will
+   fail with an error message indicating the access key could not be found.
+
+The S3 provider relies on basic AWS APIs to implement its functionality, and
+as such has limited scalability. For example, finding the latest commit requires
+listing all objects, getting metadata iteratively for each one, and comparing
+the result. It should only be used for storing relatively small numbers of
+commits. Improving this will require a new provider that includes a robust
+metadata layer on top of the base S3 functionality.
