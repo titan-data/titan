@@ -75,5 +75,12 @@ by running ``titan checkout``::
 Here you can see that we stopped the container, swapped out the data, and
 started it again. And with that, we're back to the original commit we created.
 
+.. warning::
+
+   The titan infrastructure has not currently been built for scale, and while it
+   should work fine for dozens of commits, creating hundreds or thousands of
+   commits or repositories may have adverse effects on the system. This will be
+   addressed in a future release.
+
 For information on more additional local workflows, see the
 :ref:`local` section.
