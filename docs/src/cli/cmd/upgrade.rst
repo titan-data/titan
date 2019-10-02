@@ -6,7 +6,7 @@ titan upgrade
 Upgrade the titan software on the host system. This will automatically fetch
 the latest version of Titan, replace the current titan binary, and then
 update the titan supporting infrastructure. For more information on upgrade,
-see the :ref:`local_upgrade` section.
+see the :ref:`lifecycle_upgrade` section.
 
 .. warning::
 

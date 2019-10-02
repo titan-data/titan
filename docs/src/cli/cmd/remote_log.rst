@@ -4,7 +4,7 @@ titan remote log
 ================
 
 List commits in a remote. For more information on managing remotes, see
-the :ref:`remote_remote` section.
+the :ref:`remote` section.
 
 Syntax
 ------

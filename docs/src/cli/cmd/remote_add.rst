@@ -21,7 +21,7 @@ repository
 
 uri
     *Required*. The remote URI to use. For more information on URI format,
-    see the provider sections under the :ref:`remote_remote` section.
+    see the provider sections under the :ref:`remote` section.
 
 Options
 -------
