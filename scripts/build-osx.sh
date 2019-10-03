@@ -12,6 +12,7 @@ native-image -cp ${PWD}/target/titan-$version-jar-with-dependencies.jar\
     -H:+ReportUnsupportedElementsAtRuntime\
     -H:ReflectionConfigurationFiles=${PWD}/config/reflect-config.json\
     -H:ResourceConfigurationFiles=${PWD}/config/resource-config.json\
+    -H:JNIConfigurationFiles=${PWD}/config/jni-config.json\
     -H:+AddAllCharsets\
     --initialize-at-run-time=org.bouncycastle.crypto.prng.SP800SecureRandom\
     --initialize-at-run-time=org.bouncycastle.jcajce.provider.drbg.DRBG$Default\

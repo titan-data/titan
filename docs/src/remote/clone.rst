@@ -21,5 +21,8 @@ uses whatever the configuration was as of the last commit.
 
 .. note::
 
-   The clone command currently always uses the latest commit. The ability to
-   select a specific commit to use will be added in a future release.
+   The clone command currently always uses the latest commit by default. To clone a specific
+   commit, add the commit GUID to the URI with a `#` tag. Example::
+
+    $ titan clone s3://titan-data-demo/hello-world/postgres#0f53a6a4-90ff-4f8c-843a-a6cce36f4f4f hello-world
+

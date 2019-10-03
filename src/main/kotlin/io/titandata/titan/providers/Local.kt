@@ -18,7 +18,7 @@ data class Container (
 )
 
 class Local: Provider {
-    private val titanServerVersion = "0.4.1"
+    private val titanServerVersion = "0.4.4"
     private val dockerRegistryUrl = "titandata"
 
     private val httpHandler = HttpHandler()
@@ -171,9 +171,17 @@ class Local: Provider {
         return cpCommand.cp(container, driver, source, path)
     }
 
-    override fun clone(uri: String, container: String?) {
+    override fun clone(uri: String, container: String?, commit: String?) {
         val runCommand = Run(::exit,  commandExecutor, docker)
         val cloneCommand = Clone(::remoteAdd, ::pull, ::checkout, runCommand::run, ::remove, commandExecutor, docker)
-        return cloneCommand.clone(uri, container)
+        return cloneCommand.clone(uri, container, commit)
+    }
+
+    override fun delete(repository: String, commit: String?) {
+        val deleteCommand = Delete()
+        if (!commit.isNullOrEmpty()) {
+            return deleteCommand.deleteCommit(repository, commit)
+        }
+        println("No object found to delete.")
     }
 }
