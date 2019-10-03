@@ -37,6 +37,7 @@ Subcommands
    cmd/checkout
    cmd/clone
    cmd/commit
+   cmd/delete
    cmd/cp
    cmd/install
    cmd/log
