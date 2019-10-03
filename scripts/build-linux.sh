@@ -17,7 +17,7 @@ ${entry} native-image -cp /cli/target/titan-$version-jar-with-dependencies.jar\
     --initialize-at-run-time=org.bouncycastle.crypto.prng.SP800SecureRandom\
     --initialize-at-run-time=org.bouncycastle.jcajce.provider.drbg.DRBG$Default\
     --initialize-at-run-time=org.bouncycastle.jcajce.provider.drbg.DRBG$NonceAndIV\
-    -J-Djava.security.properties=${PWD}/java.security.overrides\
+    -J-Djava.security.properties=/cli/java.security.overrides\
     --allow-incomplete-classpath\
     --enable-http\
     --enable-https
