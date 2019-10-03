@@ -176,4 +176,12 @@ class Local: Provider {
         val cloneCommand = Clone(::remoteAdd, ::pull, ::checkout, runCommand::run, ::remove, commandExecutor, docker)
         return cloneCommand.clone(uri, container, commit)
     }
+
+    override fun delete(repository: String, commit: String?) {
+        val deleteCommand = Delete()
+        if (!commit.isNullOrEmpty()) {
+            return deleteCommand.deleteCommit(repository, commit)
+        }
+        println("No object found to delete.")
+    }
 }

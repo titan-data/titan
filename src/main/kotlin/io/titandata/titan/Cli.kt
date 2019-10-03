@@ -42,6 +42,7 @@ object Cli {
             import(startModule)
             import(stopModule)
             import(commitModule)
+            import(deleteModule)
             import(checkoutModule)
             import(listModule)
             import(logModule)
