@@ -31,7 +31,7 @@ jobs:
       if: matrix.os == 'ubuntu-18.04'
       uses: actions/upload-artifact@master
       with:
-        name: titan-cli-0.3.0-linux_amd64.zip
+        name: titan-cli-0.3.0-linux_amd64.tar
         path: releases
   release:
     name: Draft Release
@@ -45,7 +45,7 @@ jobs:
         path: releases
     - uses: actions/download-artifact@master
       with:
-        name: titan-cli-0.3.0-linux_amd64.zip
+        name: titan-cli-0.3.0-linux_amd64.tar
         path: releases
     - name: Draft Release
       if: startsWith(github.ref, 'refs/tags/')

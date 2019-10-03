@@ -23,4 +23,4 @@ ${entry} native-image -cp /cli/target/titan-$version-jar-with-dependencies.jar\
     --enable-https
 
 ${entry} mkdir -p /cli/releases/
-${entry} tar -cvf /cli/releases/titan-cli-$version-linux_amd64.zip titan
+${entry} tar -cvf /cli/releases/titan-cli-$version-linux_amd64.tar titan
