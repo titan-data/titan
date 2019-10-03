@@ -28,6 +28,11 @@ class CommandExecutor(val timeout: Long = 10) {
         builder.command(args)
         val process = builder.start()
         try {
+            /**
+             Windows has an issue with the process.waitFor being at the beginning of this loop.
+             It has been moved to the end with a condition special to Windows to catch this OS
+             difference. Linux and MacOS want the process.waitFor at the beginning of the loop.
+             */
             if (SystemUtils.IS_OS_MAC || SystemUtils.IS_OS_LINUX) {
                 process.waitFor(timeout, TimeUnit.MINUTES)
             }

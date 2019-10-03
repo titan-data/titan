@@ -37,5 +37,5 @@ Example
 
 ::
 
-    $ titan checkout -c 7715327e-9535-4263-870f-f5c92c18cb23 myrepo
+    $ titan delete -c 7715327e-9535-4263-870f-f5c92c18cb23 myrepo
     7715327e-9535-4263-870f-f5c92c18cb23 deleted
