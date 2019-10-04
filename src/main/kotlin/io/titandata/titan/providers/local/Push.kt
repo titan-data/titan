@@ -53,7 +53,9 @@ class Push (
             val statuses = operationsApi.getProgress(container, operation.id)
             for (status in statuses) {
                 if (status.type != ProgressEntry.Type.PROGRESS) {
-                    println(status.message)
+                    if (!status.message.isNullOrEmpty()) {
+                        println(status.message)
+                    }
                 } else {
                     val subMessage = status.message as String
                     if (subMessage.length > padLen) {

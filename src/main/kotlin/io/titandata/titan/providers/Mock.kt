@@ -89,7 +89,11 @@ class Mock: Provider {
         println("copying data into $container with $driver from $source")
     }
 
-    override fun clone(uri: String, container: String?) {
+    override fun clone(uri: String, container: String?, commit: String?) {
         println("cloning $container from $uri")
+    }
+
+    override fun delete(repository: String, commit: String?) {
+        println("deleting $commit from $repository")
     }
 }

@@ -12,14 +12,15 @@ ${entry} native-image -cp /cli/target/titan-$version-jar-with-dependencies.jar\
     -H:+ReportUnsupportedElementsAtRuntime\
     -H:ReflectionConfigurationFiles=/cli/config/reflect-config.json\
     -H:ResourceConfigurationFiles=/cli/config/resource-config.json\
+    -H:JNIConfigurationFiles=/cli/config/jni-config.json\
     -H:+AddAllCharsets\
     --initialize-at-run-time=org.bouncycastle.crypto.prng.SP800SecureRandom\
     --initialize-at-run-time=org.bouncycastle.jcajce.provider.drbg.DRBG$Default\
     --initialize-at-run-time=org.bouncycastle.jcajce.provider.drbg.DRBG$NonceAndIV\
-    -J-Djava.security.properties=${PWD}/java.security.overrides\
+    -J-Djava.security.properties=/cli/java.security.overrides\
     --allow-incomplete-classpath\
     --enable-http\
     --enable-https
 
 ${entry} mkdir -p /cli/releases/
-${entry} tar -cvf /cli/releases/titan-cli-$version-linux_amd64.zip titan
+${entry} tar -cvf /cli/releases/titan-cli-$version-linux_amd64.tar titan

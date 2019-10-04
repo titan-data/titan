@@ -5,6 +5,7 @@
 package io.titandata.titan.providers.local
 
 import io.titandata.client.apis.RemotesApi
+import io.titandata.serialization.RemoteUtil
 
 class RemoteList (
     private val remotesApi: RemotesApi = RemotesApi()
@@ -13,9 +14,9 @@ class RemoteList (
     
     fun list(container: String) {
         val remotes = remotesApi.listRemotes(container)
-        System.out.printf("%-20s  %s${n}", "REMOTE", "PROVIDER")
+        System.out.printf("%-20s %-20s %s${n}", "REMOTE", "URI")
         for (remote in remotes) {
-            System.out.printf("%-20s  %s${n}", remote.name, remote.provider)
+            System.out.printf("%-20s %-20s %s${n}", remote.name, RemoteUtil().toUri(remote).first)
         }
     }
 }

@@ -16,15 +16,10 @@ The AWS credentials are pulled using the default AWS credential chain at
 the time you do the push or pull operation. So you must have the
 ``AWS_*`` environment variables set, or use your ``~/.aws`` configuration.
 Because the S3 provider uses the standard AWS SDK, all variations of credentials
-should be supported, including specifying a profile with ``AWS_PROFILE``.
-To pull a commit, you will need ``s3:GetObject`` permissions. To push a commit,
-you will need ``s3:PutObject`` permissions.
-
-.. note::
-
-   The S3 provider doesn't currently support MFA (multi factor authentication).
-   If you have a ``session_token`` in your AWS config, then operations will
-   fail with an error message indicating the access key could not be found.
+should be supported, including specifying a profile with ``AWS_PROFILE`` or
+using MFA (multi factor authentication) session tokens.  To pull a commit, you
+will need ``s3:GetObject`` permissions. To push a commit, you will need
+``s3:PutObject`` permissions.
 
 The S3 provider relies on basic AWS APIs to implement its functionality, and
 as such has limited scalability. For example, finding the latest commit requires
