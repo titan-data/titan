@@ -5,6 +5,7 @@ set -o pipefail
 
 UPLOAD_URL=$1
 FILE=$2
+MIME=$3
 SIZE=$(wc -c $FILE | awk '{print $1}')
 
 
@@ -12,5 +13,5 @@ SIZE=$(wc -c $FILE | awk '{print $1}')
 curl \
   -H "Authorization: token $GITHUB_TOKEN" \
   -H "Content-Length: $SIZE"\
-  -H "Content-Type: application/zip" \
+  -H "Content-Type: application/$MIME" \
   --data-binary @$FILE "$UPLOAD_URL"

@@ -3,52 +3,90 @@ name: Publish
 on: create
 
 jobs:
-  build:
-    name: Build ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-18.04, macOS-10.14]
+  build-windows:
+    name: Build Windows
+    runs-on: windows-2019
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-java@v1
-      with:
-        java-version: '8.0.212'
-    - name: Setup Env
-      run: ./scripts/setup.sh ${{ matrix.os }}
-    - name: Build Jar
-      run: ./scripts/compile-maven.sh
-    - name: Compile Binary
-      if: startsWith(github.ref, 'refs/tags/')
-      run: ./scripts/build.sh ${{ matrix.os }}
-    - name: Upload ${{ matrix.os }} Binary
-      if: matrix.os == 'macOS-10.14'
-      uses: actions/upload-artifact@master
-      with:
-        name: titan-cli-darwin_amd64.zip
-        path: releases
-    - name: Upload ${{ matrix.os }} Binary
-      if: matrix.os == 'ubuntu-18.04'
-      uses: actions/upload-artifact@master
-      with:
-        name: titan-cli-linux_amd64.tar
-        path: releases
+      - uses: actions/checkout@v1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '8.0.212'
+      - name: Build Docker Container
+        working-directory: ./scripts/windows
+        run: docker build -t graal-build .
+        shell: pwsh
+      - name: Build Jar
+        run: ./mvnw compile package
+        shell: pwsh
+      - name: Compile Binary
+        run: docker run -v D:\a\titan\titan:c:\titan -w c:\titan graal-build
+        shell: pwsh
+      - name: Compress Binary
+        run: ./scripts/windows/archive-binary
+        shell: pwsh
+      - name: Upload Binary
+        uses: actions/upload-artifact@master
+        with:
+          name: titan-cli-windows_amd64.zip
+          path: releases
+  build-linux:
+    name: Build Linux
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '8.0.212'
+      - name: Setup Env
+        run: ./scripts/setup.sh ubuntu-18.04
+      - name: Build Jar
+        run: ./scripts/compile-maven.sh
+      - name: Compile Binary
+        run: ./scripts/build.sh ubuntu-18.04
+      - name: Upload Binary
+        uses: actions/upload-artifact@master
+        with:
+          name: titan-cli-linux_amd64.tar
+          path: releases
+  build-macos:
+    name: Build macOS
+    runs-on: macOS-10.14
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '8.0.212'
+      - name: Setup Env
+        run: ./scripts/setup.sh macOS-10.14
+      - name: Build Jar
+        run: ./scripts/compile-maven.sh
+      - name: Compile Binary
+        run: ./scripts/build.sh macOS-10.14
+      - name: Upload Binary
+        uses: actions/upload-artifact@master
+        with:
+          name: titan-cli-darwin_amd64.zip
+          path: releases
   release:
     name: Draft Release
     runs-on: ubuntu-18.04
-    needs: build
+    needs: [build-windows, build-linux, build-macos]
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/download-artifact@master
-      with:
-        name: titan-cli-darwin_amd64.zip
-        path: releases
-    - uses: actions/download-artifact@master
-      with:
-        name: titan-cli-linux_amd64.tar
-        path: releases
-    - name: Draft Release
-      if: startsWith(github.ref, 'refs/tags/')
-      run: ./scripts/draft-release.sh
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v1
+      - uses: actions/download-artifact@master
+        with:
+          name: titan-cli-darwin_amd64.zip
+          path: releases
+      - uses: actions/download-artifact@master
+        with:
+          name: titan-cli-linux_amd64.tar
+          path: releases
+      - uses: actions/download-artifact@master
+        with:
+          name: titan-cli-windows_amd64.zip
+          path: releases
+      - name: Draft Release
+        if: startsWith(github.ref, 'refs/tags/')
+        run: ./scripts/draft-release.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
