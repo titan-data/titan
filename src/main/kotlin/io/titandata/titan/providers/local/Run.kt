@@ -71,7 +71,7 @@ class Run (
         argList.add("--name")
         argList.add(containerName)
         argList.addAll(argumentEdit)
-        val imageSHA = imageInfo.getJSONObject("ContainerConfig").getString("Image")
+        val imageSHA = imageInfo.getJSONObject("Config").getString("Image")
         val metadata = mapOf(
                 "container" to imageSHA,
                 "repoTags" to imageInfo.getJSONArray("RepoTags")[0],
