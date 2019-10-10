@@ -50,6 +50,15 @@ class Clone (
             try {
                 docker.inspectImage(commit.properties["container"] as String)
             } catch (e: CommandException) {
+                try{
+                    docker.pull(commit.properties["container"] as String)
+                } catch (e: CommandException) {
+                    throw CommandException(
+                            "Unable to find image ${commit.properties["container"]} for ${commit.properties["repoTags"]}",
+                            e.exitCode,
+                            e.output
+                    )
+                }
                 docker.pull(commit.properties["container"] as String)
             }
             val runtime = commit.properties["runtime"] as String
@@ -60,7 +69,6 @@ class Clone (
             pull(repoName, commit.id, null)
             checkout(repoName, commit.id)
         } catch (e: CommandException) {
-            println("Clone failed.")
             println(e.message)
             println(e.output)
             remove(repository.name, true)

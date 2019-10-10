@@ -74,6 +74,7 @@ class Run (
         val imageSHA = imageInfo.getJSONObject("ContainerConfig").getString("Image")
         val metadata = mapOf(
                 "container" to imageSHA,
+                "repoTags" to imageInfo.getJSONArray("RepoTags")[0],
                 "runtime" to argList.toString()
         )
         val updateRepo = Repository(containerName, metadata)

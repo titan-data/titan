@@ -23,6 +23,7 @@ class Commit (
                 "email" to email,
                 "message" to message!!,
                 "container" to repoMetadata["container"]!!,
+                "repoTags" to repoMetadata["repoTags"]!!,
                 "runtime" to repoMetadata["runtime"]!!
         )
         val commit = Commit(uuid, metadata)
