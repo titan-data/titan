@@ -14,7 +14,7 @@ class Commit (
     private val email: String,
     private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
     private val commitsApi: CommitsApi = CommitsApi(),
-    private val uuid: String = UUID.randomUUID().toString()
+    private val uuid: String = UUID.randomUUID().toString().replace("-","")
 ) {
     fun commit(container: String, message: String) {
         val repoMetadata = repositoriesApi.getRepository(container).properties
