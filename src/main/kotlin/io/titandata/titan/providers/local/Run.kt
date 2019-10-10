@@ -4,12 +4,15 @@
 
 package io.titandata.titan.providers.local
 
+import com.google.gson.JsonObject
 import io.titandata.client.apis.RepositoriesApi
 import io.titandata.titan.clients.Docker
 import io.titandata.titan.clients.Docker.Companion.fetchName
 import io.titandata.titan.clients.Docker.Companion.hasDetach
 import io.titandata.models.Repository
+import io.titandata.titan.exceptions.CommandException
 import io.titandata.titan.utils.CommandExecutor
+import org.json.JSONObject
 
 class Run (
     private val exit: (message: String, code: Int) -> Unit,
@@ -26,8 +29,15 @@ class Run (
             exit("Container name cannot contain a slash",1)
         }
         val image = arguments.last()
-        docker.pull(image)
-        val imageInfo = docker.inspectImage(image)
+
+        var imageInfo: JSONObject? = null
+        try {
+             imageInfo = docker.inspectImage(image)
+        } catch (e: CommandException) {
+            docker.pull(image)
+            imageInfo = docker.inspectImage(image)
+        }
+
         if (imageInfo == null) {
             exit("Image information is not available",1)
         }
@@ -61,14 +71,14 @@ class Run (
         argList.add("--name")
         argList.add(containerName)
         argList.addAll(argumentEdit)
-        val repoDigest = imageInfo.getJSONArray("RepoDigests")[0] as String
+        val imageSHA = imageInfo.getJSONObject("ContainerConfig").getString("Image")
         val metadata = mapOf(
-                "container" to repoDigest,
+                "container" to imageSHA,
                 "runtime" to argList.toString()
         )
         val updateRepo = Repository(containerName, metadata)
         repositoriesApi.updateRepository(containerName, updateRepo)
-        docker.run(repoDigest, "", argList)
+        docker.run(imageSHA, "", argList)
         println("Running controlled container $containerName")
     }
 }
