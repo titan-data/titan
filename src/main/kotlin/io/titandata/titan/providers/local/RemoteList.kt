@@ -14,9 +14,9 @@ class RemoteList (
     
     fun list(container: String) {
         val remotes = remotesApi.listRemotes(container)
-        System.out.printf("%-20s %-20s %s${n}", "REMOTE", "URI")
+        System.out.printf("%-20s %-20s${n}", "REMOTE", "URI")
         for (remote in remotes) {
-            System.out.printf("%-20s %-20s %s${n}", remote.name, RemoteUtil().toUri(remote).first)
+            System.out.printf("%-20s %-20s${n}", remote.name, RemoteUtil().toUri(remote).first)
         }
     }
 }
