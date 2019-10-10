@@ -47,7 +47,11 @@ class Clone (
             } else {
                 commit = remotesApi.getRemoteCommit(repoName, remote.name, commitId, remoteUtil.getParameters(remote))
             }
-            docker.pull(commit.properties["container"] as String)
+            try {
+                docker.inspectImage(commit.properties["container"] as String)
+            } catch (e: CommandException) {
+                docker.pull(commit.properties["container"] as String)
+            }
             val runtime = commit.properties["runtime"] as String
             val arguments = runtime.runtimeToArguments().toMutableList()
             arguments[arguments.indexOf("--name") + 1] = repoName
