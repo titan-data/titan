@@ -10,7 +10,10 @@ metadata. The URI format is::
     s3://<bucket>/<key>
 
 Commits will be created at ``<key>/<commitid>/<archive>.tar.gz``. The commit
-metadata will be stored at the ``<commitid>`` level.
+metadata will be stored at the ``<commitid>`` level. In addition, the commits
+are stored in file named ``titan`` at the root of the repository. This makes it
+more efficient to list commits, and allows the :ref:`remote_provider_s3web` to
+pull data.
 
 The AWS credentials are pulled using the default AWS credential chain at
 the time you do the push or pull operation. So you must have the
@@ -21,9 +24,9 @@ using MFA (multi factor authentication) session tokens.  To pull a commit, you
 will need ``s3:GetObject`` permissions. To push a commit, you will need
 ``s3:PutObject`` permissions.
 
-The S3 provider relies on basic AWS APIs to implement its functionality, and
-as such has limited scalability. For example, finding the latest commit requires
-listing all objects, getting metadata iteratively for each one, and comparing
-the result. It should only be used for storing relatively small numbers of
-commits. Improving this will require a new provider that includes a robust
-metadata layer on top of the base S3 functionality.
+The S3 provider relies on basic AWS APIs to implement its functionality, and as
+such has limited scalability.  For example, all commits are stored in a single
+metadata file, and there are no provisions for keeping that metadata consistent
+in the face of simultaneous pushes. It should only be used for storing
+relatively small numbers of commits. Improving this will require a new provider
+that includes a robust metadata layer on top of the base S3 functionality.
