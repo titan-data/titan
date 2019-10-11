@@ -18,4 +18,4 @@ distributions sitting in front of the bucket. The only requirement is that
 .. note::
 
    The S3 Web provider is read-only. It can only pull data that has been pushed by
-   the :refs`remote_provider_s3`.
+   the :ref:`remote_provider_s3`.
