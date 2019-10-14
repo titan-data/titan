@@ -8,7 +8,7 @@ using the HTTP terface. It is designed to make it easy to share public
 data without needing AWS credentials of any kind.
 The URI format is::
 
-    s3://<bucket-url>[:port]/<path>
+    s3web://<bucket-url>[:port]/<path>
 
 The format of the data must match that pushed by the :ref:`remote_provider_s3`.
 The bucket URL can be anything, including DNS aliases or cloud front
