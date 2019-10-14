@@ -28,14 +28,20 @@ class Run (
         if(containerName.contains("/")) {
             exit("Container name cannot contain a slash",1)
         }
-        val image = arguments.last()
+        val imageArray = arguments.last().split(":")
+        val image = imageArray[0]
+        val tag = if (imageArray[1].isNullOrEmpty()) {
+            "latest"
+        } else {
+            imageArray[1]
+        }
 
         var imageInfo: JSONObject? = null
         try {
-             imageInfo = docker.inspectImage(image)
+             imageInfo = docker.inspectImage("$image:$tag")
         } catch (e: CommandException) {
-            docker.pull(image)
-            imageInfo = docker.inspectImage(image)
+            docker.pull("$image:$tag")
+            imageInfo = docker.inspectImage("$image:$tag")
         }
 
         if (imageInfo == null) {
@@ -65,21 +71,29 @@ class Run (
             argumentEdit.removeAt((argumentEdit.indexOf("--name") + 1))
             argumentEdit.removeAt(argumentEdit.indexOf("--name"))
         }
-        if (argumentEdit.contains(image)) {
-            argumentEdit.removeAt(argumentEdit.indexOf(image))
+        if (argumentEdit.contains("$image:$tag")) {
+            argumentEdit.removeAt(argumentEdit.indexOf("$image:$tag"))
         }
         argList.add("--name")
         argList.add(containerName)
         argList.addAll(argumentEdit)
-        val imageSHA = imageInfo.getJSONObject("Config").getString("Image")
+        val repoDigest = imageInfo.optJSONArray("RepoDigests")[0] as String
+        val dockerRunCommand = if(repoDigest.isNullOrEmpty()) {
+            "$image:$tag"
+        } else  {
+            repoDigest
+        }
         val metadata = mapOf(
-                "container" to imageSHA,
-                "repoTags" to imageInfo.getJSONArray("RepoTags")[0],
+                "container" to dockerRunCommand,
+                "image" to image,
+                "tag" to tag,
+                "digest" to repoDigest,
                 "runtime" to argList.toString()
         )
+
         val updateRepo = Repository(containerName, metadata)
         repositoriesApi.updateRepository(containerName, updateRepo)
-        docker.run(imageSHA, "", argList)
+        docker.run(dockerRunCommand, "", argList)
         println("Running controlled container $containerName")
     }
 }
