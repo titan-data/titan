@@ -4,7 +4,6 @@
 
 package io.titandata.titan.providers.local
 
-import com.google.gson.JsonObject
 import io.titandata.client.apis.RepositoriesApi
 import io.titandata.titan.clients.Docker
 import io.titandata.titan.clients.Docker.Companion.fetchName
