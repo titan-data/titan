@@ -40,7 +40,7 @@ Example
 
 ::
 
-    $ titan clone s3://titan-data-demo/hello-world/postgres myrepo
+    $ titan clone s3web://demo.titan-data.io/hello-world/postgres myrepo
     Creating repository myrepo
     Creating docker volume myrepo/v0 with path /var/lib/postgresql/data
     Running controlled container myrepo

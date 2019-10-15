@@ -23,7 +23,9 @@ class Commit (
                 "email" to email,
                 "message" to message!!,
                 "container" to repoMetadata["container"]!!,
-                "repoTags" to repoMetadata["repoTags"]!!,
+                "image" to repoMetadata["image"]!!,
+                "tag" to repoMetadata["tag"]!!,
+                "digest" to repoMetadata["digest"]!!,
                 "runtime" to repoMetadata["runtime"]!!
         )
         val commit = Commit(uuid, metadata)
@@ -31,4 +33,5 @@ class Commit (
         val hash = response.id
         println("Commit $hash")
     }
+
 }

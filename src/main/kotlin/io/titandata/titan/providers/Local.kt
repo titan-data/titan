@@ -18,7 +18,7 @@ data class Container (
 )
 
 class Local: Provider {
-    private val titanServerVersion = "0.4.4"
+    private val titanServerVersion = "0.4.5"
     private val dockerRegistryUrl = "titandata"
 
     private val httpHandler = HttpHandler()

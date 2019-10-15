@@ -48,4 +48,5 @@ There are a few important general things to be aware of:
    :caption: Remote Providers
 
    provider/s3
+   provider/s3web
    provider/ssh
