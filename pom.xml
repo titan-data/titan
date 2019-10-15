@@ -123,7 +123,7 @@
 		<dependency>
 			<groupId>io.titandata</groupId>
 			<artifactId>titan-client</artifactId>
-			<version>0.4.5</version>
+			<version>0.4.6</version>
 		</dependency>
 	</dependencies>
 
