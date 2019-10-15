@@ -18,7 +18,7 @@
   "allPublicClasses":true
 },
 {
-  "name":"io.titandata.models.EngineParameters",
+  "name":"io.titandata.remote.engine.EngineParameters",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
@@ -27,7 +27,7 @@
   "allPublicClasses":true
 },
 {
-  "name":"io.titandata.models.EngineParameters[]",
+  "name":"io.titandata.remote.engine.EngineParameters[]",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
@@ -36,7 +36,7 @@
   "allPublicClasses":true
 },
 {
-  "name":"io.titandata.models.EngineRemote",
+  "name":"io.titandata.remote.engine.EngineRemote",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
@@ -45,7 +45,7 @@
   "allPublicClasses":true
 },
 {
-  "name":"io.titandata.models.EngineRemote[]",
+  "name":"io.titandata.remote.engine.EngineRemote[]",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
@@ -72,7 +72,7 @@
   "allPublicClasses":true
 },
 {
-  "name":"io.titandata.models.NopParameters",
+  "name":"io.titandata.remote.nop.NopParameters",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
@@ -81,7 +81,7 @@
   "allPublicClasses":true
 },
 {
-  "name":"io.titandata.models.NopParameters[]",
+  "name":"io.titandata.remote.nop.NopParameters[]",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
@@ -90,7 +90,7 @@
   "allPublicClasses":true
 },
 {
-  "name":"io.titandata.models.NopRemote",
+  "name":"io.titandata.remote.nop.NopRemote",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
@@ -99,7 +99,7 @@
   "allPublicClasses":true
 },
 {
-  "name":"io.titandata.models.NopRemote[]",
+  "name":"io.titandata.remote.nop.NopRemote[]",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
@@ -245,7 +245,7 @@
   "allPublicClasses":true
 },
 {
-  "name":"io.titandata.models.S3Parameters",
+  "name":"io.titandata.remote.s3.S3Parameters",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
@@ -254,7 +254,7 @@
   "allPublicClasses":true
 },
 {
-  "name":"io.titandata.models.S3Parameters[]",
+  "name":"io.titandata.remote.s3.S3Parameters[]",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
@@ -263,7 +263,7 @@
   "allPublicClasses":true
 },
 {
-  "name":"io.titandata.models.S3Remote",
+  "name":"io.titandata.remote.s3.S3Remote",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
@@ -272,7 +272,7 @@
   "allPublicClasses":true
 },
 {
-  "name":"io.titandata.models.S3Remote[]",
+  "name":"io.titandata.remote.s3.S3Remote[]",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
@@ -281,7 +281,7 @@
   "allPublicClasses":true
 },
 {
-  "name":"io.titandata.models.SshParameters",
+  "name":"io.titandata.remote.s3web.S3WebParameters",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
@@ -290,7 +290,7 @@
   "allPublicClasses":true
 },
 {
-  "name":"io.titandata.models.SshParameters[]",
+  "name":"io.titandata.remote.s3web.S3WebParameters[]",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
@@ -299,7 +299,7 @@
   "allPublicClasses":true
 },
 {
-  "name":"io.titandata.models.SshRemote",
+  "name":"io.titandata.remote.s3web.S3WebRemote",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
@@ -308,7 +308,43 @@
   "allPublicClasses":true
 },
 {
-  "name":"io.titandata.models.SshRemote[]",
+  "name":"io.titandata.remote.s3web.S3WebRemote[]",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.ssh.SshParameters",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.ssh.SshParameters[]",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.ssh.SshRemote",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.ssh.SshRemote[]",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
