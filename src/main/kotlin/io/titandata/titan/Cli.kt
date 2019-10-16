@@ -10,6 +10,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.options.versionOption
 import io.titandata.titan.exceptions.CommandException
+import org.apache.log4j.BasicConfigurator
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
@@ -31,6 +32,7 @@ object Cli {
 
     @JvmStatic
     fun main(args: Array<String>) {
+        BasicConfigurator.configure();
         val version = Cli::class.java.getResource("/VERSION").readText()
         val kodein = Kodein {
             bind() from setBinding<CliktCommand>()
