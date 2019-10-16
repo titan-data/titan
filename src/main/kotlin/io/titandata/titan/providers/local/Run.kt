@@ -76,7 +76,7 @@ class Run (
         argList.add("--name")
         argList.add(containerName)
         argList.addAll(argumentEdit)
-        val repoDigest = imageInfo.optJSONArray("RepoDigests")[0] as String
+        val repoDigest = imageInfo.optJSONArray("RepoDigests").optString(0)
         val dockerRunCommand = if(repoDigest.isNullOrEmpty()) {
             "$image:$tag"
         } else  {

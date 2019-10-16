@@ -1,6 +1,8 @@
 {
   "resources":[
     {"pattern":"VERSION"}, 
+    {"pattern":"log4j.properties"}, 
+    {"pattern":"org/slf4j/impl/StaticLoggerBinder.class"}, 
     {"pattern":"sun/net/idn/uidna.spp"}, 
     {"pattern":"sun/text/resources/unorm.icu"}
   ]

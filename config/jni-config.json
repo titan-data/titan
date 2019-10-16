@@ -1,11 +1,11 @@
 [
-  {
-    "name":"java.net.SocketTimeoutException",
-    "allDeclaredFields":true,
-    "allPublicMethods":true,
-    "allDeclaredConstructors":true,
-    "allPublicConstructors":true,
-    "allDeclaredClasses":true,
-    "allPublicClasses":true
-  }
+{
+  "name":"java.net.SocketTimeoutException",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+}
 ]

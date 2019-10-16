@@ -18,42 +18,6 @@
   "allPublicClasses":true
 },
 {
-  "name":"io.titandata.remote.engine.EngineParameters",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.engine.EngineParameters[]",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.engine.EngineRemote",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.engine.EngineRemote[]",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
   "name":"io.titandata.models.Error",
   "allDeclaredFields":true,
   "allPublicMethods":true,
@@ -64,42 +28,6 @@
 },
 {
   "name":"io.titandata.models.Error[]",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.nop.NopParameters",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.nop.NopParameters[]",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.nop.NopRemote",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.nop.NopRemote[]",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
@@ -237,114 +165,6 @@
 },
 {
   "name":"io.titandata.models.Repository[]",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.s3.S3Parameters",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.s3.S3Parameters[]",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.s3.S3Remote",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.s3.S3Remote[]",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.s3web.S3WebParameters",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.s3web.S3WebParameters[]",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.s3web.S3WebRemote",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.s3web.S3WebRemote[]",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.ssh.SshParameters",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.ssh.SshParameters[]",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.ssh.SshRemote",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
-  "name":"io.titandata.remote.ssh.SshRemote[]",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
@@ -533,6 +353,193 @@
   "allPublicClasses":true
 },
 {
+  "name":"io.titandata.remote.engine.EngineParameters",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.engine.EngineParameters[]",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.engine.EngineRemote",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.engine.EngineRemote[]",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.nop.NopParameters",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.nop.NopParameters[]",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.nop.NopRemote",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.nop.NopRemote[]",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.s3.S3Parameters",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.s3.S3Parameters[]",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.s3.S3Remote",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.s3.S3Remote[]",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.s3web.S3WebParameters",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.s3web.S3WebParameters[]",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.s3web.S3WebRemote",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.s3web.S3WebRemote[]",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.ssh.SshParameters",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.ssh.SshParameters[]",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.ssh.SshRemote",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.remote.ssh.SshRemote[]",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"java.lang.String"
+},
+{
+  "name":"java.lang.Thread",
+  "methods":[{"name":"getContextClassLoader","parameterTypes":[] }]
+},
+{
   "name":"java.lang.Throwable",
   "methods":[{"name":"addSuppressed","parameterTypes":["java.lang.Throwable"] }]
 },
@@ -551,7 +558,33 @@
   "name":"kotlin.jvm.internal.DefaultConstructorMarker"
 },
 {
-  "name":"org.slf4j.impl.NOPLoggerFactory"
+  "name":"org.apache.log4j.Appender"
+},
+{
+  "name":"org.apache.log4j.Category"
+},
+{
+  "name":"org.apache.log4j.CategoryKey"
+},
+{
+  "name":"org.apache.log4j.ConsoleAppender",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.apache.log4j.Layout"
+},
+{
+  "name":"org.apache.log4j.Logger"
+},
+{
+  "name":"org.apache.log4j.PatternLayout",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.apache.log4j.helpers.Loader"
+},
+{
+  "name":"org.apache.log4j.spi.OptionHandler"
 },
 {
   "name":"sun.misc.Unsafe",
