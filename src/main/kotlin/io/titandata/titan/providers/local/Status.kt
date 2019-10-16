@@ -29,16 +29,16 @@ class Status (
         val status = repositoriesApi.getRepositoryStatus(container)
         for(cont in getContainersStatus()) {
             if(container == cont.name) {
-                System.out.printf("%15s %s${n}", "Status: ", cont.status)
+                System.out.printf("%20s %s${n}", "Status: ", cont.status)
             }
         }
-        System.out.printf("%15s %s${n}", "Logical Size: ", readableFileSize(status.logicalSize))
-        System.out.printf("%15s %s${n}", "Actual Size: ", readableFileSize(status.actualSize))
-        System.out.printf("%15s %s${n}", "Last Commit: ", status.lastCommit)
+        System.out.printf("%20s %s${n}", "Uncompressed Size: ", readableFileSize(status.logicalSize))
+        System.out.printf("%20s %s${n}", "Compressed Size: ", readableFileSize(status.actualSize))
+        System.out.printf("%20s %s${n}", "Last Commit: ", status.lastCommit)
         println()
-        System.out.printf("%-30s  %-10s  %s${n}", "Volume", "Logical", "Actual")
+        System.out.printf("%-30s  %-12s  %s${n}", "Volume", "Uncompressed", "Compressed")
         for (volume in status.volumeStatus) {
-            System.out.printf("%-30s  %-10s  %s${n}", volume.properties["path"], readableFileSize(volume.logicalSize), readableFileSize(volume.actualSize))
+            System.out.printf("%-30s  %-12s  %s${n}", volume.properties["path"], readableFileSize(volume.logicalSize), readableFileSize(volume.actualSize))
         }
     }
 }
