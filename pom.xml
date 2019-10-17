@@ -80,11 +80,6 @@
 			<version>1.7.0</version>
 		</dependency>
 		<dependency>
-			<groupId>io.github.cdimascio</groupId>
-			<artifactId>java-dotenv</artifactId>
-			<version>3.1.7</version>
-		</dependency>
-		<dependency>
 	        <groupId>org.kodein.di</groupId>
 	        <artifactId>kodein-di-generic-jvm</artifactId>
 	        <version>6.4.1</version>
