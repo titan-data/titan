@@ -7,6 +7,7 @@ package io.titandata.titan.providers.local
 import io.titandata.client.apis.CommitsApi
 import io.titandata.client.apis.RemotesApi
 import io.titandata.client.apis.OperationsApi
+import io.titandata.client.apis.RepositoriesApi
 import io.titandata.client.infrastructure.ClientException
 import io.titandata.models.*
 import io.titandata.models.Commit
@@ -17,7 +18,8 @@ class Push (
     private val commitsApi: CommitsApi = CommitsApi(),
     private val remotesApi: RemotesApi = RemotesApi(),
     private val operationsApi: OperationsApi = OperationsApi(),
-    private val remoteUtil: RemoteUtil = RemoteUtil()
+    private val remoteUtil: RemoteUtil = RemoteUtil(),
+    private val repositoriesApi: RepositoriesApi = RepositoriesApi()
 ) {
     fun push(container: String, guid: String?, remoteName: String?) {
         val name = remoteName ?: "origin"
@@ -26,20 +28,12 @@ class Push (
             exit("remote is not set, run 'remote add' first", 1)
         }
 
-        val commits = commitsApi.listCommits(container)
-        if (commits.isEmpty()) {
+        val repoStatus = repositoriesApi.getRepositoryStatus(container)
+        if(repoStatus.lastCommit.isNullOrEmpty()) {
             exit("container has no history, run 'commit' to first commit state",1)
         }
-        var commit: Commit = io.titandata.models.Commit("id", emptyMap())
-        if (!guid.isNullOrEmpty()) {
-            try{
-                commit =  commitsApi.getCommit(container, guid!!)
-            } catch (e: ClientException) {
-                exit(e.message!!, 1)
-            }
-        } else {
-            commit = commits.last()
-        }
+        val commit = commitsApi.getCommit(container, repoStatus.lastCommit!!)
+
         val remote = remotesApi.getRemote(container, name)
         var operation = Operation("id", Operation.Type.PUSH, Operation.State.RUNNING, remote.name, commit.id)
         try {
@@ -47,6 +41,7 @@ class Push (
         } catch (e: ClientException) {
             exit(e.message!!,1)
         }
+
         println("${operation.type} ${operation.commitId} to ${operation.remote} ${operation.state}")
         var padLen = 0
         while (operation.state == Operation.State.RUNNING){
@@ -68,6 +63,5 @@ class Push (
             operation = operationsApi.getOperation(container, operation.id)
         }
         println("${operation.type} ${operation.commitId} to ${operation.remote} ${operation.state}")
-        // TODO get appropriate source hash for clone !! Confirm beta issue
     }
 }
