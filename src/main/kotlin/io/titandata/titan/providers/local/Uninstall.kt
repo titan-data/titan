@@ -10,6 +10,7 @@ import io.titandata.titan.exceptions.CommandException
 import io.titandata.titan.utils.CommandExecutor
 
 class Uninstall (
+    private val titanServerVersion: String,
     private val exit: (message: String, code: Int) -> Unit,
     private val remove: (container: String, force: Boolean) -> Unit,
     private val commandExecutor: CommandExecutor = CommandExecutor(),
@@ -35,6 +36,7 @@ class Uninstall (
         try {
             docker.removeVolume("titan-data")
         } catch (e: CommandException) {}
+        docker.removeTitanImages(titanServerVersion)
         println("Uninstalled titan infrastructure")
     }
 }

@@ -137,7 +137,7 @@ class Local: Provider {
     }
 
     override fun uninstall(force: Boolean) {
-        val uninstallCommand = Uninstall(::exit, ::remove,  commandExecutor, docker)
+        val uninstallCommand = Uninstall(titanServerVersion, ::exit, ::remove,  commandExecutor, docker)
         return uninstallCommand.uninstall(force)
     }
 

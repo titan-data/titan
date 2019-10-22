@@ -110,6 +110,11 @@ class Docker(private val executor: CommandExecutor) {
         return executor.exec(listOf("docker", "container", "rm", containerId))
     }
 
+    fun removeTitanImages(version: String): String {
+        val imageId = executor.exec(listOf("docker", "images", "titan:$version", "--format", "{{.ID}}")).trim()
+        return executor.exec(listOf("docker", "rmi", imageId, "-f"))
+    }
+
     fun run(image: String, entry: String, arguments: List<String>): String {
         val mutArgs = mutableListOf("docker", "run")
         mutArgs.addAll(arguments)
