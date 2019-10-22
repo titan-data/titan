@@ -36,7 +36,9 @@ class Uninstall (
         try {
             docker.removeVolume("titan-data")
         } catch (e: CommandException) {}
-        docker.removeTitanImages(titanServerVersion)
+        try {
+            docker.removeTitanImages(titanServerVersion)
+        } catch (e: CommandException) {}
         println("Uninstalled titan infrastructure")
     }
 }
