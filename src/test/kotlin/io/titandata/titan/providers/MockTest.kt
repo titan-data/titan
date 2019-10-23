@@ -94,7 +94,7 @@ class MockTest {
     fun `can remoteLog`(){
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.remoteLog("container", null)
+        mockProvider.remoteLog("container", null, listOf())
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "Display remote log")
@@ -164,7 +164,7 @@ class MockTest {
     fun `can log`(){
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.log("container")
+        mockProvider.log("container", listOf())
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "Log for container")

@@ -104,9 +104,9 @@ class Local: Provider {
         return remoteAddCommand.remoteAdd(container, uri, remoteName)
     }
 
-    override fun remoteLog(container:String, remoteName: String?) {
+    override fun remoteLog(container:String, remoteName: String?, tags: List<String>) {
         val remoteLogCommand = RemoteLog(::exit)
-        return remoteLogCommand.remoteLog(container, remoteName)
+        return remoteLogCommand.remoteLog(container, remoteName, tags)
     }
 
     override fun remoteList(container: String) {
@@ -146,9 +146,9 @@ class Local: Provider {
         return checkoutCommand.checkout(container, guid)
     }
 
-    override fun log(container: String) {
+    override fun log(container: String, tags: List<String>) {
         val logCommand = Log()
-        return logCommand.log(container)
+        return logCommand.log(container, tags)
     }
 
     override fun stop(container: String) {

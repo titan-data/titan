@@ -33,7 +33,7 @@ class Mock: Provider {
         println("Add remote")
     }
 
-    override fun remoteLog(container: String, remoteName: String?) {
+    override fun remoteLog(container: String, remoteName: String?, tags: List<String>) {
         println("Display remote log")
     }
 
@@ -69,7 +69,7 @@ class Mock: Provider {
         println("List containers")
     }
 
-    override fun log(container: String) {
+    override fun log(container: String, logs: List<String>) {
         println("Log for $container")
     }
 
