@@ -93,7 +93,7 @@ class Mock: Provider {
         println("cloning $container from $uri")
     }
 
-    override fun delete(repository: String, commit: String?) {
+    override fun delete(repository: String, commit: String?, tags: List<String>) {
         println("deleting $commit from $repository")
     }
 }

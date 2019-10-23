@@ -177,10 +177,14 @@ class Local: Provider {
         return cloneCommand.clone(uri, container, commit)
     }
 
-    override fun delete(repository: String, commit: String?) {
+    override fun delete(repository: String, commit: String?, tags: List<String>) {
         val deleteCommand = Delete()
         if (!commit.isNullOrEmpty()) {
-            return deleteCommand.deleteCommit(repository, commit)
+            if (!tags.isEmpty()) {
+                return deleteCommand.deleteTags(repository, commit, tags)
+            } else {
+                return deleteCommand.deleteCommit(repository, commit)
+            }
         }
         println("No object found to delete.")
     }
