@@ -56,6 +56,7 @@ object Cli {
             import(removeModule)
             import(uninstallModule)
             import(upgradeModule)
+            import(tagModule)
         }
         val commands: Set<CliktCommand> by kodein.instance()
         try {

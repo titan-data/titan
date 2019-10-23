@@ -96,4 +96,8 @@ class Mock: Provider {
     override fun delete(repository: String, commit: String?, tags: List<String>) {
         println("deleting $commit from $repository")
     }
+
+    override fun tag(repository: String, commit: String, tags: List<String>) {
+        println("tagging $commit in $repository")
+    }
 }

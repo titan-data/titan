@@ -188,4 +188,9 @@ class Local: Provider {
         }
         println("No object found to delete.")
     }
+
+    override fun tag(repository: String, commit: String, tags: List<String>) {
+        val tagCommand = Tag()
+        return tagCommand.tagCommit(repository, commit, tags)
+    }
 }
