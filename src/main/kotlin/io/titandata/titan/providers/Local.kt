@@ -18,7 +18,7 @@ data class Container (
 )
 
 class Local: Provider {
-    private val titanServerVersion = "0.4.6"
+    private val titanServerVersion = "0.5.0"
     private val dockerRegistryUrl = "titandata"
 
     private val httpHandler = HttpHandler()
@@ -78,12 +78,12 @@ class Local: Provider {
         return installCommand.install()
     }
 
-    override fun commit(container: String, message: String) {
+    override fun commit(container: String, message: String, tags: List<String>) {
         try {
             val user= commandExecutor.exec(listOf("git", "config", "user.name")).trim()
             val email = commandExecutor.exec(listOf("git", "config", "user.email")).trim()
             val commitCommand = Commit(user, email)
-            return commitCommand.commit(container, message)
+            return commitCommand.commit(container, message, tags)
         } catch (e: CommandException) {
             exit("Git not configured.")
         }

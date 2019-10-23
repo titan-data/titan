@@ -13,7 +13,7 @@ class Mock: Provider {
         println("Pushing to remote")
     }
 
-    override fun commit(container: String, message: String) {
+    override fun commit(container: String, message: String, tags: List<String>) {
         println("Committing new state")
     }
 

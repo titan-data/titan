@@ -112,7 +112,7 @@
 		<dependency>
 			<groupId>io.titandata</groupId>
 			<artifactId>titan-client</artifactId>
-			<version>0.4.6</version>
+			<version>0.5.0</version>
 		</dependency>
 	</dependencies>
 

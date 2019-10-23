@@ -31,6 +31,18 @@ class Log (
                 println("Email: ${metadata["email"]}")
             }
             println("Date: ${metadata["timestamp"]}")
+            if (metadata.containsKey("tags")) {
+                print("Tags:")
+                for ((key, value) in metadata.get("tags") as Map<String, String>) {
+                    print(" ")
+                    if (value != "") {
+                        print("$key=$value")
+                    } else {
+                        print(key)
+                    }
+                }
+                println("")
+            }
             if (metadata["message"] != "") {
                 println("${n}${metadata["message"]}")
             }

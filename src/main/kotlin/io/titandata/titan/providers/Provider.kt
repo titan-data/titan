@@ -4,7 +4,7 @@ interface Provider {
     fun checkInstall()
     fun pull(container: String, commit: String?, remoteName: String?)
     fun push(container: String, commit: String?, remoteName: String?)
-    fun commit(container: String, message: String)
+    fun commit(container: String, message: String, tags: List<String>)
     fun install(registry: String?)
     fun abort(container: String)
     fun status(container: String)

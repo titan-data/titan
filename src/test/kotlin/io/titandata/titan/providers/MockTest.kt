@@ -44,7 +44,7 @@ class MockTest {
     fun `can commit`(){
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.commit("container", "message")
+        mockProvider.commit("container", "message", listOf())
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "Committing new state")

@@ -15,7 +15,7 @@ import org.json.JSONObject
 
 class Migrate (
         private val exit: (message: String, code: Int) -> Unit,
-        private val commit: (container: String, message: String) -> Unit,
+        private val commit: (container: String, message: String, tags: List<String>) -> Unit,
         private val commandExecutor: CommandExecutor = CommandExecutor(),
         private val docker: Docker = Docker(commandExecutor),
         private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
@@ -101,7 +101,7 @@ class Migrate (
         val updateRepo = Repository(name, metadata)
         repositoriesApi.updateRepository(name, updateRepo)
         docker.run(image, "", arguments)
-        commit(name, "Initial Migration")
+        commit(name, "Initial Migration", listOf())
         println("$container migrated to controlled environment $name")
     }
 }
