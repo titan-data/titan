@@ -1,0 +1,28 @@
+package io.titandata.titan.providers
+
+interface Provider {
+    fun checkInstall()
+    fun pull(container: String, commit: String?, remoteName: String?)
+    fun push(container: String, commit: String?, remoteName: String?)
+    fun commit(container: String, message: String)
+    fun install(registry: String?)
+    fun abort(container: String)
+    fun status(container: String)
+    fun remoteAdd(container: String, uri: String, remoteName: String?)
+    fun remoteLog(container: String, remoteName: String?)
+    fun remoteList(container:String)
+    fun remoteRemove(container: String, remote:String)
+    fun migrate(container: String, name: String)
+    fun run(arguments: List<String>)
+    fun uninstall(force: Boolean)
+    fun upgrade(force: Boolean, version: String, finalize: Boolean, path: String?)
+    fun checkout(container: String, guid: String)
+    fun delete(repository: String, commit: String?)
+    fun list()
+    fun log(container: String)
+    fun stop(container: String)
+    fun start(container: String)
+    fun remove(container: String, force: Boolean)
+    fun cp(container: String, driver: String, source: String, path: String)
+    fun clone(uri: String, container: String?, commit: String?)
+}
