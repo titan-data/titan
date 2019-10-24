@@ -53,14 +53,14 @@ class Local: Provider {
         return upgradeCommand.upgrade(force, version, finalize, path)
     }
 
-    override fun pull(container: String, commit: String?, remoteName: String?) {
+    override fun pull(container: String, commit: String?, remoteName: String?, metadataOnly: Boolean) {
         val pullCommand = Pull(::exit)
-        return pullCommand.pull(container, commit, remoteName)
+        return pullCommand.pull(container, commit, remoteName, metadataOnly)
     }
 
-    override fun push(container: String, commit: String?, remoteName: String?) {
+    override fun push(container: String, commit: String?, remoteName: String?, metadataOnly: Boolean) {
         val pushCommand = Push(::exit)
-        return pushCommand.push(container, commit, remoteName)
+        return pushCommand.push(container, commit, remoteName, metadataOnly)
     }
 
     override fun checkInstall() {

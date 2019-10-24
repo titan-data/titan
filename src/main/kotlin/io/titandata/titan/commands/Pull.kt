@@ -8,6 +8,7 @@ import io.titandata.titan.Dependencies
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.requireObject
 import com.github.ajalt.clikt.parameters.arguments.argument
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
@@ -18,11 +19,12 @@ class Pull : CliktCommand(help = "Pull a new data state from remote") {
     private val dependencies: Dependencies by requireObject()
     private val commit by option("-c", "--commit", help="Commit GUID to pull from, defaults to latest")
     private val remote: String? by option("-r", "--remote", help="Name of the remote provider, defaults to origin")
+    private val metadataOnly: Boolean by option("-u", "--update-only", help="Update tags only, do not pull data").flag()
     private val repository by argument()
 
     override fun run() {
         val provider = dependencies.provider
-        provider.pull(repository, commit, remote)
+        provider.pull(repository, commit, remote, metadataOnly)
     }
 }
 

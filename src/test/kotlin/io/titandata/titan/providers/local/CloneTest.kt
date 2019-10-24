@@ -6,7 +6,7 @@ import org.junit.Assert.assertThat
 
 class CloneTest {
     private fun remoteAdd(container:String, uri: String, remoteName: String?) {}
-    private fun pull(container: String, commit: String?, remoteName: String?) {}
+    private fun pull(container: String, commit: String?, remoteName: String?, metadataOnly: Boolean) {}
     private fun checkout(container: String, hash: String) {}
     private fun run(arguments: List<String>, createRepo:Boolean) {}
     private fun remove(container: String, force: Boolean) {}

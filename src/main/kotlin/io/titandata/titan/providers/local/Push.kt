@@ -21,7 +21,7 @@ class Push (
     private val remoteUtil: RemoteUtil = RemoteUtil(),
     private val repositoriesApi: RepositoriesApi = RepositoriesApi()
 ) {
-    fun push(container: String, guid: String?, remoteName: String?) {
+    fun push(container: String, guid: String?, remoteName: String?, metadataOnly: Boolean) {
         val name = remoteName ?: "origin"
         val remotes = remotesApi.listRemotes(container)
         if(remotes.isEmpty()) {
@@ -37,7 +37,8 @@ class Push (
         val remote = remotesApi.getRemote(container, name)
         var operation = Operation("id", Operation.Type.PUSH, Operation.State.RUNNING, remote.name, commit.id)
         try {
-            operation = operationsApi.push(container, remote.name, commit.id, remoteUtil.getParameters(remote))
+            operation = operationsApi.push(container, remote.name, commit.id, remoteUtil.getParameters(remote),
+                    metadataOnly)
         } catch (e: ClientException) {
             exit(e.message!!,1)
         }

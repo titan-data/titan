@@ -5,11 +5,11 @@ class Mock: Provider {
         println("Mock Provider Installed")
     }
 
-    override fun pull(container: String, commit: String?, remoteName: String?) {
+    override fun pull(container: String, commit: String?, remoteName: String?, metadataOnly: Boolean) {
         println("Pulling from remote")
     }
 
-    override fun push(container: String, commit: String?, remoteName: String?) {
+    override fun push(container: String, commit: String?, remoteName: String?, metadataOnly: Boolean) {
         println("Pushing to remote")
     }
 

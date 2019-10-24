@@ -17,7 +17,7 @@ class Pull (
         private val remoteUtil: RemoteUtil = RemoteUtil()
 ) {
 
-    fun pull(container: String, guid: String?, remoteName: String?) {
+    fun pull(container: String, guid: String?, remoteName: String?, metadataOnly: Boolean) {
         val name = remoteName ?: "origin"
         val remotes = remotesApi.listRemotes(container)
         if(remotes.isEmpty()) {
@@ -43,7 +43,8 @@ class Pull (
         }
         var operation = Operation("id", Operation.Type.PULL, Operation.State.RUNNING, remote.name, commit.id)
         try {
-            operation = operationsApi.pull(container, remote.name, commit.id, remoteUtil.getParameters(remote))
+            operation = operationsApi.pull(container, remote.name, commit.id, remoteUtil.getParameters(remote),
+                    metadataOnly)
         } catch (e: ClientException) {
             exit(e.message!!,1)
         }

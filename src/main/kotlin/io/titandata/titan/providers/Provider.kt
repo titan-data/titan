@@ -2,8 +2,8 @@ package io.titandata.titan.providers
 
 interface Provider {
     fun checkInstall()
-    fun pull(container: String, commit: String?, remoteName: String?)
-    fun push(container: String, commit: String?, remoteName: String?)
+    fun pull(container: String, commit: String?, remoteName: String?, metadataOnly: Boolean)
+    fun push(container: String, commit: String?, remoteName: String?, metadataOnly: Boolean)
     fun commit(container: String, message: String, tags: List<String>)
     fun install(registry: String?)
     fun abort(container: String)
