@@ -101,7 +101,7 @@ class Migrate (
         val updateRepo = Repository(name, metadata)
         repositoriesApi.updateRepository(name, updateRepo)
         docker.run(image, "", arguments)
-        commit(name, "Initial Migration", listOf())
+        commit(name, "Initial Migration", emptyList())
         println("$container migrated to controlled environment $name")
     }
 }

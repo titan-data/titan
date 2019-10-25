@@ -21,11 +21,11 @@ class Commit (
         val repoStatus = repositoriesApi.getRepositoryStatus(container)
         val sourceCommit = repoStatus.sourceCommit
         val tagMetadata = mutableMapOf<String, String>()
-        for (t in tags) {
-            val (key, value) = if (t.contains("=")) {
-                Pair(t.substringBefore("="), t.substringAfter("="))
+        for (tag in tags) {
+            val (key, value) = if (tag.contains("=")) {
+                Pair(tag.substringBefore("="), tag.substringAfter("="))
             } else {
-                Pair(t, "")
+                Pair(tag, "")
             }
             tagMetadata[key] = value
         }

@@ -145,9 +145,9 @@ class Local: Provider {
         return uninstallCommand.uninstall(force)
     }
 
-    override fun checkout(container: String, commit: String?, tags: List<String>) {
+    override fun checkout(container: String, guid: String?, tags: List<String>) {
         val checkoutCommand = Checkout(commandExecutor, docker)
-        return checkoutCommand.checkout(container, commit, tags)
+        return checkoutCommand.checkout(container, guid, tags)
     }
 
     override fun log(container: String, tags: List<String>) {

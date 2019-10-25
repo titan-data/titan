@@ -15,8 +15,8 @@ class Checkout (
         private val commitsApi: CommitsApi = CommitsApi(),
         private val repositoriesApi: RepositoriesApi = RepositoriesApi()
 ) {
-    fun checkout(container: String, commit: String?, tags: List<String>) {
-        var sourceCommit = if (commit == null) {
+    fun checkout(container: String, guid: String?, tags: List<String>) {
+        val sourceCommit = if (guid == null) {
             if (tags.isNotEmpty()) {
                 val commits = commitsApi.listCommits(container, tags)
                 if (commits.size == 0) {
@@ -34,7 +34,7 @@ class Checkout (
             if (tags.isNotEmpty()) {
                 throw IllegalArgumentException("tags and commit cannot both be specified")
             }
-            commit
+            guid
         }
 
         println("Stopping container $container")
