@@ -29,7 +29,24 @@ volume yourself prior to running :ref:`cli_cmd_install`.
 
 Managing Storage Usage
 ----------------------
-Titan does not currently support showing the space used by repositories
-or by individual commits. And while removing repositories is supported,
-deleting commits is not. These capabilities will be added in a future
-release.
+To view the amount of space consumed by a repository, run the
+:ref:`cli_cmd_status` command. This will display output similar to::
+
+    $ titan status hello-world
+                Status:  running
+     Uncompressed Size:  526.5 KiB
+       Compressed Size:  254 KiB
+           Last Commit:  12c6da4d57004d3497afca4fb914ed58
+
+    Volume                          Uncompressed  Compressed
+    /var/lib/postgresql/data        31.7 MiB      6.9 MiB
+
+The compressed size shows the amount of space currently consumed by the
+repository, and the amount of space that would be freed if it were to be
+destroyed. The volume size represents the amount of data actively being
+used. While it can be reduced by freeing up data within the directory,
+it may or may not reduce overall data consumption as that data may be
+referenced by previous commits.
+
+There is not currently a way to view the amount of storage used by individual
+commits.

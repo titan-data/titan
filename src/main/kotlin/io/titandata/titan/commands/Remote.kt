@@ -9,6 +9,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.requireObject
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.arguments.argument
+import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import org.kodein.di.Kodein
@@ -36,10 +37,11 @@ class RemoteLog : CliktCommand(help = "Display log on remote", name = "log") {
     private val dependencies: Dependencies by requireObject()
     private val repository: String by argument()
     private val remote: String? by option("-r", "--remote", help="Name of the remote provider, defaults to origin")
+    private val tags by option("-t", "--tag", help="Tag to set").multiple()
 
     override fun run() {
         val provider = dependencies.provider
-        provider.remoteLog(repository, remote)
+        provider.remoteLog(repository, remote, tags)
     }
 }
 

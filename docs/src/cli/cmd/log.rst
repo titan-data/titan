@@ -20,7 +20,7 @@ Syntax
 
 ::
 
-    titan log <repository>
+    titan log [-t key[=value] ...] <repository>
 
 Arguments
 ---------
@@ -28,6 +28,15 @@ Arguments
 repository
     *Required*. The name of the target repository.
 
+Options
+-------
+
+-t, --tag tag           Filter commits by the specified tag(s).
+                        More than one of this option can be specified. If
+                        present, then only tags that match the given tags will
+                        be displayed. Tags are matched according to the
+                        filtering rules described in the :ref:`local_tags`
+                        section.
 
 Example
 -------

@@ -32,7 +32,7 @@ class CheckoutTest {
         val command = Checkout(executor, docker, commitsApi)
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        command.checkout("container", "hash")
+        command.checkout("container", "hash", listOf())
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "Stopping container container${n}Checkout hash${n}Starting container container${n}hash checked out")

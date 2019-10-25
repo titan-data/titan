@@ -6,27 +6,24 @@ package io.titandata.titan.providers.local
 
 import io.titandata.client.apis.CommitsApi
 
-class Delete (
+class Tag (
     private val commitsApi: CommitsApi = CommitsApi()
 ) {
-    fun deleteCommit(repository: String, commit: String) {
-        commitsApi.deleteCommit(repository, commit)
-        println("$commit deleted")
-    }
-
-    fun deleteTags(repository: String, commit: String, tags: List<String>) {
+    fun tagCommit(repository: String, commit: String, tags: List<String>) {
         val commit = commitsApi.getCommit(repository, commit)
-        val commitTags = (commit.properties.get("tags") as Map<String, String>).toMutableMap()
+        val commitTags = if (commit.properties.containsKey("tags")) {
+            (commit.properties.get("tags") as Map<String, String>).toMutableMap()
+        } else {
+            mutableMapOf()
+        }
 
         for (t in tags) {
             if (t.contains("=")) {
                 val key = t.substringBefore("=")
                 val value = t.substringAfter("=")
-                if (commitTags.containsKey(key) && commitTags[key] == value) {
-                    commitTags.remove(key)
-                }
+                commitTags[key] = value
             } else {
-                commitTags.remove(t)
+                commitTags[t] = ""
             }
         }
 

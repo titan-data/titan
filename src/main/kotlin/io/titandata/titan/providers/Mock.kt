@@ -5,15 +5,15 @@ class Mock: Provider {
         println("Mock Provider Installed")
     }
 
-    override fun pull(container: String, commit: String?, remoteName: String?) {
+    override fun pull(container: String, commit: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean) {
         println("Pulling from remote")
     }
 
-    override fun push(container: String, commit: String?, remoteName: String?) {
+    override fun push(container: String, commit: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean) {
         println("Pushing to remote")
     }
 
-    override fun commit(container: String, message: String) {
+    override fun commit(container: String, message: String, tags: List<String>) {
         println("Committing new state")
     }
 
@@ -33,7 +33,7 @@ class Mock: Provider {
         println("Add remote")
     }
 
-    override fun remoteLog(container: String, remoteName: String?) {
+    override fun remoteLog(container: String, remoteName: String?, tags: List<String>) {
         println("Display remote log")
     }
 
@@ -61,7 +61,7 @@ class Mock: Provider {
         println("Upgrading to $version")
     }
 
-    override fun checkout(container: String, guid: String) {
+    override fun checkout(container: String, guid: String?, tags: List<String>) {
         println("Checking out data set $guid")
     }
 
@@ -69,7 +69,7 @@ class Mock: Provider {
         println("List containers")
     }
 
-    override fun log(container: String) {
+    override fun log(container: String, logs: List<String>) {
         println("Log for $container")
     }
 
@@ -93,7 +93,11 @@ class Mock: Provider {
         println("cloning $container from $uri")
     }
 
-    override fun delete(repository: String, commit: String?) {
+    override fun delete(repository: String, commit: String?, tags: List<String>) {
         println("deleting $commit from $repository")
+    }
+
+    override fun tag(repository: String, commit: String, tags: List<String>) {
+        println("tagging $commit in $repository")
     }
 }

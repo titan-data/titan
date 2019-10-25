@@ -34,7 +34,12 @@ class Status (
         }
         System.out.printf("%20s %s${n}", "Uncompressed Size: ", readableFileSize(status.logicalSize))
         System.out.printf("%20s %s${n}", "Compressed Size: ", readableFileSize(status.actualSize))
-        System.out.printf("%20s %s${n}", "Last Commit: ", status.lastCommit)
+        if (status.lastCommit != null) {
+            System.out.printf("%20s %s${n}", "Last Commit: ", status.lastCommit)
+        }
+        if (status.sourceCommit != null) {
+            System.out.printf("%20s %s${n}", "Source Commit: ", status.sourceCommit)
+        }
         println()
         System.out.printf("%-30s  %-12s  %s${n}", "Volume", "Uncompressed", "Compressed")
         for (volume in status.volumeStatus) {

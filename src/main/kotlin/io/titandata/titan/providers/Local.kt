@@ -18,7 +18,7 @@ data class Container (
 )
 
 class Local: Provider {
-    private val titanServerVersion = "0.4.6"
+    private val titanServerVersion = "0.5.1"
     private val dockerRegistryUrl = "titandata"
 
     private val httpHandler = HttpHandler()
@@ -29,7 +29,9 @@ class Local: Provider {
     private val n = System.lineSeparator()
 
     private fun exit(message:String, code: Int = 1) {
-        println(message)
+        if (message != "") {
+            println(message)
+        }
         exitProcess(code)
     }
 
@@ -53,14 +55,16 @@ class Local: Provider {
         return upgradeCommand.upgrade(force, version, finalize, path)
     }
 
-    override fun pull(container: String, commit: String?, remoteName: String?) {
+    override fun pull(container: String, commit: String?, remoteName: String?, tags: List<String>,
+                      metadataOnly: Boolean) {
         val pullCommand = Pull(::exit)
-        return pullCommand.pull(container, commit, remoteName)
+        return pullCommand.pull(container, commit, remoteName, tags, metadataOnly)
     }
 
-    override fun push(container: String, commit: String?, remoteName: String?) {
+    override fun push(container: String, commit: String?, remoteName: String?, tags: List<String>,
+                      metadataOnly: Boolean) {
         val pushCommand = Push(::exit)
-        return pushCommand.push(container, commit, remoteName)
+        return pushCommand.push(container, commit, remoteName, tags, metadataOnly)
     }
 
     override fun checkInstall() {
@@ -78,12 +82,12 @@ class Local: Provider {
         return installCommand.install()
     }
 
-    override fun commit(container: String, message: String) {
+    override fun commit(container: String, message: String, tags: List<String>) {
         try {
             val user= commandExecutor.exec(listOf("git", "config", "user.name")).trim()
             val email = commandExecutor.exec(listOf("git", "config", "user.email")).trim()
             val commitCommand = Commit(user, email)
-            return commitCommand.commit(container, message)
+            return commitCommand.commit(container, message, tags)
         } catch (e: CommandException) {
             exit("Git not configured.")
         }
@@ -104,9 +108,9 @@ class Local: Provider {
         return remoteAddCommand.remoteAdd(container, uri, remoteName)
     }
 
-    override fun remoteLog(container:String, remoteName: String?) {
+    override fun remoteLog(container:String, remoteName: String?, tags: List<String>) {
         val remoteLogCommand = RemoteLog(::exit)
-        return remoteLogCommand.remoteLog(container, remoteName)
+        return remoteLogCommand.remoteLog(container, remoteName, tags)
     }
 
     override fun remoteList(container: String) {
@@ -141,14 +145,14 @@ class Local: Provider {
         return uninstallCommand.uninstall(force)
     }
 
-    override fun checkout(container: String, guid: String) {
+    override fun checkout(container: String, guid: String?, tags: List<String>) {
         val checkoutCommand = Checkout(commandExecutor, docker)
-        return checkoutCommand.checkout(container, guid)
+        return checkoutCommand.checkout(container, guid, tags)
     }
 
-    override fun log(container: String) {
+    override fun log(container: String, tags: List<String>) {
         val logCommand = Log()
-        return logCommand.log(container)
+        return logCommand.log(container, tags)
     }
 
     override fun stop(container: String) {
@@ -177,11 +181,20 @@ class Local: Provider {
         return cloneCommand.clone(uri, container, commit)
     }
 
-    override fun delete(repository: String, commit: String?) {
+    override fun delete(repository: String, commit: String?, tags: List<String>) {
         val deleteCommand = Delete()
         if (!commit.isNullOrEmpty()) {
-            return deleteCommand.deleteCommit(repository, commit)
+            if (!tags.isEmpty()) {
+                return deleteCommand.deleteTags(repository, commit, tags)
+            } else {
+                return deleteCommand.deleteCommit(repository, commit)
+            }
         }
         println("No object found to delete.")
+    }
+
+    override fun tag(repository: String, commit: String, tags: List<String>) {
+        val tagCommand = Tag()
+        return tagCommand.tagCommit(repository, commit, tags)
     }
 }

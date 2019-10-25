@@ -11,7 +11,7 @@ Syntax
 
 ::
 
-    titan remote log [-r remote] <repository>
+    titan remote log [-r remote] [-t key[=value] ...] <repository>
 
 Arguments
 ---------
@@ -24,6 +24,13 @@ Options
 
 -r, --remote remote     Optional remote name. If not provided, then the name
                         'origin' is assumed.
+
+-t, --tag tag           Filter commits by the specified tag(s).
+                        More than one of this option can be specified. If
+                        present, then only tags that match the given tags will
+                        be displayed. Tags are matched according to the
+                        filtering rules described in the :ref:`local_tags`
+                        section.
 
 Example
 -------

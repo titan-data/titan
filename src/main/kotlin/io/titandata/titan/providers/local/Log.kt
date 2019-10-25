@@ -11,9 +11,9 @@ class Log (
 ) {
     private val n = System.lineSeparator()
 
-    fun log(container: String) {
+    fun log(container: String, tags: List<String>) {
         var first = true
-        for (commit in commitsApi.listCommits(container)) {
+        for (commit in commitsApi.listCommits(container, tags)) {
             if (!first) {
                 println("")
             } else {
@@ -31,6 +31,22 @@ class Log (
                 println("Email: ${metadata["email"]}")
             }
             println("Date: ${metadata["timestamp"]}")
+            if (metadata.containsKey("tags")) {
+                @Suppress("UNCHECKED_CAST")
+                val tags = metadata.get("tags") as Map<String, String>
+                if (!tags.isEmpty()) {
+                    print("Tags:")
+                    for ((key, value) in tags) {
+                        print(" ")
+                        if (value != "") {
+                            print("$key=$value")
+                        } else {
+                            print(key)
+                        }
+                    }
+                    println("")
+                }
+            }
             if (metadata["message"] != "") {
                 println("${n}${metadata["message"]}")
             }
