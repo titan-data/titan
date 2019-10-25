@@ -18,7 +18,7 @@ data class Container (
 )
 
 class Local: Provider {
-    private val titanServerVersion = "0.5.0"
+    private val titanServerVersion = "0.5.1"
     private val dockerRegistryUrl = "titandata"
 
     private val httpHandler = HttpHandler()
@@ -145,9 +145,9 @@ class Local: Provider {
         return uninstallCommand.uninstall(force)
     }
 
-    override fun checkout(container: String, guid: String) {
+    override fun checkout(container: String, commit: String?, tags: List<String>) {
         val checkoutCommand = Checkout(commandExecutor, docker)
-        return checkoutCommand.checkout(container, guid)
+        return checkoutCommand.checkout(container, commit, tags)
     }
 
     override fun log(container: String, tags: List<String>) {

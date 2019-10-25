@@ -61,8 +61,8 @@ class Mock: Provider {
         println("Upgrading to $version")
     }
 
-    override fun checkout(container: String, guid: String) {
-        println("Checking out data set $guid")
+    override fun checkout(container: String, commit: String?, tags: List<String>) {
+        println("Checking out data set $commit")
     }
 
     override fun list() {

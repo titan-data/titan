@@ -16,7 +16,7 @@ interface Provider {
     fun run(arguments: List<String>)
     fun uninstall(force: Boolean)
     fun upgrade(force: Boolean, version: String, finalize: Boolean, path: String?)
-    fun checkout(container: String, guid: String)
+    fun checkout(container: String, commit: String?, tags: List<String>)
     fun delete(repository: String, commit: String?, tags: List<String>)
     fun tag(repository: String, commit: String, tags: List<String>)
     fun list()

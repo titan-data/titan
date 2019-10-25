@@ -32,9 +32,11 @@ Options
 
 -c, --commit id         Specify the commit ID to checkout. Must be a
                         known commit in `titan log` for the given repository.
-                        If this is not specified, then the last commit
+                        If this is not specified, then the source commit
                         is used, unless tags are specified in which case the
-                        latest matching commit is used instead.
+                        latest matching commit is used instead. See the
+                        :ref:`cli_cmd_status` command for more info on the
+                        source commit.
 
 -t, --tag tag           Filter commits by the specified tag(s).
                         More than one of this option can be specified.

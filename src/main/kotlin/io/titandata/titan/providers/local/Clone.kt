@@ -17,7 +17,7 @@ import io.titandata.titan.exceptions.CommandException
 class Clone (
     private val remoteAdd: (container:String, uri: String, remoteName: String?) -> Unit,
     private val pull: (container: String, commit: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean) -> Unit,
-    private val checkout: (container: String, hash: String) -> Unit,
+    private val checkout: (container: String, hash: String?, tags: List<String>) -> Unit,
     private val run: (arguments: List<String>, createRepo: Boolean) -> Unit,
     private val remove: (container: String, force: Boolean) -> Unit,
     private val commandExecutor: CommandExecutor = CommandExecutor(),
@@ -67,7 +67,7 @@ class Clone (
             arguments.add(commit.properties["container"] as String)
             run(arguments, false)
             pull(repoName, commit.id, null, listOf(), false)
-            checkout(repoName, commit.id)
+            checkout(repoName, commit.id, listOf())
         } catch (e: CommandException) {
             println(e.message)
             println(e.output)

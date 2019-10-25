@@ -39,7 +39,7 @@ class RemoteLog (
             if (remote.provider == "nop") {
                 break@loop
             }
-            
+
             try {
                 val commits = remotesApi.listRemoteCommits(container, remote.name, remoteUtil.getParameters(remote), tags)
                 for (commit in commits) {

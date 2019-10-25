@@ -144,7 +144,7 @@ class MockTest {
     fun `can checkout`(){
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.checkout("container", "hash")
+        mockProvider.checkout("container", "hash", listOf())
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "Checking out data set hash")
