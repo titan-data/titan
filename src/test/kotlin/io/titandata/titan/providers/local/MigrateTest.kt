@@ -6,7 +6,7 @@ import org.junit.Test
 
 class MigrateTest {
     private fun exit(message: String, code: Int) {}
-    private fun commit(container: String, message: String) {}
+    private fun commit(container: String, message: String, tags: List<String>) {}
     private val command = Migrate(::exit,::commit)
 
     @Test

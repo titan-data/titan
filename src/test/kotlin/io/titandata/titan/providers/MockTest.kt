@@ -24,7 +24,7 @@ class MockTest {
     fun `can pull`(){
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.pull("container", "commit", null)
+        mockProvider.pull("container", "commit", null, listOf(), false)
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "Pulling from remote")
@@ -34,7 +34,7 @@ class MockTest {
     fun `can push`(){
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.push("container", "commit", null)
+        mockProvider.push("container", "commit", null, listOf(), false)
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "Pushing to remote")
@@ -44,7 +44,7 @@ class MockTest {
     fun `can commit`(){
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.commit("container", "message")
+        mockProvider.commit("container", "message", listOf())
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "Committing new state")
@@ -94,7 +94,7 @@ class MockTest {
     fun `can remoteLog`(){
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.remoteLog("container", null)
+        mockProvider.remoteLog("container", null, listOf())
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "Display remote log")
@@ -144,7 +144,7 @@ class MockTest {
     fun `can checkout`(){
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.checkout("container", "hash")
+        mockProvider.checkout("container", "hash", listOf())
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "Checking out data set hash")
@@ -164,7 +164,7 @@ class MockTest {
     fun `can log`(){
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.log("container")
+        mockProvider.log("container", listOf())
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "Log for container")

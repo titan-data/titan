@@ -14,4 +14,5 @@ Coming Soon!
    commit
    copy
    migrate
+   tags
    storage

@@ -9,7 +9,9 @@ import io.titandata.titan.providers.ProviderFactory
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.options.versionOption
+import io.titandata.client.infrastructure.ApiClient
 import io.titandata.titan.exceptions.CommandException
+import okhttp3.logging.HttpLoggingInterceptor
 import org.apache.log4j.BasicConfigurator
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
@@ -32,7 +34,19 @@ object Cli {
 
     @JvmStatic
     fun main(args: Array<String>) {
+        val titanDebug = System.getenv("TITAN_DEBUG")
+        if (titanDebug != null) {
+            val logging = HttpLoggingInterceptor()
+            if (titanDebug.equals("trace", true)) {
+                logging.level = HttpLoggingInterceptor.Level.BODY
+            } else {
+                logging.level = HttpLoggingInterceptor.Level.BASIC
+            }
+            ApiClient.builder.addInterceptor(logging)
+        }
+
         BasicConfigurator.configure();
+
         val version = Cli::class.java.getResource("/VERSION").readText()
         val kodein = Kodein {
             bind() from setBinding<CliktCommand>()
@@ -56,6 +70,7 @@ object Cli {
             import(removeModule)
             import(uninstallModule)
             import(upgradeModule)
+            import(tagModule)
         }
         val commands: Set<CliktCommand> by kodein.instance()
         try {
@@ -63,9 +78,15 @@ object Cli {
         } catch (e: CommandException) {
             println(e.message)
             println(e.output)
+            if (titanDebug != null) {
+                e.printStackTrace()
+            }
             exitProcess(e.exitCode)
         } catch (e: Throwable) {
             println(e.message)
+            if (titanDebug != null) {
+                e.printStackTrace()
+            }
             exitProcess(1)
         }
     }

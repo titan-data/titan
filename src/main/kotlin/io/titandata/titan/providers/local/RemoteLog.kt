@@ -28,7 +28,7 @@ class RemoteLog (
         }
     }
 
-    fun remoteLog(container:String, remoteName: String?) {
+    fun remoteLog(container:String, remoteName: String?, tags: List<String>) {
         val remotes = getRemotes(container, remoteName)
         if(remotes.isEmpty()) {
             exit("remote is not set, run 'remote add' first", 1)
@@ -39,15 +39,16 @@ class RemoteLog (
             if (remote.provider == "nop") {
                 break@loop
             }
+
             try {
-                if (!first) {
-                    println("")
-                } else {
-                    first = false
-                }
-                val commits = remotesApi.listRemoteCommits(container, remote.name, remoteUtil.getParameters(remote))
+                val commits = remotesApi.listRemoteCommits(container, remote.name, remoteUtil.getParameters(remote), tags)
                 for (commit in commits) {
-                    println("Remote: ${remote.name}")
+                    if (!first) {
+                        println("")
+                    } else {
+                        first = false
+                    }
+
                     println("Commit ${commit.id}")
                     if (commit.properties.containsKey("author")) {
                         println("Author: ${commit.properties["author"]}")
@@ -59,6 +60,22 @@ class RemoteLog (
                         println("Email: ${commit.properties["email"]}")
                     }
                     println("Date:   ${commit.properties["timestamp"]}")
+                    if (commit.properties.containsKey("tags")) {
+                        @Suppress("UNCHECKED_CAST")
+                        val tagInfo = commit.properties.get("tags") as Map<String, String>
+                        if (!tagInfo.isEmpty()) {
+                            print("Tags:")
+                            for ((key, value) in tagInfo) {
+                                print(" ")
+                                if (value != "") {
+                                    print("$key=$value")
+                                } else {
+                                    print(key)
+                                }
+                            }
+                            println("")
+                        }
+                    }
                     if (commit.properties["message"] != "") {
                         println("${n}${commit.properties["message"]}")
                     }
