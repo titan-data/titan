@@ -19,6 +19,7 @@ class Commit (
     fun commit(container: String, message: String, tags: List<String>) {
         val repoMetadata = repositoriesApi.getRepository(container).properties
         val repoStatus = repositoriesApi.getRepositoryStatus(container)
+        val sourceCommit = repoStatus.sourceCommit
         val tagMetadata = mutableMapOf<String, String>()
         for (t in tags) {
             val (key, value) = if (t.contains("=")) {
@@ -40,8 +41,8 @@ class Commit (
                 "runtime" to repoMetadata["runtime"]!!,
                 "tags" to tagMetadata
         )
-        if (repoStatus.sourceCommit != null) {
-                "source" to repoStatus.sourceCommit
+        if (sourceCommit != null) {
+                metadata.put("source", sourceCommit)
         }
         val commit = Commit(uuid, metadata)
         val response = commitsApi.createCommit(container, commit)
