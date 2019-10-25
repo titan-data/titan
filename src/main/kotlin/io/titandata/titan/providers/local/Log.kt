@@ -32,6 +32,7 @@ class Log (
             }
             println("Date: ${metadata["timestamp"]}")
             if (metadata.containsKey("tags")) {
+                @Suppress("UNCHECKED_CAST")
                 val tags = metadata.get("tags") as Map<String, String>
                 if (!tags.isEmpty()) {
                     print("Tags:")
