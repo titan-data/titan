@@ -11,7 +11,7 @@ Syntax
 
 ::
 
-    titan pull [-c commit] [-r remote] <repository>
+    titan pull [-c commit] [-r remote] [-t key[=value] ...] <repository>
 
 Arguments
 ---------
@@ -23,10 +23,18 @@ Options
 -------
 
 -c, --commit commit     Commit to pull. If not specified, then the latest
-                        commit is used.
+                        commit is used unless tags are specified, in which
+                        case the latest tag matching the given tags is used.
 
 -r, --remote remote     Name of remote to push to. If not specified, defaults
                         to "origin".
+
+-t, --tag tag           Filter commits by the specified tag(s).
+                        More than one of this option can be specified. If
+                        present, then the last commit matching the given tags
+                        is used. This is incompatible with the ``-c`` option.
+                        Tags are matched according to the filtering rules
+                        described in the :ref:`local_tags` section.
 
 Example
 -------

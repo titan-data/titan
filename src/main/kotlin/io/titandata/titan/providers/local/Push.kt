@@ -12,6 +12,7 @@ import io.titandata.client.infrastructure.ClientException
 import io.titandata.models.*
 import io.titandata.models.Commit
 import io.titandata.serialization.RemoteUtil
+import io.titandata.titan.utils.OperationMonitor
 
 class Push (
     private val exit: (message: String, code: Int) -> Unit,
@@ -21,7 +22,8 @@ class Push (
     private val remoteUtil: RemoteUtil = RemoteUtil(),
     private val repositoriesApi: RepositoriesApi = RepositoriesApi()
 ) {
-    fun push(container: String, guid: String?, remoteName: String?, metadataOnly: Boolean) {
+
+    fun push(container: String, guid: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean) {
         val name = remoteName ?: "origin"
         val remotes = remotesApi.listRemotes(container)
         if(remotes.isEmpty()) {
@@ -32,37 +34,28 @@ class Push (
         if(repoStatus.lastCommit.isNullOrEmpty()) {
             exit("container has no history, run 'commit' to first commit state",1)
         }
-        val commit = commitsApi.getCommit(container, repoStatus.lastCommit!!)
+        val commit = if (guid != null) {
+            if (!tags.isEmpty()) {
+                exit("tags cannot be specified when commit is also specified", 1)
+            }
+            guid
+        } else {
+            if (tags.isEmpty()) {
+                commitsApi.getCommit(container, repoStatus.lastCommit!!).id
+            } else {
+                val commits = commitsApi.listCommits(container, tags)
+                if (commits.isEmpty()) {
+                    exit("no matching commits found, unable to push latest", 1)
+                }
+                commits.first().id
+            }
+        }
 
         val remote = remotesApi.getRemote(container, name)
-        var operation = Operation("id", Operation.Type.PUSH, Operation.State.RUNNING, remote.name, commit.id)
-        try {
-            operation = operationsApi.push(container, remote.name, commit.id, remoteUtil.getParameters(remote),
-                    metadataOnly)
-        } catch (e: ClientException) {
-            exit(e.message!!,1)
+        var operation = operationsApi.push(container, remote.name, commit, remoteUtil.getParameters(remote),
+                metadataOnly)
+        if (!OperationMonitor(container, operation).monitor()) {
+            exit("", 1)
         }
-
-        println("${operation.type} ${operation.commitId} to ${operation.remote} ${operation.state}")
-        var padLen = 0
-        while (operation.state == Operation.State.RUNNING){
-            val statuses = operationsApi.getProgress(container, operation.id)
-            for (status in statuses) {
-                if (status.type != ProgressEntry.Type.PROGRESS) {
-                    if (!status.message.isNullOrEmpty()) {
-                        println(status.message)
-                    }
-                } else {
-                    val subMessage = status.message as String
-                    if (subMessage.length > padLen) {
-                        padLen = subMessage.length
-                    }
-                    System.out.printf("\r%s", subMessage.padEnd((padLen - subMessage.length) + 1, ' '))
-                }
-            }
-            Thread.sleep(2000)
-            operation = operationsApi.getOperation(container, operation.id)
-        }
-        println("${operation.type} ${operation.commitId} to ${operation.remote} ${operation.state}")
     }
 }

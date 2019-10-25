@@ -24,7 +24,7 @@ class MockTest {
     fun `can pull`(){
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.pull("container", "commit", null, false)
+        mockProvider.pull("container", "commit", null, listOf(), false)
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "Pulling from remote")
@@ -34,7 +34,7 @@ class MockTest {
     fun `can push`(){
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.push("container", "commit", null, false)
+        mockProvider.push("container", "commit", null, listOf(), false)
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "Pushing to remote")

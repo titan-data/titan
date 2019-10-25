@@ -31,7 +31,7 @@ Syntax
 
 ::
 
-    titan commit [-m message] <repository>
+    titan commit [-m message] [-t key[=value] ...] <repository>
 
 Arguments
 ---------
@@ -49,10 +49,15 @@ Options
                        repositories. If not provided, then an empty string is
                        used.
 
+-t, --tag tag          Specify a tag to set for the commit. This option can
+                       appear multiple times. If the value is omitted, then the
+                       empty string is assumed. For more information on tags,
+                       see the :ref:`local_tags` section.
+
 Example
 -------
 
 ::
 
-    $ titan commit -m "my first commit" myrepo
+    $ titan commit -m "my first commit" -t nightly -t source=qa myrepo
     Commit 470ceb06-ebd3-486a-a4de-7f755df84309

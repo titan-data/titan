@@ -19,7 +19,7 @@ Syntax
 
 ::
 
-    titan checkout -c <id> <repository>
+    titan checkout [-c id] [-t key[=value] ...] <repository>
 
 Arguments
 ---------
@@ -30,8 +30,19 @@ repository
 Options
 -------
 
--c, --commit id   *Required*. Specify the commit ID to checkout. Must be a known
-                  commit in `titan log` for the given repository.
+-c, --commit id         Specify the commit ID to checkout. Must be a
+                        known commit in `titan log` for the given repository.
+                        If this is not specified, then the last commit
+                        is used, unless tags are specified in which case the
+                        latest matching commit is used instead.
+
+-t, --tag tag           Filter commits by the specified tag(s).
+                        More than one of this option can be specified.
+                        Tags cannot be used if the ``-c`` option is
+                        specified. When tags are specified, then the latest
+                        commit matching those tags is checked out.
+                        Tags are matched according to the filtering rules
+                        described in the :ref:`local_tags` section.
 
 Example
 -------

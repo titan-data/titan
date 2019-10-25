@@ -29,7 +29,9 @@ class Local: Provider {
     private val n = System.lineSeparator()
 
     private fun exit(message:String, code: Int = 1) {
-        println(message)
+        if (message != "") {
+            println(message)
+        }
         exitProcess(code)
     }
 
@@ -53,14 +55,16 @@ class Local: Provider {
         return upgradeCommand.upgrade(force, version, finalize, path)
     }
 
-    override fun pull(container: String, commit: String?, remoteName: String?, metadataOnly: Boolean) {
+    override fun pull(container: String, commit: String?, remoteName: String?, tags: List<String>,
+                      metadataOnly: Boolean) {
         val pullCommand = Pull(::exit)
-        return pullCommand.pull(container, commit, remoteName, metadataOnly)
+        return pullCommand.pull(container, commit, remoteName, tags, metadataOnly)
     }
 
-    override fun push(container: String, commit: String?, remoteName: String?, metadataOnly: Boolean) {
+    override fun push(container: String, commit: String?, remoteName: String?, tags: List<String>,
+                      metadataOnly: Boolean) {
         val pushCommand = Push(::exit)
-        return pushCommand.push(container, commit, remoteName, metadataOnly)
+        return pushCommand.push(container, commit, remoteName, tags, metadataOnly)
     }
 
     override fun checkInstall() {

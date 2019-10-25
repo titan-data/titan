@@ -54,5 +54,6 @@ Subcommands
    cmd/start
    cmd/status
    cmd/stop
+   cmd/tag
    cmd/uninstall
    cmd/upgrade

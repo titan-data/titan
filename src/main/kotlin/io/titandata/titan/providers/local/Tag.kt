@@ -11,7 +11,11 @@ class Tag (
 ) {
     fun tagCommit(repository: String, commit: String, tags: List<String>) {
         val commit = commitsApi.getCommit(repository, commit)
-        val commitTags = (commit.properties.get("tags") as Map<String, String>).toMutableMap()
+        val commitTags = if (commit.properties.containsKey("tags")) {
+            (commit.properties.get("tags") as Map<String, String>).toMutableMap()
+        } else {
+            mutableMapOf()
+        }
 
         for (t in tags) {
             if (t.contains("=")) {

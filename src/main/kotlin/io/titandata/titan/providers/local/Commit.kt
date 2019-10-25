@@ -31,7 +31,7 @@ class Commit (
         val metadata = mapOf(
                 "user" to user,
                 "email" to email,
-                "message" to message!!,
+                "message" to message,
                 "container" to repoMetadata["container"]!!,
                 "image" to repoMetadata["image"]!!,
                 "tag" to repoMetadata["tag"]!!,
