@@ -7,7 +7,7 @@ tests:
         get:
           - PWD
   - "create test directory in ssh server":
-      command: docker exec sshHost mkdir -p test
+      command: docker exec sshHost mkdir -p /test
   - "get localhost ip":
       command: cat localip
       stdout:
@@ -113,7 +113,7 @@ tests:
                 delimiter: " "
                 position: 1
   - "create new directory in ssh server":
-      command: docker exec sshHost mkdir -p sshtest
+      command: docker exec sshHost mkdir -p /sshtest
   - "add private ssh key to ssh server":
       command: [docker, exec, sshHost, sh, -c, cat sshKey.pub > /root/.ssh/authorized_keys]
   - "add remote with ssh key succeeds":
