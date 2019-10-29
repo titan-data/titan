@@ -1,6 +1,8 @@
 tests:
+  - "get ssh test server":
+      command: docker pull titandata/ssh-test-server:latest
   - "start ssh server":
-      command: docker run -v $PWD:/workdir --workdir /workdir -p 22:22 -d --name sshHost sshtest:latest
+      command: docker run -v $PWD:/workdir --workdir /workdir -p 22:22 -d --name sshHost titandata/ssh-test-server:latest
       env:
         get:
           - PWD
