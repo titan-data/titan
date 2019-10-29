@@ -24,7 +24,7 @@ class Remote : CliktCommand(help = "Add, log, ls and rm remotes") {
 class RemoteAdd : CliktCommand(help = "Set remote destination for a repository", name = "add") {
     private val dependencies: Dependencies by requireObject()
     private val remote: String? by option("-r", "--remote", help="Name of the remote provider, defaults to origin")
-    private val parameters by option("-p", "--parameters").multiple()
+    private val parameters by option("-p", "--parameters", help="Provider specific parameters. key=value format.").multiple()
     private val uri: String by argument()
     private val repository: String by argument()
 

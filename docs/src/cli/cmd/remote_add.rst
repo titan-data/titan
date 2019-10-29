@@ -11,7 +11,7 @@ Syntax
 
 ::
 
-    titan remote add [-r remote] <uri> <repository>
+    titan remote add [-r remote] [-p key=value] <uri> <repository>
 
 Arguments
 ---------
@@ -26,8 +26,10 @@ uri
 Options
 -------
 
--r, --remote remote     Optional remote name. If not provided, then the name
-                        'origin' is assumed.
+-r, --remote     remote  Optional remote name. If not provided, then the name
+                         'origin' is assumed.
+
+-p, --parameters string  Key=Value pair for provider specific options.
 
 Example
 -------
@@ -35,3 +37,5 @@ Example
 ::
 
     $ titan remote add -r upstream s3://titan-data-demo/hello-world/postgres hello-world
+    $ titan remote add -r ssh -p keyFle=id_rsa ssh://user@host/hello-world hello-world
+

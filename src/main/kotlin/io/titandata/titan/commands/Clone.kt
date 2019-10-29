@@ -22,7 +22,7 @@ class Clone : CliktCommand(help = "Clone a remote repository to local repository
     private val uri by argument()
     private val repository by argument().optional()
     private val commit by option("-c", "--commit", help="Commit GUID to pull from, defaults to latest")
-    private val parameters by option("-p", "--parameters").multiple()
+    private val parameters by option("-p", "--parameters", help="Provider specific parameters. key=value format.").multiple()
 
     override fun run() {
         val provider = dependencies.provider

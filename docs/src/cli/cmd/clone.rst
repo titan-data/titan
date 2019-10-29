@@ -14,7 +14,7 @@ Syntax
 
 ::
 
-    titan clone -c [id] <uri> [repository]
+    titan clone -c [id] -p [key=value] <uri> [repository]
 
 Arguments
 ---------
@@ -24,6 +24,7 @@ uri
     remotes, the URI format, and different remote providers, see the
     :ref:`remote` section.
 
+
 repository
     Optional. Name of the new repository to create. If not specified, then
     the name of the original repository is used (which may or may not match
@@ -32,8 +33,9 @@ repository
 Options
 -------
 
--c, --commit id   Specify the commit ID to checkout.
+-c, --commit     id      Specify the commit ID to checkout.
 
+-p, --parameters string  Key=Value pair for provider specific options.
 
 Example
 -------
