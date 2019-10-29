@@ -84,7 +84,7 @@ class MockTest {
     fun `can remoteAdd`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.remoteAdd("container", "uri", "remoteName")
+        mockProvider.remoteAdd("container", "uri", "remoteName", emptyMap())
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "Add remote")
@@ -214,7 +214,7 @@ class MockTest {
     fun `can clone`(){
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.clone("http://user:pass@path", "container", null)
+        mockProvider.clone("http://user:pass@path", "container", null, emptyMap())
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "cloning container from http://user:pass@path")

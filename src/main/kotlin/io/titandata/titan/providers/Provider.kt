@@ -8,7 +8,7 @@ interface Provider {
     fun install(registry: String?)
     fun abort(container: String)
     fun status(container: String)
-    fun remoteAdd(container: String, uri: String, remoteName: String?)
+    fun remoteAdd(container: String, uri: String, remoteName: String?, params: Map<String, String>)
     fun remoteLog(container: String, remoteName: String?, tags: List<String>)
     fun remoteList(container:String)
     fun remoteRemove(container: String, remote:String)
@@ -25,5 +25,5 @@ interface Provider {
     fun start(container: String)
     fun remove(container: String, force: Boolean)
     fun cp(container: String, driver: String, source: String, path: String)
-    fun clone(uri: String, container: String?, commit: String?)
+    fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>)
 }

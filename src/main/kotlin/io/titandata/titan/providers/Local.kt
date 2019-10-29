@@ -103,9 +103,9 @@ class Local: Provider {
         return statusCommand.status(container)
     }
 
-    override fun remoteAdd(container:String, uri: String, remoteName: String?) {
+    override fun remoteAdd(container:String, uri: String, remoteName: String?, params: Map<String, String>) {
         val remoteAddCommand = RemoteAdd(::exit)
-        return remoteAddCommand.remoteAdd(container, uri, remoteName)
+        return remoteAddCommand.remoteAdd(container, uri, remoteName, params)
     }
 
     override fun remoteLog(container:String, remoteName: String?, tags: List<String>) {
@@ -175,10 +175,10 @@ class Local: Provider {
         return cpCommand.cp(container, driver, source, path)
     }
 
-    override fun clone(uri: String, container: String?, commit: String?) {
+    override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>) {
         val runCommand = Run(::exit,  commandExecutor, docker)
         val cloneCommand = Clone(::remoteAdd, ::pull, ::checkout, runCommand::run, ::remove, commandExecutor, docker)
-        return cloneCommand.clone(uri, container, commit)
+        return cloneCommand.clone(uri, container, commit, params)
     }
 
     override fun delete(repository: String, commit: String?, tags: List<String>) {

@@ -29,7 +29,7 @@ class Mock: Provider {
         println("Display current status")
     }
 
-    override fun remoteAdd(container: String, uri: String, remoteName: String?) {
+    override fun remoteAdd(container: String, uri: String, remoteName: String?, params: Map<String, String>) {
         println("Add remote")
     }
 
@@ -89,7 +89,7 @@ class Mock: Provider {
         println("copying data into $container with $driver from $source")
     }
 
-    override fun clone(uri: String, container: String?, commit: String?) {
+    override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>) {
         println("cloning $container from $uri")
     }
 
