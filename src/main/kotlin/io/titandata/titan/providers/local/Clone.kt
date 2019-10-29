@@ -15,7 +15,7 @@ import io.titandata.serialization.RemoteUtil
 import io.titandata.titan.exceptions.CommandException
 
 class Clone (
-    private val remoteAdd: (container:String, uri: String, remoteName: String?) -> Unit,
+    private val remoteAdd: (container:String, uri: String, remoteName: String?, params: Map<String, String>) -> Unit,
     private val pull: (container: String, commit: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean) -> Unit,
     private val checkout: (container: String, hash: String?, tags: List<String>) -> Unit,
     private val run: (arguments: List<String>, createRepo: Boolean) -> Unit,
@@ -26,7 +26,7 @@ class Clone (
     private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
     private val remoteUtil: RemoteUtil = RemoteUtil()
 ) {
-    fun clone(uri: String, container: String?, guid: String?) {
+    fun clone(uri: String, container: String?, guid: String?, params: Map<String, String>) {
         val repoName = when(container){
             null -> uri.split("/").last().substringBefore('#')
             else -> container
@@ -38,7 +38,7 @@ class Clone (
         val repository = Repository(repoName, emptyMap())
         try {
             repositoriesApi.createRepository(repository)
-            remoteAdd(repoName, uri.substringBefore('#'), null)
+            remoteAdd(repoName, uri.substringBefore('#'), null, params)
             val remote = remotesApi.getRemote(repoName, "origin")
             var commit = Commit("id", emptyMap())
             if (commitId.isNullOrEmpty()) {

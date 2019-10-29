@@ -9,7 +9,9 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.requireObject
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.optional
+import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
+import io.titandata.titan.exceptions.InvalidArgumentException
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.inSet
@@ -20,10 +22,19 @@ class Clone : CliktCommand(help = "Clone a remote repository to local repository
     private val uri by argument()
     private val repository by argument().optional()
     private val commit by option("-c", "--commit", help="Commit GUID to pull from, defaults to latest")
+    private val parameters by option("-p", "--parameters").multiple()
 
     override fun run() {
         val provider = dependencies.provider
-        provider.clone(uri, repository, commit)
+        val params = mutableMapOf<String, String>()
+        for (param in parameters) {
+            val split = param.split("=")
+            if (split.count() != 2) {
+                throw InvalidArgumentException(message = "Parameters must be in key=value format.", exitCode = 1, output = param)
+            }
+            params[split[0]] = split[1]
+        }
+        provider.clone(uri, repository, commit, params)
     }
 }
 
