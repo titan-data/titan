@@ -1,0 +1,200 @@
+tests:
+  - "start ssh server":
+      command: docker run -v $PWD:/workdir --workdir /workdir -p 22:22 -d --name sshHost sshtest:latest
+      env:
+        get:
+          - PWD
+  - "create test directory in ssh server":
+      command: docker exec sshHost mkdir -p test
+  - "get localhost ip":
+      command: cat localip
+      stdout:
+        notEmpty: "true"
+      env:
+        set: SSH_HOST
+  - "run empty mongo db":
+      command:  titan run -- --name sshTest -p 27017:27017 -d mongo:latest
+      wait: 10
+      stdout:
+        contains: Running controlled container sshTest
+  - "create new commit":
+      command: [titan, commit, -m, sshTest Commit, sshTest]
+      stdout:
+        contains: Commit
+      env:
+        set:
+          - COMMIT_GUID:
+              split:
+                delimiter: " "
+                position: 1
+  - "add ssh remote with password succeeds":
+      command: titan remote add ssh://root:root@$SSH_HOST:22/test sshTest
+      env:
+        get:
+          - SSH_HOST
+  - "repo has ssh remote with password":
+      command: titan remote ls sshTest
+      stdout:
+        contains: ssh://root:*****@$SSH_HOST:22/test
+      env:
+        get:
+          - SSH_HOST
+  - "list remote with password commits returns empty list":
+      command: titan remote log sshTest
+  - "get non-existent remote commit with password fails":
+      command: titan pull sshTest
+      exitValue: 1
+      sdout: no commits found in remote, unable to pull latest
+  - "push commit with password succeeds":
+      command: titan push sshTest
+      stdout:
+        contains:
+          - PUSH $COMMIT_GUID to origin RUNNING
+          - PUSH $COMMIT_GUID to origin COMPLETE
+      env:
+        get:
+          - COMMIT_GUID
+  - "list remote commits with password returns pushed commit":
+      command: titan remote log sshTest
+      stdout:
+        contains:
+          - Commit $COMMIT_GUID
+          - sshTest Commit
+      env:
+        get:
+          - COMMIT_GUID
+  - "push of same commit with password fails":
+      command: titan push sshTest
+      exitValue: 1
+      stdout: commit $COMMIT_GUID exists in remote 'origin'
+      env:
+        get:
+          - COMMIT_GUID
+  - "delete local commit succeeds":
+      command: titan delete -c $COMMIT_GUID sshTest
+      stdout: $COMMIT_GUID deleted
+      env:
+        get:
+          - COMMIT_GUID
+  - "list local commits is empty":
+      command: titan log sshTest
+  - "pull original commit with password succeeds":
+      command: titan pull sshTest
+      stdout:
+        contains:
+          - PULL $COMMIT_GUID from origin RUNNING
+          - PULL $COMMIT_GUID from origin COMPLETE
+      env:
+        get:
+          - COMMIT_GUID
+  - "checkout commit succeeds":
+      command: titan checkout -c $COMMIT_GUID sshTest
+      stdout: |-
+        Stopping container sshTest
+        Checkout $COMMIT_GUID
+        Starting container sshTest
+        $COMMIT_GUID checked out
+      env:
+        get:
+          - COMMIT_GUID
+  - "remove remote with password succeeds":
+      command: titan remote rm sshTest origin
+      stdout: Removed origin from sshTest
+  - "create new sshkey commit":
+      command: [titan, commit, -m, sshTest key Commit, sshTest]
+      stdout:
+        contains: Commit
+      env:
+        set:
+          - KEY_COMMIT_GUID:
+              split:
+                delimiter: " "
+                position: 1
+  - "create new directory in ssh server":
+      command: docker exec sshHost mkdir -p sshtest
+  - "add private ssh key to ssh server":
+      command: [docker, exec, sshHost, sh, -c, cat sshKey.pub > /root/.ssh/authorized_keys]
+  - "add remote with ssh key succeeds":
+      command: [titan, remote, add, -p, keyFile=$PWD/sshKey, ssh://root@$SSH_HOST:22/sshtest, sshTest]
+      env:
+        get:
+          - PWD
+          - SSH_HOST
+  - "repo has ssh remote with ssh key":
+      command: titan remote ls sshTest
+      stdout:
+        contains: ssh://root@$SSH_HOST:22/sshtest
+      env:
+        get:
+          - SSH_HOST
+  - "list remote with ssh key commits returns empty list":
+      command: titan remote log sshTest
+  - "get non-existent remote commit with ssh key fails":
+      command: titan pull sshTest
+      exitValue: 1
+      sdout: no commits found in remote, unable to pull latest
+  - "push commit with ssh key succeeds":
+      command: titan push sshTest
+      stdout:
+        contains:
+          - PUSH $KEY_COMMIT_GUID to origin RUNNING
+          - PUSH $KEY_COMMIT_GUID to origin COMPLETE
+      env:
+        get:
+          - KEY_COMMIT_GUID
+  - "list remote commits with ssh key returns pushed commit":
+      command: titan remote log sshTest
+      stdout:
+        contains:
+          - Commit $KEY_COMMIT_GUID
+          - sshTest key Commit
+      env:
+        get:
+          - KEY_COMMIT_GUID
+  - "push of same commit with ssh key fails":
+      command: titan push sshTest
+      exitValue: 1
+      stdout: commit $KEY_COMMIT_GUID exists in remote 'origin'
+      env:
+        get:
+          - KEY_COMMIT_GUID
+  - "delete local commit succeeds":
+      command: titan delete -c $KEY_COMMIT_GUID sshTest
+      stdout: $KEY_COMMIT_GUID deleted
+      env:
+        get:
+          - KEY_COMMIT_GUID
+  - "list local commits is empty":
+      command: titan log sshTest
+  - "pull original commit with ssh key succeeds":
+      command: titan pull sshTest
+      stdout:
+        contains:
+          - PULL $KEY_COMMIT_GUID from origin RUNNING
+          - PULL $KEY_COMMIT_GUID from origin COMPLETE
+      env:
+        get:
+          - KEY_COMMIT_GUID
+  - "checkout commit succeeds":
+      command: titan checkout -c $KEY_COMMIT_GUID sshTest
+      stdout: |-
+        Stopping container sshTest
+        Checkout $KEY_COMMIT_GUID
+        Starting container sshTest
+        $KEY_COMMIT_GUID checked out
+      env:
+        get:
+          - KEY_COMMIT_GUID
+  - "remove remote with ssh key succeeds":
+      command: titan remote rm sshTest origin
+      stdout: Removed origin from sshTest
+  - "remove sshTest succeeds":
+      command: titan rm -f sshTest
+      stdout: |-
+        Removing container sshTest
+        Deleting volume sshTest/v0
+        Deleting volume sshTest/v1
+        sshTest removed
+  - "stop ssh server":
+      command: docker rm -f sshHost
+      stdout: sshHost
