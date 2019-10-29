@@ -84,7 +84,7 @@ class MockTest {
     fun `can remoteAdd`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.remoteAdd("container", "uri", "remoteName")
+        mockProvider.remoteAdd("container", "uri", "remoteName", emptyMap())
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "Add remote")

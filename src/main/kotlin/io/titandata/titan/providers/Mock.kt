@@ -29,7 +29,7 @@ class Mock: Provider {
         println("Display current status")
     }
 
-    override fun remoteAdd(container: String, uri: String, remoteName: String?) {
+    override fun remoteAdd(container: String, uri: String, remoteName: String?, params: Map<String, String>) {
         println("Add remote")
     }
 

@@ -103,9 +103,9 @@ class Local: Provider {
         return statusCommand.status(container)
     }
 
-    override fun remoteAdd(container:String, uri: String, remoteName: String?) {
+    override fun remoteAdd(container:String, uri: String, remoteName: String?, params: Map<String, String>) {
         val remoteAddCommand = RemoteAdd(::exit)
-        return remoteAddCommand.remoteAdd(container, uri, remoteName)
+        return remoteAddCommand.remoteAdd(container, uri, remoteName, params)
     }
 
     override fun remoteLog(container:String, remoteName: String?, tags: List<String>) {

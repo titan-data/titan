@@ -11,7 +11,7 @@ import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
-import com.github.ajalt.clikt.parameters.options.required
+import io.titandata.titan.exceptions.InvalidArgumentException
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.inSet
@@ -24,12 +24,21 @@ class Remote : CliktCommand(help = "Add, log, ls and rm remotes") {
 class RemoteAdd : CliktCommand(help = "Set remote destination for a repository", name = "add") {
     private val dependencies: Dependencies by requireObject()
     private val remote: String? by option("-r", "--remote", help="Name of the remote provider, defaults to origin")
+    private val parameters by option("-p", "--parameters").multiple()
     private val uri: String by argument()
     private val repository: String by argument()
 
     override fun run() {
         val provider = dependencies.provider
-        provider.remoteAdd(repository, uri, remote)
+        val params = mutableMapOf<String, String>()
+        for(param in parameters) {
+            val split = param.split("=")
+            if (split.count() != 2) {
+                throw InvalidArgumentException(message = "Parameters must be in key=value format.", exitCode = 1, output = param)
+            }
+            params[split[0]] = split[1]
+        }
+        provider.remoteAdd(repository, uri, remote, params)
     }
 }
 
