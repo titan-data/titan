@@ -11,7 +11,7 @@ Syntax
 
 ::
 
-    titan remote add [-r remote] [-p key=value] <uri> <repository>
+    titan remote add [-r remote] [-p key=value ...] <uri> <repository>
 
 Arguments
 ---------

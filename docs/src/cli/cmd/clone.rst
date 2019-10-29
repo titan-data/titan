@@ -14,7 +14,7 @@ Syntax
 
 ::
 
-    titan clone -c [id] -p [key=value] <uri> [repository]
+    titan clone [-c id] [-p key=value ...] <uri> [repository]
 
 Arguments
 ---------

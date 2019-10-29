@@ -6,7 +6,7 @@ Adding and Removing Remotes
 Each repository can have zero or more remotes configured. To add a remote,
 use :ref:`cli_cmd_remote_add`::
 
-    $ titan remote add s3://bucket/path myrepo -p [key=value]
+    $ titan remote add s3://bucket/path myrepo
 
 Remotes are specified as URIs, with the first portion defining the provider
 (s3 in the above case), and the rest being specific to that provider. By
