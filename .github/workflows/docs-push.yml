@@ -1,0 +1,42 @@
+name: Push to Development Docs
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'docs/*'
+      - 'docs/*/*'
+      - 'docs/*/*/*'
+      - 'docs/*/*/*/*'
+
+jobs:
+  build:
+    name: Build Documentation
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Configure GitHub SSH access
+        uses: webfactory/ssh-agent@v0.1.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Install virtualenv
+        run: sudo pip3 install virtualenv
+      - name: Build documentation
+        run: |
+          export PATH=/usr/local/bin:$PATH
+          ./docs/build.sh -r development -v development
+      - name: Clone titan-data.github.io
+        run: |
+          git clone git@github.com:titan-data/titan-data.github.io
+          cd ./titan-data.github.io && git log -1
+      - name: Configure git user
+        run: |
+          cd ./titan-data.github.io
+          git config user.name "titan-docs"
+          git config user.email "titan-docs@users.noreply.github.com"
+      - name: Publish docs
+        run: ./docs/publish.sh -v development ./titan-data.github.io
+      - name: Push docs
+        run: |
+          cd ./titan-data.github.io
+          git push
