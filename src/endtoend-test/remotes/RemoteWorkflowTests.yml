@@ -1,8 +1,6 @@
 tests:
   - "$REMOTE > remote > add":
       command: titan remote add -r $REMOTE $URI $REPO
-      exitValue: 0
-      stdout: ""
       env:
         get:
           - URI
@@ -10,7 +8,6 @@ tests:
           - REMOTE
   - "$REMOTE > remote > ls > has $REMOTE":
       command: titan remote ls $REPO
-      exitValue: 0
       stdout:
         contains: $URI
       env:
@@ -20,7 +17,6 @@ tests:
           - REMOTE
   - "$REMOTE > commit":
       command: [titan, commit, -m, Test $REMOTE Commit, $REPO]
-      exitValue: 0
       stdout:
         contains: Commit
       env:
@@ -34,7 +30,6 @@ tests:
                 position: 1
   - "$REMOTE > remote > log > missing commit":
       command: titan remote log $REPO
-      exitValue: 0
       stdout:
         excludes: Commit $COMMIT_GUID
       env:
@@ -44,12 +39,10 @@ tests:
           - REMOTE
   - "$REMOTE > push":
       command: [titan, push, -r, $REMOTE, -c, $COMMIT_GUID, $REPO]
-      exitValue: 0
       stdout:
         contains:
-          - PUSH $COMMIT_GUID to $REMOTE RUNNING
           - Pushing $COMMIT_GUID to '$REMOTE'
-          - PUSH $COMMIT_GUID to $REMOTE COMPLETE
+          - Push completed successfully
       env:
         get:
           - COMMIT_GUID
@@ -57,7 +50,6 @@ tests:
           - REMOTE
   - "$REMOTE > remote > log > has commit":
       command: titan remote log $REPO
-      exitValue: 0
       stdout:
         contains: Commit $COMMIT_GUID
       env:
