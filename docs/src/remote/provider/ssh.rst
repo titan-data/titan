@@ -33,7 +33,7 @@ require a new provider that includes a robust metadata layer on top of the base
 SSH functionality.
 
 SSH Specific Parameters
-------
+-----------------------
 
 ::
 

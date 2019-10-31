@@ -38,7 +38,7 @@ that includes a robust metadata layer on top of the base S3 functionality.
 
 
 SSH Specific Parameters
-------
+-----------------------
 
 ::
 
