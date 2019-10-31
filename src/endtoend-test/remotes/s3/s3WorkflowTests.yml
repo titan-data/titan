@@ -1,28 +1,40 @@
 tests:
   - "aws configure access_key_id":
       command: aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-      exitValue: 0
-      stdout: ""
       env:
         get:
           - AWS_ACCESS_KEY_ID
   - "aws configure access_secret_key":
       command: aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-      exitValue: 0
-      stdout: ""
       env:
         get:
           - AWS_SECRET_ACCESS_KEY
   - "aws configure region":
       command: aws configure set region $AWS_REGION
-      exitValue: 0
-      stdout: ""
       env:
         get:
-          - $AWS_REGION
+          - AWS_REGION
+  - "can install titan":
+      command: titan install
+      wait: 30
+      stdout:
+        contains: Titan cli successfully installed, happy data versioning :)
+  - "can clone hello-world/posrgres":
+      command: titan clone s3web://demo.titan-data.io/hello-world/postgres hello-world
+      stdout:
+        contains:
+          - Running controlled container hello-world
+          - Starting container hello-world
 files:
   - ../RemoteWorkflowTests.yml:
       parameters:
         REMOTE: s3
+        URI: s3://titan-data-testdata/e2etest
+        REPO: hello-world
+  - s3Cleanup.yml:
+      parameters:
+        REMOTE: s3
+        URI: s3://titan-data-testdata/e2etest
+        REPO: hello-world
 after:
   clearVars: true

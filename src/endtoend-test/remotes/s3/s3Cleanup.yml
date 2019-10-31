@@ -1,0 +1,12 @@
+tests:
+  - "remove $REMOTE assets":
+      command: aws s3 rm $URI
+      env:
+        get:
+          - URI
+          - REMOTE
+  - "remove $REPO":
+      command: titan rm -f $REPO
+      env:
+        get:
+          - REPO
