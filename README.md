@@ -2,6 +2,7 @@
 ## Your Code. Your Environment. Your Data. 
 
 ![](https://github.com/titan-data/titan/workflows/Publish/badge.svg)
+![](https://github.com/titan-data/titan/workflows/End%20to%20End%20Test/badge.svg)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/titan-data/titan)
 ![GitHub All Releases](https://img.shields.io/github/downloads/titan-data/titan/total)
 

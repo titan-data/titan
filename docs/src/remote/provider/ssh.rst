@@ -20,8 +20,10 @@ privileges for running rsync. This enables file ownership and permissions to be
 set properly.
 
 If ``password`` is not specified, then the user will be prompted for a password
-at the time they do the push or pull operation. Future enhancements will
-include the ability to specify a SSH key file instead of using passwords.
+at the time they do the push or pull operation. Users are also able to use a
+``keyFile`` instead of a password::
+
+    ssh://user@host[:port]/path -p keyfile=/path/to/keyFile
 
 Like the S3 provider, the SSH provider has inherent scalability limitations. For
 example, finding the latest commit requires listing all commits in the path,
@@ -30,7 +32,14 @@ used for storing relatively small numbers of commits. Improving this will
 require a new provider that includes a robust metadata layer on top of the base
 SSH functionality.
 
-.. note ::
+SSH Specific Parameters
+------
+
+::
+
+    keyFile=/path/to/keyFile    Location of private SSH key file
+
+.. note::
 
    The SSH connection is made from within the Titan server container, so the host
    name must be resolvable from within the container. In general, this should
