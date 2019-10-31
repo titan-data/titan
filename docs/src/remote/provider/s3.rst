@@ -24,9 +24,24 @@ using MFA (multi factor authentication) session tokens.  To pull a commit, you
 will need ``s3:GetObject`` permissions. To push a commit, you will need
 ``s3:PutObject`` permissions.
 
+Although not recommended, it is possible to pass ``accessKey``, ``secretKey``,
+and ``region`` to the S3 Provider during runtime through CLI parameters::
+
+        s3://<bucket>/<key> -p accessKey=value -p secretKey=value -p region=value
+
 The S3 provider relies on basic AWS APIs to implement its functionality, and as
 such has limited scalability.  For example, all commits are stored in a single
 metadata file, and there are no provisions for keeping that metadata consistent
 in the face of simultaneous pushes. It should only be used for storing
 relatively small numbers of commits. Improving this will require a new provider
 that includes a robust metadata layer on top of the base S3 functionality.
+
+
+SSH Specific Parameters
+-----------------------
+
+::
+
+    accessKey=aws_access_key_id         AWS Access Key ID
+    secretKey=aws_secret_access_key     AWS Secret Access Key
+    region=region                       AWS Region
