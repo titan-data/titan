@@ -213,6 +213,10 @@
   "methods":[{"name":"toPath","parameterTypes":[] }]
 },
 {
+  "name":"java.io.File",
+  "methods":[{"name":"toPath","parameterTypes":[] }]
+},
+{
   "name":"java.lang.String"
 },
 {
