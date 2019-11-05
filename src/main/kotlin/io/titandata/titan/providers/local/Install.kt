@@ -4,58 +4,41 @@
 
 package io.titandata.titan.providers.local
 
-import io.titandata.progresstracker.PrintStreamProgressTracker
-import io.titandata.progresstracker.ProgressTracker
-import io.titandata.progresstracker.StringBasedApi.markAsFailed
-import io.titandata.progresstracker.StringBasedApi.trackTask
 import io.titandata.titan.Version
 import io.titandata.titan.clients.Docker
 import io.titandata.titan.utils.CommandExecutor
-import kotlin.system.exitProcess
+import io.titandata.titan.utils.ProgressTracker
 
 class Install (
     private val titanServerVersion: String,
     private val dockerRegistryUrl: String,
     private val commandExecutor: CommandExecutor = CommandExecutor(),
-    private val docker: Docker = Docker(commandExecutor)
+    private val docker: Docker = Docker(commandExecutor),
+    private val track: (title: String, function: () -> Any) -> Unit = ProgressTracker()::track
 ) {
-
-    private fun createProgressTracker(): ProgressTracker {
-        io.titandata.progresstracker.ApplicationProgressTracker.progressTracker = PrintStreamProgressTracker(
-                tasksPrefix = "\t",
-                successMessage = "Titan cli successfully installed, happy data versioning :)",
-                failureMessage = "Docker not found")
-        return io.titandata.progresstracker.ApplicationProgressTracker.progressTracker
-    }
-
     fun install() {
-        createProgressTracker().use {
-            println("Initializing titan infrastructure ...")
-            try {
-                "Checking docker installation".trackTask()
-                docker.version()
-            } catch (e: Exception) {
-                "Checking docker installation".markAsFailed()
-                exitProcess(2)
-            }
-            if(!docker.titanLatestIsDownloaded(Version.fromString(titanServerVersion))) {
-                "Pulling titan docker image (may take a while)".trackTask()
+        println("Initializing titan infrastructure ...")
+        track("Checking docker installation") { docker.version() }
+        if (!docker.titanLatestIsDownloaded(Version.fromString(titanServerVersion))) {
+            track("Pulling titan docker image (may take a while)") {
                 docker.pull("${dockerRegistryUrl}/titan:$titanServerVersion")
-                "Tagging titan docker image".trackTask()
-                docker.tag("${dockerRegistryUrl}/titan:$titanServerVersion", "titan:$titanServerVersion")
-                "Tagging latest titan".trackTask()
-                docker.tag("${dockerRegistryUrl}/titan:$titanServerVersion", "titan")
             }
-            if (docker.titanServerIsAvailable()) {
-                "Removing stale containers".trackTask()
+            docker.tag("${dockerRegistryUrl}/titan:$titanServerVersion", "titan:$titanServerVersion")
+            docker.tag("${dockerRegistryUrl}/titan:$titanServerVersion", "titan")
+        }
+        if (docker.titanServerIsAvailable()) {
+            track("Removing stale titan-server container") {
                 docker.rm("titan-server", true)
             }
-            if (docker.titanLaunchIsAvailable()) {
-                "Removing stale containers".trackTask()
+        }
+        if (docker.titanLaunchIsAvailable()) {
+            track( "Removing stale titan-launch container") {
                 docker.rm("titan-launch", true)
             }
-            "Starting titan server docker containers".trackTask()
+        }
+        track("Starting titan server docker containers") {
             docker.launchTitanServers()
         }
+        println("Titan cli successfully installed, happy data versioning :)")
     }
 }

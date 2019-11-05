@@ -40,7 +40,7 @@ Status: Downloaded newer image for titan:latest
     }
 ]"""
         on {exec(listOf("docker", "volume", "create", "-d", "titan", "-o", "path=path", "volume"))} doReturn "volume"
-        on {exec(listOf("docker", "volume", "rm", "", "volume"))} doReturn "volume"
+        on {exec(listOf("docker", "volume", "rm", "volume"))} doReturn "volume"
         on {exec(listOf("docker", "cp", "-a", "source/.", "titan-server:/var/lib/titan/mnt/target"))} doReturn ""
         on {exec(listOf("docker", "rm", "-f", "container"))} doReturn ""
         on {exec(listOf("docker", "rm", "", "container"))} doReturn ""

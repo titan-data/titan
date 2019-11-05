@@ -138,11 +138,13 @@ class Docker(private val executor: CommandExecutor) {
     }
 
     fun removeVolume(name: String, force: Boolean = false): String {
-        val forceCheck = when (force) {
-            true -> "-f"
-            else -> ""
+        var argList = mutableListOf<String>(
+                "docker", "volume", "rm", "-f", name
+        )
+        if (!force) {
+            argList.remove("-f")
         }
-        return executor.exec(listOf("docker", "volume", "rm", forceCheck, name))
+        return executor.exec(argList)
     }
 
     fun cp(source: String, target: String): String {

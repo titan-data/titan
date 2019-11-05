@@ -551,6 +551,10 @@
   "allPublicClasses":true
 },
 {
+  "name":"java.io.File",
+  "methods":[{"name":"toPath","parameterTypes":[] }]
+},
+{
   "name":"java.lang.String"
 },
 {
@@ -571,6 +575,14 @@
 {
   "name":"java.net.URLConnection",
   "fields":[{"name":"requests"}]
+},
+{
+  "name":"java.nio.file.Files",
+  "methods":[{"name":"setPosixFilePermissions","parameterTypes":["java.nio.file.Path","java.util.Set"] }]
+},
+{
+  "name":"java.nio.file.attribute.PosixFilePermissions",
+  "methods":[{"name":"fromString","parameterTypes":["java.lang.String"] }]
 },
 {
   "name":"kotlin.jvm.internal.DefaultConstructorMarker"
