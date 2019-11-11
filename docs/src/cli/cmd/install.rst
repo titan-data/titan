@@ -20,10 +20,11 @@ Options
 
 -r, --registry  registry    Docker Registry URL for private repositories.
                             Defaults to titandata from docker hub.
+-V, --verbose               Optionally output titan-server install details.
 
 Example
 -------
 
 ::
 
-    $ titan install -r your.registry.address:port
+    $ titan install -V -r your.registry.address:port
