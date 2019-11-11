@@ -6,7 +6,6 @@ package io.titandata.titan.providers.local
 
 import io.titandata.client.apis.RepositoriesApi
 import io.titandata.titan.clients.Docker
-import io.titandata.titan.exceptions.CommandException
 import io.titandata.titan.utils.CommandExecutor
 import io.titandata.titan.utils.ProgressTracker
 
@@ -37,9 +36,9 @@ class Uninstall (
         track ("Removing titan-data Docker volume") {
             docker.removeVolume("titan-data")
         }
-        //track ("Removing Titan Docker image") {
-        //    docker.removeTitanImages(titanServerVersion)
-        //}
+        track ("Removing Titan Docker image") {
+            docker.removeTitanImages(titanServerVersion)
+        }
         println("Uninstalled titan infrastructure")
     }
 }
