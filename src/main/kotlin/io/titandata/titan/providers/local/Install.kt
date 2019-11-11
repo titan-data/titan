@@ -20,7 +20,6 @@ class Install (
     fun install() {
         println("Initializing titan infrastructure ...")
         track("Checking docker installation") { docker.version() }
-        /*
         if (!docker.titanLatestIsDownloaded(Version.fromString(titanServerVersion))) {
             track("Pulling titan docker image (may take a while)") {
                 docker.pull("${dockerRegistryUrl}/titan:$titanServerVersion")
@@ -28,7 +27,6 @@ class Install (
             docker.tag("${dockerRegistryUrl}/titan:$titanServerVersion", "titan:$titanServerVersion")
             docker.tag("${dockerRegistryUrl}/titan:$titanServerVersion", "titan")
         }
-        */
         if (docker.titanServerIsAvailable()) {
             track("Removing stale titan-server container") {
                 docker.rm("titan-server", true)
