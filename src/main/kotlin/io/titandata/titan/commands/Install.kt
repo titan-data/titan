@@ -7,6 +7,7 @@ package io.titandata.titan.commands
 import io.titandata.titan.Dependencies
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.requireObject
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
@@ -16,9 +17,10 @@ import org.kodein.di.generic.provider
 class Install : CliktCommand(help = "Install titan infrastructure") {
     private val dependencies: Dependencies by requireObject()
     private val registry by option("-r","--registry", help = "Registry URL for titan docker image, defaults to titandata")
+    private val verbose by option("-V", "--verbose", help = "Verbose output of Titan Server installation steps.").flag(default = false)
     override fun run() {
         val provider = dependencies.provider
-        provider.install(registry)
+        provider.install(registry, verbose)
     }
 }
 

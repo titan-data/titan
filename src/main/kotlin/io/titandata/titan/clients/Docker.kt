@@ -14,6 +14,8 @@ import kotlin.random.Random
 
 class Docker(private val executor: CommandExecutor) {
 
+    val logs = mutableMapOf<String, Boolean>()
+
     private val titanLaunchArgs = mutableListOf(
         "--privileged",
         "--pid=host",
@@ -99,10 +101,13 @@ class Docker(private val executor: CommandExecutor) {
     }
 
     fun rm(container: String, force: Boolean): String {
-        val forceFlag = if(force) "-f" else ""
-        val args = mutableListOf("docker", "rm", forceFlag)
-        args.addAll(container.toList())
-        return executor.exec(args).trim()
+        var argList = mutableListOf<String>(
+                "docker", "rm", "-f", container
+        )
+        if (!force) {
+            argList.remove("-f")
+        }
+        return executor.exec(argList).trim()
     }
 
     fun rmStopped(container:String): String {
@@ -126,6 +131,15 @@ class Docker(private val executor: CommandExecutor) {
     fun inspectContainer(container: String): JSONObject? {
         val results = executor.exec(listOf("docker", "inspect",  "--type", "container", container))
         return JSONArray(results).optJSONObject(0)
+    }
+
+    fun fetchLogs(container: String) {
+        val lines = executor.exec(listOf("docker", "logs", container)).lines()
+        for (line in lines) {
+            if (!this.logs.containsKey(line) && !line.isNullOrEmpty()){
+                this.logs[line] = false
+            }
+        }
     }
 
     fun inspectImage(image: String): JSONObject? {

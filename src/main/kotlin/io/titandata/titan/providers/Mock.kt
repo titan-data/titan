@@ -17,7 +17,7 @@ class Mock: Provider {
         println("Committing new state")
     }
 
-    override fun install(registry: String?) {
+    override fun install(registry: String?, verbose: Boolean) {
         println("Initializing new repository")
     }
 

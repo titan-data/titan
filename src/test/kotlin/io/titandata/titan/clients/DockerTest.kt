@@ -43,7 +43,7 @@ Status: Downloaded newer image for titan:latest
         on {exec(listOf("docker", "volume", "rm", "volume"))} doReturn "volume"
         on {exec(listOf("docker", "cp", "-a", "source/.", "titan-server:/var/lib/titan/mnt/target"))} doReturn ""
         on {exec(listOf("docker", "rm", "-f", "container"))} doReturn ""
-        on {exec(listOf("docker", "rm", "", "container"))} doReturn ""
+        on {exec(listOf("docker", "rm", "container"))} doReturn ""
         on {exec(listOf("docker", "run", "--name", "name", "image", "entry.sh"))} doReturn "entry output string"
         on {exec(listOf("docker", "run", "--name", "name", "image"))} doReturn "no entry output string"
         on {exec(listOf("docker", "run", "--privileged","--pid=host","--network=host","-d","--restart","always","--name=titan-launch","-v", "/var/lib:/var/lib","-v", "/run/docker:/run/docker","-v", "/lib:/var/lib/titan/system","-v", "titan-data:/var/lib/titan/data","-v", "/var/run/docker.sock:/var/run/docker.sock", "-e", "TITAN_IMAGE=titan:latest","titan:latest", "/bin/bash", "/titan/launch"))} doReturn ""

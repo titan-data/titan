@@ -72,13 +72,13 @@ class Local: Provider {
         return checkInstallCommand.checkInstall()
     }
 
-    override fun install(registry: String?) {
+    override fun install(registry: String?, verbose: Boolean) {
         val regVal = if (registry.isNullOrEmpty()) {
             dockerRegistryUrl
         } else {
             registry
         }
-        val installCommand = Install(titanServerVersion, regVal, commandExecutor, docker)
+        val installCommand = Install(titanServerVersion, regVal, verbose, commandExecutor, docker)
         return installCommand.install()
     }
 

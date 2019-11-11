@@ -37,9 +37,9 @@ class Uninstall (
         track ("Removing titan-data Docker volume") {
             docker.removeVolume("titan-data")
         }
-        track ("Removing Titan Docker image") {
-            docker.removeTitanImages(titanServerVersion)
-        }
+        //track ("Removing Titan Docker image") {
+        //    docker.removeTitanImages(titanServerVersion)
+        //}
         println("Uninstalled titan infrastructure")
     }
 }
