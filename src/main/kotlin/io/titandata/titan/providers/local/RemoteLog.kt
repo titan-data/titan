@@ -7,7 +7,6 @@ package io.titandata.titan.providers.local
 import io.titandata.client.apis.RemotesApi
 import io.titandata.client.infrastructure.ClientException
 import io.titandata.serialization.RemoteUtil
-import io.titandata.remote.nop.NopRemote
 import io.titandata.models.Remote
 
 class RemoteLog (
@@ -24,7 +23,7 @@ class RemoteLog (
                 else -> arrayOf(remotesApi.getRemote(container, remoteName))
             }
         } catch (e: ClientException) {
-            arrayOf(NopRemote( name="NOP"))
+            arrayOf(Remote("nop", "nop"))
         }
     }
 
