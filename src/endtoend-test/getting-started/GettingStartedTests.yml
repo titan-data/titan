@@ -85,6 +85,7 @@ tests:
         mongo-test removed
   - "can uninstall titan":
       command: titan uninstall
-      stdout: Uninstalled titan infrastructure
+      stdout:
+        contains: Uninstalled titan infrastructure
 after:
   clearVars: true
