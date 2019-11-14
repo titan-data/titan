@@ -1,6 +1,7 @@
 {
   "resources":[
     {"pattern":"META-INF/native/osx/libjansi.jnilib"}, 
+    {"pattern":"META-INF/services/io.titandata.remote.RemoteClient"}, 
     {"pattern":"META-INF/services/org.jline.terminal.spi.JansiSupport"}, 
     {"pattern":"META-INF/services/org.jline.terminal.spi.JnaSupport"}, 
     {"pattern":"VERSION"}, 

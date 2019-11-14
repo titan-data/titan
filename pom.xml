@@ -7,7 +7,7 @@
 	<artifactId>titan</artifactId>
 	<name>Titan CLI</name>
 	<description></description>
-	<version>0.3.4</version>
+	<version>0.3.5</version>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -117,7 +117,12 @@
 		<dependency>
 			<groupId>io.titandata</groupId>
 			<artifactId>titan-client</artifactId>
-			<version>0.6.0</version>
+			<version>0.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>io.titandata</groupId>
+			<artifactId>s3web-remote-client</artifactId>
+			<version>0.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>me.tongfei</groupId>
