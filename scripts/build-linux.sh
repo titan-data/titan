@@ -6,7 +6,7 @@ version=`cat VERSION`
 entry="docker run -v ${HOME}/.m2:/root/.m2 -v ${PWD}:/cli --workdir /cli gvm-native:19.0.0"
 docker build -t gvm-native:19.0.0 .
 ${entry} ./mvnw jar:jar install:install -DgroupId=org.bouncycastle -DartifactId=bcprov-jdk15on -Dversion=1.62
-${entry} native-image -cp /cli/target/titan-$version-jar-with-dependencies.jar\
+${entry} native-image -cp /cli/target/titan-$version.jar\
     -H:Name=titan\
     -H:Class=io.titandata.titan.Cli\
     -H:+ReportUnsupportedElementsAtRuntime\
