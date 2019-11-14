@@ -25,7 +25,7 @@ class Uninstall (
                 if (!force) {
                     exit("repository ${repo.name} exists, remove first or use '-f'", 1)
                 }
-                track("Removing repository ${repo.name}" ) { remove(repo.name, true) }
+                remove(repo.name, true)
             }
         }
         if (docker.titanServerIsAvailable()) docker.rm("titan-server", true)
