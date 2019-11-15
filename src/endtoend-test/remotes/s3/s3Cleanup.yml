@@ -1,6 +1,6 @@
 tests:
   - "remove $REMOTE assets":
-      command: aws s3 rm $URI
+      command: aws s3 rm $URI --recursive
       env:
         get:
           - URI
