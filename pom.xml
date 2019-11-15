@@ -120,11 +120,6 @@
 			<version>0.6.3</version>
 		</dependency>
 		<dependency>
-			<groupId>io.titandata</groupId>
-			<artifactId>s3web-remote-client</artifactId>
-			<version>0.0.1</version>
-		</dependency>
-		<dependency>
 			<groupId>me.tongfei</groupId>
 			<artifactId>progressbar</artifactId>
 			<version>0.7.4</version>
