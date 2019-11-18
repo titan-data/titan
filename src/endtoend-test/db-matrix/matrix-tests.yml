@@ -81,6 +81,44 @@ tests:
           - DB
           - VERSION
           - COMMIT_GUID
+  - "$DB > $VERSION > delete > commit":
+      command: titan delete -c $COMMIT_GUID $DB-test
+      stdout: $COMMIT_GUID deleted
+      env:
+        get:
+          - DB
+          - VERSION
+          - COMMIT_GUID
+  - "$DB > $VERSION > log > missing commit":
+      command: titan log $DB-test
+      stdout:
+        excludes:
+          - $COMMIT_GUID
+      env:
+        get:
+          - DB
+          - VERSION
+          - COMMIT_GUID
+  - "$DB > $VERSION > pull":
+      command: [titan, pull, -c, $COMMIT_GUID, -r, s3, $DB-test]
+      stdout:
+        contains:
+          - Pulling $COMMIT_GUID from 's3'
+          - Pull completed successfully
+      env:
+        get:
+          - DB
+          - VERSION
+          - COMMIT_GUID
+  - "$DB > $VERSION > log > has commit":
+      command: titan log $DB-test
+      stdout:
+        contains: commit $COMMIT_GUID
+      env:
+        get:
+          - DB
+          - VERSION
+          - COMMIT_GUID
   - "$DB > $VERSION > rm":
       command: titan rm -f $DB-test
       wait: 5
