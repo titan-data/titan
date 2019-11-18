@@ -50,18 +50,18 @@ jobs:
           path: releases
   build-macos:
     name: Build macOS
-    runs-on: macOS-10.14
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-java@v1
         with:
           java-version: '8.0.212'
       - name: Setup Env
-        run: ./scripts/setup.sh macOS-10.14
+        run: ./scripts/setup.sh macos-latest
       - name: Build Jar
         run: ./scripts/compile-maven.sh
       - name: Compile Binary
-        run: ./scripts/build.sh macOS-10.14
+        run: ./scripts/build.sh macos-latest
       - name: Upload Binary
         uses: actions/upload-artifact@master
         with:
