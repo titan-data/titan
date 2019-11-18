@@ -18,7 +18,7 @@ data class Container (
 )
 
 class Local: Provider {
-    private val titanServerVersion = "0.5.1"
+    private val titanServerVersion = "0.6.3"
     private val dockerRegistryUrl = "titandata"
 
     private val httpHandler = HttpHandler()
@@ -72,13 +72,13 @@ class Local: Provider {
         return checkInstallCommand.checkInstall()
     }
 
-    override fun install(registry: String?) {
+    override fun install(registry: String?, verbose: Boolean) {
         val regVal = if (registry.isNullOrEmpty()) {
             dockerRegistryUrl
         } else {
             registry
         }
-        val installCommand = Install(titanServerVersion, regVal, commandExecutor, docker)
+        val installCommand = Install(titanServerVersion, regVal, verbose, commandExecutor, docker)
         return installCommand.install()
     }
 

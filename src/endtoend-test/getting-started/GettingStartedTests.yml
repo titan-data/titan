@@ -26,7 +26,6 @@ tests:
       command: titan rm -f hello-world
       stdout: |-
         Removing container hello-world
-        Deleting volume hello-world/v0
         hello-world removed
   - "can run mongo-test":
       command: titan run -- --name mongo-test -p 27017:27017 -d mongo:latest
@@ -80,11 +79,10 @@ tests:
       command: titan rm -f mongo-test
       stdout: |-
         Removing container mongo-test
-        Deleting volume mongo-test/v0
-        Deleting volume mongo-test/v1
         mongo-test removed
   - "can uninstall titan":
       command: titan uninstall
-      stdout: Uninstalled titan infrastructure
+      stdout:
+        contains: Uninstalled titan infrastructure
 after:
   clearVars: true

@@ -5,7 +5,7 @@ interface Provider {
     fun pull(container: String, commit: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean)
     fun push(container: String, commit: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean)
     fun commit(container: String, message: String, tags: List<String>)
-    fun install(registry: String?)
+    fun install(registry: String?, verbose: Boolean)
     fun abort(container: String)
     fun status(container: String)
     fun remoteAdd(container: String, uri: String, remoteName: String?, params: Map<String, String>)

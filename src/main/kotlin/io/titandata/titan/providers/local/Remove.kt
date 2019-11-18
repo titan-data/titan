@@ -5,10 +5,8 @@
 package io.titandata.titan.providers.local
 
 import io.titandata.client.apis.RepositoriesApi
-import io.titandata.client.apis.VolumeApi
+import io.titandata.client.apis.VolumesApi
 import io.titandata.titan.clients.Docker
-import io.titandata.models.VolumeMountRequest
-import io.titandata.models.VolumeRequest
 import io.titandata.titan.exceptions.CommandException
 import io.titandata.titan.utils.CommandExecutor
 import java.lang.Exception
@@ -18,7 +16,7 @@ class Remove (
         private val commandExecutor: CommandExecutor = CommandExecutor(),
         private val docker: Docker = Docker(commandExecutor),
         private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
-        private val volumeApi: VolumeApi = VolumeApi()
+        private val volumeApi: VolumesApi = VolumesApi()
 ) {
     fun remove(container: String, force: Boolean) {
         try {
@@ -37,13 +35,11 @@ class Remove (
                 }
             }
         } catch (e: Exception) { }
-        for (volume in volumeApi.listVolumes().volumes) {
+        for (volume in volumeApi.listVolumes(container)) {
             val name = volume.name.split("/")[0]
             if (name == container) {
                 println("Deleting volume ${volume.name}")
-                val volMountRequest = VolumeMountRequest(volume.name)
-                volumeApi.unmountVolume(volMountRequest)
-                val volRequest = VolumeRequest(volume.name)
+                volumeApi.deactivateVolume(container, volume.name)
                 try {
                     docker.removeVolume(volume.name, force)
                 } catch (e: CommandException) {
@@ -54,7 +50,7 @@ class Remove (
                      not allow it to be removed. Falling back on the VolumeApi
                      fixes this condition.
                      */
-                    volumeApi.removeVolume(volRequest)
+                    volumeApi.deleteVolume(container, volume.name)
                 }
             }
         }

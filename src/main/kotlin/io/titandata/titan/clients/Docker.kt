@@ -14,6 +14,8 @@ import kotlin.random.Random
 
 class Docker(private val executor: CommandExecutor) {
 
+    val logs = mutableMapOf<String, Boolean>()
+
     private val titanLaunchArgs = mutableListOf(
         "--privileged",
         "--pid=host",
@@ -99,10 +101,13 @@ class Docker(private val executor: CommandExecutor) {
     }
 
     fun rm(container: String, force: Boolean): String {
-        val forceFlag = if(force) "-f" else ""
-        val args = mutableListOf("docker", "rm", forceFlag)
-        args.addAll(container.toList())
-        return executor.exec(args).trim()
+        var argList = mutableListOf<String>(
+                "docker", "rm", "-f", container
+        )
+        if (!force) {
+            argList.remove("-f")
+        }
+        return executor.exec(argList).trim()
     }
 
     fun rmStopped(container:String): String {
@@ -128,6 +133,15 @@ class Docker(private val executor: CommandExecutor) {
         return JSONArray(results).optJSONObject(0)
     }
 
+    fun fetchLogs(container: String) {
+        val lines = executor.exec(listOf("docker", "logs", container)).lines()
+        for (line in lines) {
+            if (!this.logs.containsKey(line) && !line.isNullOrEmpty()){
+                this.logs[line] = false
+            }
+        }
+    }
+
     fun inspectImage(image: String): JSONObject? {
         val results = executor.exec(listOf("docker", "inspect",  "--type", "image", image))
         return JSONArray(results).optJSONObject(0)
@@ -138,11 +152,13 @@ class Docker(private val executor: CommandExecutor) {
     }
 
     fun removeVolume(name: String, force: Boolean = false): String {
-        val forceCheck = when (force) {
-            true -> "-f"
-            else -> ""
+        var argList = mutableListOf<String>(
+                "docker", "volume", "rm", "-f", name
+        )
+        if (!force) {
+            argList.remove("-f")
         }
-        return executor.exec(listOf("docker", "volume", "rm", forceCheck, name))
+        return executor.exec(argList)
     }
 
     fun cp(source: String, target: String): String {

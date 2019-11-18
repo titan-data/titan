@@ -194,8 +194,6 @@ tests:
       command: titan rm -f sshTest
       stdout: |-
         Removing container sshTest
-        Deleting volume sshTest/v0
-        Deleting volume sshTest/v1
         sshTest removed
   - "stop ssh server":
       command: docker rm -f sshHost

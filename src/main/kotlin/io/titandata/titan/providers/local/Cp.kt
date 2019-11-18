@@ -4,9 +4,8 @@
 
 package io.titandata.titan.providers.local
 
-import io.titandata.client.apis.VolumeApi
+import io.titandata.client.apis.VolumesApi
 import io.titandata.titan.clients.Docker
-import io.titandata.models.VolumeMountRequest
 import io.titandata.titan.utils.CommandExecutor
 import org.json.JSONObject
 
@@ -16,7 +15,7 @@ class Cp (
     private val stop: (container: String) -> Unit,
     private val commandExecutor: CommandExecutor = CommandExecutor(),
     private val docker: Docker = Docker(commandExecutor),
-    private val volumeApi: VolumeApi = VolumeApi()
+    private val volumeApi: VolumesApi = VolumesApi()
 ) {
     fun cp(container: String, driver: String, source: String, path: String) {
         var mutablePath = path
@@ -41,8 +40,7 @@ class Cp (
             if (mount.optString("Target") == mutablePath) {
                 val volumeName = mount.optString("Source")
                 println("Copying data to $volumeName")
-                val volMountRequest = VolumeMountRequest(volumeName, "")
-                volumeApi.mountVolume(volMountRequest)
+                volumeApi.activateVolume(container, volumeName)
                 /*
                 TODO add multiple cp sources
                 when(driver) {
@@ -51,8 +49,7 @@ class Cp (
                 }
                 */
                 docker.cp(source.removeSuffix("/"), volumeName)
-
-                volumeApi.unmountVolume(volMountRequest)
+                volumeApi.deactivateVolume(container, volumeName)
             }
         }
         if (running) {

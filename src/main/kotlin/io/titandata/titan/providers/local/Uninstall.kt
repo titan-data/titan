@@ -6,8 +6,8 @@ package io.titandata.titan.providers.local
 
 import io.titandata.client.apis.RepositoriesApi
 import io.titandata.titan.clients.Docker
-import io.titandata.titan.exceptions.CommandException
 import io.titandata.titan.utils.CommandExecutor
+import io.titandata.titan.utils.ProgressTracker
 
 class Uninstall (
     private val titanServerVersion: String,
@@ -15,7 +15,8 @@ class Uninstall (
     private val remove: (container: String, force: Boolean) -> Unit,
     private val commandExecutor: CommandExecutor = CommandExecutor(),
     private val docker: Docker = Docker(commandExecutor),
-    private val repositoriesApi: RepositoriesApi = RepositoriesApi()
+    private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
+    private val track: (title: String, function: () -> Any) -> Unit = ProgressTracker()::track
 ) {
     fun uninstall(force: Boolean) {
         if (docker.titanServerIsAvailable()) {
@@ -29,16 +30,15 @@ class Uninstall (
         }
         if (docker.titanServerIsAvailable()) docker.rm("titan-server", true)
         if (docker.titanLaunchIsAvailable()) docker.rm("titan-launch", true)
-        docker.teardownTitanServers()
-        try {
-            docker.removeVolume("titan-modules")
-        } catch (e: CommandException) {}
-        try {
+        track ("Tearing down Titan servers") {
+            docker.teardownTitanServers()
+        }
+        track ("Removing titan-data Docker volume") {
             docker.removeVolume("titan-data")
-        } catch (e: CommandException) {}
-        try {
+        }
+        track ("Removing Titan Docker image") {
             docker.removeTitanImages(titanServerVersion)
-        } catch (e: CommandException) {}
+        }
         println("Uninstalled titan infrastructure")
     }
 }

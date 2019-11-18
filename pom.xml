@@ -117,7 +117,12 @@
 		<dependency>
 			<groupId>io.titandata</groupId>
 			<artifactId>titan-client</artifactId>
-			<version>0.5.1</version>
+			<version>0.6.3</version>
+		</dependency>
+		<dependency>
+			<groupId>me.tongfei</groupId>
+			<artifactId>progressbar</artifactId>
+			<version>0.7.4</version>
 		</dependency>
 	</dependencies>
 
@@ -190,23 +195,21 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.2.0</version>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals> <goal>single</goal> </goals>
+						<goals>
+							<goal>shade</goal>
+						</goals>
 						<configuration>
-							<archive>
-								<manifest>
-									<addClasspath>true</addClasspath>
+							<transformers>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<mainClass>${main.class}</mainClass>
-								</manifest>
-							</archive>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
+								</transformer>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+							</transformers>
+							<createDependencyReducedPom>false</createDependencyReducedPom>
 						</configuration>
 					</execution>
 				</executions>

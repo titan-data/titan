@@ -32,8 +32,6 @@ class Status (
                 System.out.printf("%20s %s${n}", "Status: ", cont.status)
             }
         }
-        System.out.printf("%20s %s${n}", "Uncompressed Size: ", readableFileSize(status.logicalSize))
-        System.out.printf("%20s %s${n}", "Compressed Size: ", readableFileSize(status.actualSize))
         if (status.lastCommit != null) {
             System.out.printf("%20s %s${n}", "Last Commit: ", status.lastCommit)
         }

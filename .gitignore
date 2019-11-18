@@ -22,3 +22,8 @@ releases
 
 # Docs files
 /docs/build
+
+# Testing Files
+localip
+sshKey
+sshKey.pub

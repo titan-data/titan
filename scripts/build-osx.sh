@@ -6,7 +6,7 @@ version=`cat VERSION`
 
 ./mvnw jar:jar install:install -DgroupId=org.bouncycastle -DartifactId=bcprov-jdk15on -Dversion=1.62
 
-native-image -cp ${PWD}/target/titan-$version-jar-with-dependencies.jar\
+native-image -cp ${PWD}/target/titan-$version.jar\
     -H:Name=titan\
     -H:Class=io.titandata.titan.Cli\
     -H:+ReportUnsupportedElementsAtRuntime\

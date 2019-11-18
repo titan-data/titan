@@ -5,10 +5,9 @@
 package io.titandata.titan.providers.local
 
 import io.titandata.client.apis.RepositoriesApi
-import io.titandata.client.apis.VolumeApi
+import io.titandata.client.apis.VolumesApi
 import io.titandata.titan.clients.Docker
 import io.titandata.models.Repository
-import io.titandata.models.VolumeMountRequest
 import io.titandata.titan.utils.CommandExecutor
 import org.json.JSONArray
 import org.json.JSONObject
@@ -19,7 +18,7 @@ class Migrate (
         private val commandExecutor: CommandExecutor = CommandExecutor(),
         private val docker: Docker = Docker(commandExecutor),
         private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
-        private val volumeApi: VolumeApi = VolumeApi()
+        private val volumeApi: VolumesApi = VolumesApi()
 ) {
 
     private fun getLocalSrcFromPath(path: String, containerInfo: JSONObject): String {
@@ -65,10 +64,9 @@ class Migrate (
             val localSrc = getLocalSrcFromPath(path, containerInfo as JSONObject)
             if (localSrc.isNotEmpty()) {
                 println("Copying data to $volumeName")
-                val volMountRequest = VolumeMountRequest(volumeName, "")
-                volumeApi.mountVolume(volMountRequest)
+                volumeApi.activateVolume(container, volumeName)
                 docker.cp(localSrc, volumeName)
-                volumeApi.unmountVolume(volMountRequest)
+                volumeApi.deactivateVolume(container, volumeName)
             }
             arguments.add("--mount")
             arguments.add("type=volume,src=$volumeName,dst=$path,volume-driver=titan")
