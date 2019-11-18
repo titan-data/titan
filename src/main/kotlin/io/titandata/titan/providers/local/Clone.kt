@@ -13,6 +13,7 @@ import io.titandata.models.Repository
 import io.titandata.titan.utils.CommandExecutor
 import io.titandata.serialization.RemoteUtil
 import io.titandata.titan.exceptions.CommandException
+import kotlin.system.exitProcess
 
 class Clone (
     private val remoteAdd: (container:String, uri: String, remoteName: String?, params: Map<String, String>) -> Unit,
@@ -72,6 +73,7 @@ class Clone (
             println(e.message)
             println(e.output)
             remove(repository.name, true)
+            exitProcess(1)
         }
     }
 }

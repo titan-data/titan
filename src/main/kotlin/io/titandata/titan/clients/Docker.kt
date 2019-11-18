@@ -179,12 +179,14 @@ class Docker(private val executor: CommandExecutor) {
         }
 
         fun String.runtimeToArguments(): List<String> {
-            val arguments = this.removePrefix("[").removeSuffix("]").toList(", ").toMutableList()
-            if (arguments.contains("--mount")) {
-                arguments.removeAt((arguments.indexOf("--mount") + 1))
-                arguments.removeAt(arguments.indexOf("--mount"))
+            val rawArguments = this.removePrefix("[").removeSuffix("]").toList(", ")
+            val returnArgs = mutableListOf<String>()
+            for (arg in rawArguments) {
+               if (arg != "--mount" && !arg.contains("type=volume")) {
+                   returnArgs.add(arg)
+               }
             }
-            return arguments
+            return returnArgs
         }
 
         fun List<String>.fetchName(): String {

@@ -1,0 +1,46 @@
+tests:
+  - "aws configure access_key_id":
+      command: aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+      env:
+        get:
+          - AWS_ACCESS_KEY_ID
+  - "aws configure access_secret_key":
+      command: aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+      env:
+        get:
+          - AWS_SECRET_ACCESS_KEY
+  - "aws configure region":
+      command: aws configure set region $AWS_REGION
+      env:
+        get:
+          - AWS_REGION
+  - "can install titan":
+      command: titan install
+      wait: 10
+      stdout:
+        contains: Titan cli successfully installed, happy data versioning :)
+files:
+  - matrix-tests.yml:
+      parameters:
+        DB: postgres
+        VERSION: 12.0
+        PORT: 5432:5432
+        URI: s3://titan-data-testdata/e2etest
+  - matrix-tests.yml:
+      parameters:
+        DB: postgres
+        VERSION: 11.5
+        PORT: 5432:5432
+        URI: s3://titan-data-testdata/e2etest
+  - matrix-tests.yml:
+      parameters:
+        DB: mongo
+        VERSION: 4
+        PORT: 27017:27017
+        URI: s3://titan-data-testdata/e2etest
+  - matrix-tests.yml:
+      parameters:
+        DB: mongo
+        VERSION: 3.6.14
+        PORT: 27017:27017
+        URI: s3://titan-data-testdata/e2etest
