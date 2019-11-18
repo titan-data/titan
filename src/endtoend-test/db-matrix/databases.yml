@@ -20,24 +20,24 @@ tests:
       stdout:
         contains: Titan cli successfully installed, happy data versioning :)
 files:
-#  - matrix-tests.yml:
-#      parameters:
-#        DB: postgres
-#        VERSION: 12.0
-#        PORT: 5432:5432
-#        URI: s3://titan-data-testdata/e2etest
-#  - matrix-tests.yml:
-#      parameters:
-#        DB: postgres
-#        VERSION: 11.5
-#        PORT: 5432:5432
-#        URI: s3://titan-data-testdata/e2etest
-#  - matrix-tests.yml:
-#      parameters:
-#        DB: mongo
-#        VERSION: 4
-#        PORT: 27017:27017
-#        URI: s3://titan-data-testdata/e2etest
+  - matrix-tests.yml:
+      parameters:
+        DB: postgres
+        VERSION: 12.0
+        PORT: 5432:5432
+        URI: s3://titan-data-testdata/e2etest
+  - matrix-tests.yml:
+      parameters:
+        DB: postgres
+        VERSION: 11.5
+        PORT: 5432:5432
+        URI: s3://titan-data-testdata/e2etest
+  - matrix-tests.yml:
+      parameters:
+        DB: mongo
+        VERSION: 4
+        PORT: 27017:27017
+        URI: s3://titan-data-testdata/e2etest
   - matrix-tests.yml:
       parameters:
         DB: mongo
