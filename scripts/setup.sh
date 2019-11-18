@@ -8,7 +8,7 @@ if [ $os = "ubuntu-18.04" ]; then
 fi
 
 #Setup OSX
-if [ $os = "macOS-10.14" ]; then
+if [ $os = "macos-latest" ]; then
   echo $os
   curl -L https://github.com/oracle/graal/releases/download/vm-19.0.0/graalvm-ce-darwin-amd64-19.0.0.tar.gz --output graal.tar.gz
   gunzip -c graal.tar.gz | tar xopf -

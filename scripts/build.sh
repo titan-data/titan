@@ -8,7 +8,7 @@ if [ $os = "ubuntu-18.04" ]; then
 fi
 
 #Setup OSX
-if [ $os = "macOS-10.14" ]; then
+if [ $os = "macos-latest" ]; then
   export PATH=${PWD}/graalvm-ce-19.0.0/Contents/Home/bin:$PATH
   export JAVA_HOME=${PWD}/graalvm-ce-19.0.0/Contents/Home/jre
   ${PWD}/scripts/build-osx.sh
