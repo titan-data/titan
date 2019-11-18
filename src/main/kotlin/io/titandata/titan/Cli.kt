@@ -24,7 +24,8 @@ object Cli {
 
         override fun run() {
             val providerFactory = ProviderFactory()
-            val provider = providerFactory.getFactory("Local")
+            val type = System.getenv("TITAN_CONTEXT") ?: "local"
+            val provider = providerFactory.getFactory(type)
             context.obj = Dependencies(provider)
             if (context.invokedSubcommand?.commandName != "install") {
                 provider.checkInstall()

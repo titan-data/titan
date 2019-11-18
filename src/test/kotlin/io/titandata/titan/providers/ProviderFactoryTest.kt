@@ -18,7 +18,7 @@ class ProviderFactoryTest {
 
     @Test
     fun `can get local provider`(){
-        val provider = providerFactory.getFactory("Local")
+        val provider = providerFactory.getFactory("local")
         //TODO test without reflection or add reflection to dev dependencies only
         //assertThat(provider, instanceOf(Provider::class.java))
         //assertEquals("io.titandata.titan.providers.Local", provider::class.qualifiedName)
