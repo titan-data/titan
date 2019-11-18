@@ -12,7 +12,7 @@ import org.json.JSONObject
 import org.kohsuke.randname.RandomNameGenerator
 import kotlin.random.Random
 
-class Docker(private val executor: CommandExecutor) {
+class Docker(private val executor: CommandExecutor, val identity: String = "titan") {
 
     val logs = mutableMapOf<String, Boolean>()
 
@@ -22,12 +22,23 @@ class Docker(private val executor: CommandExecutor) {
         "--network=host",
         "-d",
         "--restart","always",
-        "--name=titan-launch",
+        "--name=$identity-launch",
         "-v", "/var/lib:/var/lib",
         "-v", "/run/docker:/run/docker",
-        "-v", "/lib:/var/lib/titan/system",
-        "-v", "titan-data:/var/lib/titan/data",
+        "-v", "/lib:/var/lib/$identity/system",
+        "-v", "$identity-data:/var/lib/$identity/data",
         "-v", "/var/run/docker.sock:/var/run/docker.sock"
+    )
+
+    private val titanLaunchKubernetesArgs = mutableListOf(
+            "-d",
+            "--restart", "always",
+            "--name=$identity-server",
+            "-v", "${System.getProperty("user.home")}/.kube:/root/.kube",
+            "-v", "$identity-data:/var/lib/$identity",
+            "-e", "TITAN_CONTEXT=kubernetes-csi",
+            "-e", "TITAN_DATA=$identity",
+            "-p", "5002:5001"
     )
 
     fun version(): String {
@@ -63,23 +74,26 @@ class Docker(private val executor: CommandExecutor) {
     }
 
     fun titanLaunchIsAvailable():Boolean {
-        return containerIsRunning("titan-launch")
+        return containerIsRunning("$identity-launch")
     }
 
     fun titanLaunchIsStopped(): Boolean {
-        return containerIsStopped("titan-launch")
+        return containerIsStopped("$identity-launch")
     }
 
     fun titanServerIsAvailable(): Boolean {
-        return containerIsRunning("titan-server")
+        return containerIsRunning("$identity-server")
     }
 
     fun titanServerIsStopped(): Boolean {
-        return containerIsStopped("titan-server")
+        return containerIsStopped("$identity-server")
     }
+
     fun launchTitanServers(): String {
         titanLaunchArgs.add("-e")
         titanLaunchArgs.add("TITAN_IMAGE=titan:latest")
+        titanLaunchArgs.add("-e")
+        titanLaunchArgs.add("TITAN_IDENTITY=$identity")
         return run("titan:latest", "/bin/bash /titan/launch", titanLaunchArgs)
     }
 
@@ -87,9 +101,13 @@ class Docker(private val executor: CommandExecutor) {
         titanLaunchArgs.removeAt(titanLaunchArgs.indexOf("-d"))
         titanLaunchArgs.removeAt(titanLaunchArgs.indexOf("--restart"))
         titanLaunchArgs.removeAt(titanLaunchArgs.indexOf("always"))
-        titanLaunchArgs.removeAt(titanLaunchArgs.indexOf("--name=titan-launch"))
+        titanLaunchArgs.removeAt(titanLaunchArgs.indexOf("--name=$identity-launch"))
         titanLaunchArgs.add("--rm")
         return run("titan:latest", "/bin/bash /titan/teardown", titanLaunchArgs)
+    }
+
+    fun launchTitanKubernetesServers(): String {
+        return run("titan:latest", "/bin/bash /titan/run", titanLaunchKubernetesArgs)
     }
 
     fun pull(image: String): String {
@@ -162,7 +180,7 @@ class Docker(private val executor: CommandExecutor) {
     }
 
     fun cp(source: String, target: String): String {
-        return executor.exec(listOf("docker", "cp", "-a", "$source/.", "titan-server:/var/lib/titan/mnt/$target"))
+        return executor.exec(listOf("docker", "cp", "-a", "$source/.", "$identity-server:/var/lib/titan/mnt/$target"))
     }
 
     fun stop(container: String): String {
