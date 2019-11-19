@@ -1,0 +1,9 @@
+tests:
+  - "can build test container":
+      command: cd src/endtoend-test/context/docker && docker build -t nginx-test -f ./src/endtoend-test/context/docker/Dockerfile .
+  - "can run test container":
+      command: titan run nginx-test
+  - "can remove test container":
+      command: titan rm -f nginx-test
+after:
+  clearVars: true
