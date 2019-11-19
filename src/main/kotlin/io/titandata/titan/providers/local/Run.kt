@@ -77,11 +77,13 @@ class Run (
         argList.add("--name")
         argList.add(containerName)
 
-        val exposedPorts = imageInfo.getJSONObject("Config").optJSONObject("ExposedPorts")
-        for (rawPort in exposedPorts.keys()) {
-            val port = rawPort.split("/")[0]
-            argList.add("-p")
-            argList.add("$port:$port")
+        if (!disablePortMapping) {
+            val exposedPorts = imageInfo.getJSONObject("Config").optJSONObject("ExposedPorts")
+            for (rawPort in exposedPorts.keys()) {
+                val port = rawPort.split("/")[0]
+                argList.add("-p")
+                argList.add("$port:$port")
+            }
         }
 
         for (env in environments) {

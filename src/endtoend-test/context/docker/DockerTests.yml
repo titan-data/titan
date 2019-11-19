@@ -1,17 +1,26 @@
 tests:
-  - "can build test container":
+  - "can build nginx-test":
       command: cd src/endtoend-test/context/docker && docker build -t nginx-test -f ./src/endtoend-test/context/docker/Dockerfile .
-  - "can run test container without env":
+  - "can run nginx-test without env":
       command: titan run nginx-test
-  - "can remove test container without env":
+  - "can remove nginx-test without env":
       command: titan rm -f nginx-test
-  - "can run test container with env":
+  - "can run nginx-test with env":
       command: titan run nginx-test -e TEST=true
-  - "can verify env value in test container":
+  - "verify env value in nginx-test":
       command: curl -L http://localhost
       stdout:
         contains: TEST=true
-  - "can remove test container with env":
+  - "can remove nginx-test with env":
+      command: titan rm -f nginx-test
+  - "can run nginx-test without port mapping":
+      command: titan run nginx-test -P
+  - "verify localhost is unavailable":
+      command: curl -L http://localhost
+      exitValue: 7
+      stderr:
+        contains: "Failed to connect to localhost port 80: Connection refused"
+  - "can remove nginx-test without port mapping":
       command: titan rm -f nginx-test
 after:
   clearVars: true
