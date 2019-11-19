@@ -32,23 +32,26 @@ class Run (
             exit("Repository name cannot contain a slash",1)
         }
 
-        /*
-        val imageArray = arguments.last().split(":")
-        val image = imageArray[0]
-        val tag = if (imageArray[1].isNullOrEmpty()) {
-            "latest"
-        } else {
-            imageArray[1]
+        val containerName = when {
+            repository.isNullOrEmpty() -> container
+            else -> repository
+        }
+        val image = when{
+            container.contains(":") -> container.split(":")[0]
+            else -> container
+        }
+        val tag =  when {
+            container.contains(":") -> container.split(":")[1]
+            else -> "latest"
         }
 
         var imageInfo: JSONObject? = null
         try {
-             imageInfo = docker.inspectImage("$image:$tag")
+            imageInfo = docker.inspectImage("$image:$tag")
         } catch (e: CommandException) {
             docker.pull("$image:$tag")
             imageInfo = docker.inspectImage("$image:$tag")
         }
-
         if (imageInfo == null) {
             exit("Image information is not available",1)
         }
@@ -56,32 +59,31 @@ class Run (
         if (volumes == null) {
             exit("No volumes found for image $image",1)
         }
+
         println("Creating repository $containerName")
         val repo = Repository(containerName, emptyMap())
         if (createRepo) {
             repositoriesApi.createRepository(repo)
         }
-        val argList = mutableListOf("--label","io.titandata.titan")
+
+        val argList = mutableListOf("-d", "--label","io.titandata.titan")
         for ((index, path) in volumes.keys().withIndex()) {
             val volumeName = "$containerName/v$index"
             println("Creating docker volume $volumeName with path $path")
-
             docker.createVolume(volumeName, path)
-
             argList.add("--mount")
             argList.add("type=volume,src=$volumeName,dst=$path,volume-driver=titan")
         }
-        val argumentEdit= arguments.toMutableList()
-        if (argumentEdit.contains("--name")) {
-            argumentEdit.removeAt((argumentEdit.indexOf("--name") + 1))
-            argumentEdit.removeAt(argumentEdit.indexOf("--name"))
-        }
-        if (argumentEdit.contains("$image:$tag")) {
-            argumentEdit.removeAt(argumentEdit.indexOf("$image:$tag"))
-        }
         argList.add("--name")
         argList.add(containerName)
-        argList.addAll(argumentEdit)
+
+        val exposedPorts = imageInfo.getJSONObject("Config").optJSONObject("ExposedPorts")
+        for (rawPort in exposedPorts.keys()) {
+            val port = rawPort.split("/")[0]
+            argList.add("-p")
+            argList.add("$port:$port")
+        }
+
         val repoDigest = imageInfo.optJSONArray("RepoDigests").optString(0)
         val dockerRunCommand = if(repoDigest.isNullOrEmpty()) {
             "$image:$tag"
@@ -100,7 +102,5 @@ class Run (
         repositoriesApi.updateRepository(containerName, updateRepo)
         docker.run(dockerRunCommand, "", argList)
         println("Running controlled container $containerName")
-
-         */
     }
 }
