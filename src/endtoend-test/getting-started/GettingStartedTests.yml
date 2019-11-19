@@ -28,7 +28,7 @@ tests:
         Removing container hello-world
         hello-world removed
   - "can run mongo-test":
-      command: titan run -- --name mongo-test -p 27017:27017 -d mongo:latest
+      command: titan run mongo mongo-test
       wait: 5
       stdout: |-
         Creating repository mongo-test
