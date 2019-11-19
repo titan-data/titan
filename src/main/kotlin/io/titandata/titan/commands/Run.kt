@@ -21,17 +21,18 @@ import org.kodein.di.generic.provider
 private val n = System.lineSeparator()
 
 class Run : CliktCommand(
-        help = "Create repository and start container"
+        help = "Create repository and start container",
+        epilog = "Containers associated with a repository can be launched using context specific run arguments and passed verbatim using `--` as the flag.${n}${n}Docker example: `titan run --disable-port-mapping postgres -- -p 2345:5432`"
 ) {
     private val dependencies: Dependencies by requireObject()
-    private val disablePortMapping by option("-P", "--disablePortMapping", help = "Disable port mapping from container to localhost.").flag(default = false)
-    private val parameters by option("-p", "--parameters", help="Context specific parameters. key=value format.").multiple()
-    private val environments by option("-e", "--env", help="Container specific environment variables. key=value format.").multiple()
+    private val disablePortMapping by option("-P", "--disable-port-mapping", help = "Disable default port mapping from container to localhost.").flag(default = false)
+    private val environments by option("-e", "--env", help="Container specific environment variables.").multiple()
     private val container by argument()
     private val repository by argument().optional()
+    private val arguments by argument().multiple()
     override fun run() {
         val provider = dependencies.provider
-        provider.run(container, repository, environments, parameters, disablePortMapping)
+        provider.run(container, repository, environments, arguments, disablePortMapping)
     }
 }
 

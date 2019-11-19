@@ -13,7 +13,7 @@ interface Provider {
     fun remoteList(container:String)
     fun remoteRemove(container: String, remote:String)
     fun migrate(container: String, name: String)
-    fun run(container: String, repository: String?, environments: List<String>, parameters: List<String>, disablePortMapping: Boolean)
+    fun run(container: String, repository: String?, environments: List<String>, arguments: List<String>, disablePortMapping: Boolean)
     fun uninstall(force: Boolean)
     fun upgrade(force: Boolean, version: String, finalize: Boolean, path: String?)
     fun checkout(container: String, guid: String?, tags: List<String>)

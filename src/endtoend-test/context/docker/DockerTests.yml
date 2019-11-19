@@ -1,9 +1,9 @@
 tests:
   - "can build nginx-test":
       command: cd src/endtoend-test/context/docker && docker build -t nginx-test -f ./src/endtoend-test/context/docker/Dockerfile .
-  - "can run nginx-test without env":
+  - "can run nginx-test":
       command: titan run nginx-test
-  - "can remove nginx-test without env":
+  - "can remove nginx-test":
       command: titan rm -f nginx-test
   - "can run nginx-test with env":
       command: titan run nginx-test -e TEST=true

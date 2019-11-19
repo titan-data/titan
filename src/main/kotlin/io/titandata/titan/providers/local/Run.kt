@@ -23,7 +23,7 @@ class Run (
         container: String,
         repository: String?,
         environments: List<String>,
-        parameters: List<String>,
+        arguments: List<String>,
         disablePortMapping: Boolean,
         createRepo: Boolean = true
     ) {
