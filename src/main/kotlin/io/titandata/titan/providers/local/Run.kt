@@ -84,6 +84,11 @@ class Run (
             argList.add("$port:$port")
         }
 
+        for (env in environments) {
+            argList.add("--env")
+            argList.add(env)
+        }
+
         val repoDigest = imageInfo.optJSONArray("RepoDigests").optString(0)
         val dockerRunCommand = if(repoDigest.isNullOrEmpty()) {
             "$image:$tag"
