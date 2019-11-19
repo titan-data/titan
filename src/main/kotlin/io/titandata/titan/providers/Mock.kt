@@ -49,7 +49,7 @@ class Mock: Provider {
         println("Migrating $container to $name controlled environment")
     }
 
-    override fun run(arguments: List<String>) {
+    override fun run(repository: String?, environments: List<String>, parameters: List<String>, disablePortMapping: Boolean) {
         println("Running controlled container")
     }
 

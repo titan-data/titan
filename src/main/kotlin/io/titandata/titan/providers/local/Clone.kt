@@ -19,7 +19,7 @@ class Clone (
     private val remoteAdd: (container:String, uri: String, remoteName: String?, params: Map<String, String>) -> Unit,
     private val pull: (container: String, commit: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean) -> Unit,
     private val checkout: (container: String, hash: String?, tags: List<String>) -> Unit,
-    private val run: (arguments: List<String>, createRepo: Boolean) -> Unit,
+    private val run: (repository: String?, environments: List<String>, parameters: List<String>, disablePortMapping: Boolean, createRepo: Boolean) -> Unit,
     private val remove: (container: String, force: Boolean) -> Unit,
     private val commandExecutor: CommandExecutor = CommandExecutor(),
     private val docker: Docker = Docker(commandExecutor),
@@ -28,6 +28,7 @@ class Clone (
     private val remoteUtil: RemoteUtil = RemoteUtil()
 ) {
     fun clone(uri: String, container: String?, guid: String?, params: Map<String, String>) {
+        /*
         val repoName = when(container){
             null -> uri.split("/").last().substringBefore('#')
             else -> container
@@ -75,5 +76,6 @@ class Clone (
             remove(repository.name, true)
             exitProcess(1)
         }
+        */
     }
 }

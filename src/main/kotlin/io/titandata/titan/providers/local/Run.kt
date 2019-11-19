@@ -19,7 +19,14 @@ class Run (
     private val docker: Docker = Docker(commandExecutor),
     private val repositoriesApi: RepositoriesApi = RepositoriesApi()
 ) {
-    fun run(arguments: List<String>, createRepo: Boolean = true) {
+    fun run(
+        repository: String?,
+        environments: List<String>,
+        parameters: List<String>,
+        disablePortMapping: Boolean,
+        createRepo: Boolean = true
+    ) {
+        /*
         if (!arguments.hasDetach()) {
             exit("No detach (-d or --detach) argument found, only detached containers are supported",1)
         }
@@ -94,5 +101,7 @@ class Run (
         repositoriesApi.updateRepository(containerName, updateRepo)
         docker.run(dockerRunCommand, "", argList)
         println("Running controlled container $containerName")
+
+         */
     }
 }

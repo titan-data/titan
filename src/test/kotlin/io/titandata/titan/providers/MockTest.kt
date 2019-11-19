@@ -114,7 +114,7 @@ class MockTest {
     fun `can run`(){
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.run(emptyList())
+        mockProvider.run("Repo", emptyList(), emptyList(), true)
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "Running controlled container")
