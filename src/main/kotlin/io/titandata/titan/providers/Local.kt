@@ -140,9 +140,9 @@ class Local: Provider {
         return migrateCommand.migrate(container, name)
     }
 
-    override fun run(repository: String?, environments: List<String>, parameters: List<String>, disablePortMapping: Boolean) {
+    override fun run(container: String, repository: String?, environments: List<String>, parameters: List<String>, disablePortMapping: Boolean) {
         val runCommand = Run(::exit,  commandExecutor, docker)
-        return runCommand.run(repository, environments, parameters, disablePortMapping)
+        return runCommand.run(container, repository, environments, parameters, disablePortMapping)
     }
 
     override fun list() {

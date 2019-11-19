@@ -132,7 +132,7 @@ class Kubernetes: Provider {
         throw NotImplementedError("migrate is not supported in kubernetes context")
     }
 
-    override fun run(repository: String?, environments: List<String>, parameters: List<String>, disablePortMapping: Boolean) {
+    override fun run(container: String, repository: String?, environments: List<String>, parameters: List<String>, disablePortMapping: Boolean) {
         TODO("not implemented")
     }
 

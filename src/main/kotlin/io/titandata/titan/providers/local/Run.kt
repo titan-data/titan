@@ -20,20 +20,19 @@ class Run (
     private val repositoriesApi: RepositoriesApi = RepositoriesApi()
 ) {
     fun run(
+        container: String,
         repository: String?,
         environments: List<String>,
         parameters: List<String>,
         disablePortMapping: Boolean,
         createRepo: Boolean = true
     ) {
+
+        if(!repository.isNullOrEmpty() && repository.contains("/")) {
+            exit("Repository name cannot contain a slash",1)
+        }
+
         /*
-        if (!arguments.hasDetach()) {
-            exit("No detach (-d or --detach) argument found, only detached containers are supported",1)
-        }
-        val containerName = arguments.fetchName()
-        if(containerName.contains("/")) {
-            exit("Container name cannot contain a slash",1)
-        }
         val imageArray = arguments.last().split(":")
         val image = imageArray[0]
         val tag = if (imageArray[1].isNullOrEmpty()) {

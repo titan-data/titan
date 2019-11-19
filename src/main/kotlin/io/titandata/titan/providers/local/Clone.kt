@@ -19,7 +19,7 @@ class Clone (
     private val remoteAdd: (container:String, uri: String, remoteName: String?, params: Map<String, String>) -> Unit,
     private val pull: (container: String, commit: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean) -> Unit,
     private val checkout: (container: String, hash: String?, tags: List<String>) -> Unit,
-    private val run: (repository: String?, environments: List<String>, parameters: List<String>, disablePortMapping: Boolean, createRepo: Boolean) -> Unit,
+    private val run: (container: String, repository: String?, environments: List<String>, parameters: List<String>, disablePortMapping: Boolean, createRepo: Boolean) -> Unit,
     private val remove: (container: String, force: Boolean) -> Unit,
     private val commandExecutor: CommandExecutor = CommandExecutor(),
     private val docker: Docker = Docker(commandExecutor),
