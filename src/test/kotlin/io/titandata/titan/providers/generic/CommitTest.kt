@@ -1,17 +1,8 @@
-package io.titandata.titan.providers.local
+package io.titandata.titan.providers.generic
 
-import io.titandata.client.apis.CommitsApi
-import io.titandata.client.apis.RepositoriesApi
-import io.titandata.models.Repository
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Test
 import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Assert.assertThat
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
-import kotlin.test.assertEquals
 
 class CommitTest {
 

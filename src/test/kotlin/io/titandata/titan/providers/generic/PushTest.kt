@@ -1,4 +1,4 @@
-package io.titandata.titan.providers.local
+package io.titandata.titan.providers.generic
 
 import org.hamcrest.CoreMatchers
 import org.junit.Assert

@@ -2,7 +2,7 @@
  * Copyright (c) 2019 by Delphix. All rights reserved.
  */
 
-package io.titandata.titan.providers.local
+package io.titandata.titan.providers.generic
 
 import io.titandata.client.apis.CommitsApi
 import io.titandata.client.apis.RepositoriesApi
@@ -16,9 +16,9 @@ class Commit (
     private val commitsApi: CommitsApi = CommitsApi(),
     private val uuid: String = UUID.randomUUID().toString().replace("-","")
 ) {
-    fun commit(container: String, message: String, tags: List<String>) {
-        val repoMetadata = repositoriesApi.getRepository(container).properties
-        val repoStatus = repositoriesApi.getRepositoryStatus(container)
+    fun commit(repository: String, message: String, tags: List<String>) {
+        val repoMetadata = repositoriesApi.getRepository(repository).properties
+        val repoStatus = repositoriesApi.getRepositoryStatus(repository)
         val sourceCommit = repoStatus.sourceCommit
         val tagMetadata = mutableMapOf<String, String>()
         for (tag in tags) {
@@ -45,7 +45,7 @@ class Commit (
                 metadata.put("source", sourceCommit)
         }
         val commit = Commit(uuid, metadata)
-        val response = commitsApi.createCommit(container, commit)
+        val response = commitsApi.createCommit(repository, commit)
         val hash = response.id
         println("Commit $hash")
     }

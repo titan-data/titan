@@ -2,7 +2,7 @@
  * Copyright (c) 2019 by Delphix. All rights reserved.
  */
 
-package io.titandata.titan.providers.local
+package io.titandata.titan.providers.generic
 
 import io.titandata.client.apis.CommitsApi
 

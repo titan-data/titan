@@ -2,12 +2,10 @@
  * Copyright (c) 2019 by Delphix. All rights reserved.
  */
 
-package io.titandata.titan.providers.local
+package io.titandata.titan.providers.generic
 
 import io.titandata.client.apis.OperationsApi
 import io.titandata.client.apis.RemotesApi
-import io.titandata.client.infrastructure.ClientException
-import io.titandata.models.*
 import io.titandata.serialization.RemoteUtil
 import io.titandata.titan.utils.OperationMonitor
 

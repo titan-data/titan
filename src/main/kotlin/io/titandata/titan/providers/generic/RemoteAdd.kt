@@ -2,15 +2,13 @@
  * Copyright (c) 2019 by Delphix. All rights reserved.
  */
 
-package io.titandata.titan.providers.local
+package io.titandata.titan.providers.generic
 
 import io.titandata.client.apis.RemotesApi
 import io.titandata.client.apis.RepositoriesApi
 import io.titandata.client.infrastructure.ClientException
 import io.titandata.models.Repository
 import io.titandata.serialization.RemoteUtil
-
-import io.titandata.models.Commit
 
 class RemoteAdd (
         private val exit: (message: String, code: Int) -> Unit,

@@ -8,6 +8,18 @@ import io.titandata.client.apis.RepositoriesApi
 import kotlin.system.exitProcess
 import io.titandata.titan.clients.Docker
 import io.titandata.titan.exceptions.CommandException
+import io.titandata.titan.providers.generic.Abort
+import io.titandata.titan.providers.generic.Commit
+import io.titandata.titan.providers.generic.Delete
+import io.titandata.titan.providers.generic.Log
+import io.titandata.titan.providers.generic.Pull
+import io.titandata.titan.providers.generic.Push
+import io.titandata.titan.providers.generic.RemoteAdd
+import io.titandata.titan.providers.generic.RemoteList
+import io.titandata.titan.providers.generic.RemoteLog
+import io.titandata.titan.providers.generic.RemoteRemove
+import io.titandata.titan.providers.generic.Status
+import io.titandata.titan.providers.generic.Tag
 import io.titandata.titan.utils.CommandExecutor
 import io.titandata.titan.providers.kubernetes.*
 
@@ -53,16 +65,27 @@ class Kubernetes: Provider {
         return checkInstallCommand.checkInstall()
     }
 
-    override fun pull(container: String, commit: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean) {
-        TODO("not implemented")
+    override fun pull(container: String, commit: String?, remoteName: String?, tags: List<String>,
+                      metadataOnly: Boolean) {
+        val pullCommand = Pull(::exit)
+        return pullCommand.pull(container, commit, remoteName, tags, metadataOnly)
     }
 
-    override fun push(container: String, commit: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean) {
-        TODO("not implemented")
+    override fun push(container: String, commit: String?, remoteName: String?, tags: List<String>,
+                      metadataOnly: Boolean) {
+        val pushCommand = Push(::exit)
+        return pushCommand.push(container, commit, remoteName, tags, metadataOnly)
     }
 
     override fun commit(container: String, message: String, tags: List<String>) {
-        TODO("not implemented")
+        try {
+            val user= commandExecutor.exec(listOf("git", "config", "user.name")).trim()
+            val email = commandExecutor.exec(listOf("git", "config", "user.email")).trim()
+            val commitCommand = Commit(user, email)
+            return commitCommand.commit(container, message, tags)
+        } catch (e: CommandException) {
+            exit("Git not configured.")
+        }
     }
 
     override fun install(registry: String?, verbose: Boolean) {
@@ -76,31 +99,37 @@ class Kubernetes: Provider {
     }
 
     override fun abort(container: String) {
-        TODO("not implemented")
+        val abortCommand = Abort(::exit)
+        return abortCommand.abort(container)
     }
 
     override fun status(container: String) {
-        TODO("not implemented")
+        val statusCommand = Status(::getContainersStatus)
+        return statusCommand.status(container)
     }
 
-    override fun remoteAdd(container: String, uri: String, remoteName: String?, params: Map<String, String>) {
-        TODO("not implemented")
+    override fun remoteAdd(container:String, uri: String, remoteName: String?, params: Map<String, String>) {
+        val remoteAddCommand = RemoteAdd(::exit)
+        return remoteAddCommand.remoteAdd(container, uri, remoteName, params)
     }
 
-    override fun remoteLog(container: String, remoteName: String?, tags: List<String>) {
-        TODO("not implemented")
+    override fun remoteLog(container:String, remoteName: String?, tags: List<String>) {
+        val remoteLogCommand = RemoteLog(::exit)
+        return remoteLogCommand.remoteLog(container, remoteName, tags)
     }
 
     override fun remoteList(container: String) {
-        TODO("not implemented")
+        val remoteListCommand = RemoteList()
+        return remoteListCommand.list(container)
     }
 
     override fun remoteRemove(container: String, remote: String) {
-        TODO("not implemented")
+        val remoteRemoveCommand = RemoteRemove()
+        return remoteRemoveCommand.remove(container, remote)
     }
 
     override fun migrate(container: String, name: String) {
-        TODO("not implemented")
+        throw NotImplementedError("migrate is not supported in kubernetes context")
     }
 
     override fun run(arguments: List<String>) {
@@ -121,11 +150,20 @@ class Kubernetes: Provider {
     }
 
     override fun delete(repository: String, commit: String?, tags: List<String>) {
-        TODO("not implemented")
+        val deleteCommand = Delete()
+        if (!commit.isNullOrEmpty()) {
+            if (!tags.isEmpty()) {
+                return deleteCommand.deleteTags(repository, commit, tags)
+            } else {
+                return deleteCommand.deleteCommit(repository, commit)
+            }
+        }
+        println("No object found to delete.")
     }
 
     override fun tag(repository: String, commit: String, tags: List<String>) {
-        TODO("not implemented")
+        val tagCommand = Tag()
+        return tagCommand.tagCommit(repository, commit, tags)
     }
 
     override fun list() {
@@ -136,7 +174,8 @@ class Kubernetes: Provider {
     }
 
     override fun log(container: String, tags: List<String>) {
-        TODO("not implemented")
+        val logCommand = Log()
+        return logCommand.log(container, tags)
     }
 
     override fun stop(container: String) {
@@ -152,7 +191,7 @@ class Kubernetes: Provider {
     }
 
     override fun cp(container: String, driver: String, source: String, path: String) {
-        TODO("not implemented")
+        throw NotImplementedError("cp is not supported in kuberentes context")
     }
 
     override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>) {
