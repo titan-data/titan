@@ -24,7 +24,7 @@ import io.titandata.titan.utils.CommandExecutor
 import io.titandata.titan.providers.kubernetes.*
 
 class Kubernetes: Provider {
-    private val titanServerVersion = "0.6.3"
+    private val titanServerVersion = "0.6.5"
     private val dockerRegistryUrl = "titandata"
 
     private val commandExecutor = CommandExecutor()

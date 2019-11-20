@@ -6,12 +6,14 @@ package io.titandata.titan.providers.generic
 
 import io.titandata.titan.providers.Container
 import io.titandata.client.apis.RepositoriesApi
+import io.titandata.client.apis.VolumesApi
 import java.text.DecimalFormat
 import kotlin.math.log10
 
 class Status (
     private val getContainersStatus: () -> List<Container>,
-    private val repositoriesApi: RepositoriesApi = RepositoriesApi()
+    private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
+    private val volumesApi: VolumesApi = VolumesApi()
 ){
     private val n = System.lineSeparator()
 
@@ -39,9 +41,13 @@ class Status (
             System.out.printf("%20s %s${n}", "Source Commit: ", status.sourceCommit)
         }
         println()
+
+        val volumes = volumesApi.listVolumes(container)
         System.out.printf("%-30s  %-12s  %s${n}", "Volume", "Uncompressed", "Compressed")
-        for (volume in status.volumeStatus) {
-            System.out.printf("%-30s  %-12s  %s${n}", volume.properties["path"], readableFileSize(volume.logicalSize), readableFileSize(volume.actualSize))
+        for (volume in volumes) {
+            val volumeStatus = volumesApi.getVolumeStatus(container, volume.name)
+            System.out.printf("%-30s  %-12s  %s${n}", volume.properties["path"],
+                    readableFileSize(volumeStatus.logicalSize), readableFileSize(volumeStatus.actualSize))
         }
     }
 }
