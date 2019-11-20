@@ -1,6 +1,5 @@
-package io.titandata.titan.providers.local
+package io.titandata.titan.providers.generic
 
-import com.nhaarman.mockitokotlin2.any
 import io.titandata.client.apis.CommitsApi
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -8,7 +7,6 @@ import com.nhaarman.mockitokotlin2.whenever
 import org.hamcrest.CoreMatchers
 import org.junit.Assert
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyObject
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import kotlin.test.assertEquals

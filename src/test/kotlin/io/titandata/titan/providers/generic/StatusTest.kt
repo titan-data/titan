@@ -1,4 +1,4 @@
-package io.titandata.titan.providers.local
+package io.titandata.titan.providers.generic
 
 import io.titandata.titan.providers.Container
 import org.hamcrest.CoreMatchers
