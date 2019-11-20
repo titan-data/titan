@@ -74,6 +74,16 @@ class Run (
             argList.add("--mount")
             argList.add("type=volume,src=$volumeName,dst=$path,volume-driver=titan")
         }
+
+        val argumentEdit= arguments.toMutableList()
+        if (argumentEdit.contains("--name")) {
+            argumentEdit.removeAt((argumentEdit.indexOf("--name") + 1))
+            argumentEdit.removeAt(argumentEdit.indexOf("--name"))
+        }
+        if (argumentEdit.contains("$image:$tag")) {
+            argumentEdit.removeAt(argumentEdit.indexOf("$image:$tag"))
+        }
+        argList.addAll(argumentEdit)
         argList.add("--name")
         argList.add(containerName)
 

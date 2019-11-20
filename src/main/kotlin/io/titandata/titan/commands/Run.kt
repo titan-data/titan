@@ -28,7 +28,7 @@ class Run : CliktCommand(
     private val disablePortMapping by option("-P", "--disable-port-mapping", help = "Disable default port mapping from container to localhost.").flag(default = false)
     private val environments by option("-e", "--env", help="Container specific environment variables.").multiple()
     private val container by argument()
-    private val repository by argument().optional()
+    private val repository by option("-n", "--name", help="Optional new name for repository.")
     private val arguments by argument().multiple()
     override fun run() {
         val provider = dependencies.provider
