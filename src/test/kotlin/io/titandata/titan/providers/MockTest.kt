@@ -117,7 +117,7 @@ class MockTest {
         mockProvider.run("Container","Repo", emptyList(), emptyList(), true)
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
-        assertEquals(expected, "Running controlled container")
+        assertEquals(expected, "Running controlled image")
     }
 
     @Test

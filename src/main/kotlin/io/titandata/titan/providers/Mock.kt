@@ -49,8 +49,8 @@ class Mock: Provider {
         println("Migrating $container to $name controlled environment")
     }
 
-    override fun run(container: String, repository: String?, environments: List<String>, arguments: List<String>, disablePortMapping: Boolean) {
-        println("Running controlled container")
+    override fun run(image: String, repository: String?, environments: List<String>, arguments: List<String>, disablePortMapping: Boolean) {
+        println("Running controlled image")
     }
 
     override fun uninstall(force: Boolean) {
