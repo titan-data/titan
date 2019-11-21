@@ -58,50 +58,62 @@ class Run (
             repositoriesApi.createRepository(repo)
         }
         val titanVolumes = mutableListOf<Volume>()
-        for ((index, path) in volumes.keys().withIndex()) {
-            val volumeName = "$repoName/v$index"
-            println("Creating titan volume $volumeName with path $path")
+        try {
+            for ((index, path) in volumes.keys().withIndex()) {
+                val volumeName = "v$index"
+                println("Creating titan volume $volumeName with path $path")
 
-            titanVolumes.add(volumesApi.createVolume(repoName, Volume(name=volumeName, properties=mapOf("path" to path))))
-        }
-
-        println("Waiting for volumes to be ready")
-        var ready = false
-        while (!ready) {
-            ready = true
-            for (volume in titanVolumes) {
+                titanVolumes.add(volumesApi.createVolume(repoName, Volume(name = volumeName, properties = mapOf("path" to path))))
             }
-        }
-        /*
-        val argumentEdit= arguments.toMutableList()
-        if (argumentEdit.contains("--name")) {
-            argumentEdit.removeAt((argumentEdit.indexOf("--name") + 1))
-            argumentEdit.removeAt(argumentEdit.indexOf("--name"))
-        }
-        if (argumentEdit.contains("$image:$tag")) {
-            argumentEdit.removeAt(argumentEdit.indexOf("$image:$tag"))
-        }
-        argList.add("--name")
-        argList.add(containerName)
-        argList.addAll(argumentEdit)
-        val repoDigest = imageInfo.optJSONArray("RepoDigests").optString(0)
-        val dockerRunCommand = if(repoDigest.isNullOrEmpty()) {
-            "$image:$tag"
-        } else  {
-            repoDigest
-        }
-        val metadata = mapOf(
-                "container" to dockerRunCommand,
-                "image" to image,
-                "tag" to tag,
-                "digest" to repoDigest,
-                "runtime" to argList.toString()
-        )
 
-        val updateRepo = Repository(containerName, metadata)
-        repositoriesApi.updateRepository(containerName, updateRepo)
-        docker.run(dockerRunCommand, "", argList)
-        println("Running controlled container $containerName")
-         */
+            println("Waiting for volumes to be ready")
+            var ready = false
+            while (!ready) {
+                ready = true
+                for (volume in titanVolumes) {
+                    val status = volumesApi.getVolumeStatus(repoName, volume.name)
+                    if (!status.ready) {
+                        ready = false
+                        break
+                    }
+                    if (status.error != null) {
+                        throw Exception("Error creating volume ${volume.properties["path"]}: ${status.error}")
+                    }
+                }
+            }
+
+            println("Creating pod $repoName")
+
+            val repoDigest = imageInfo.optJSONArray("RepoDigests").optString(0)
+            val imageId = if(repoDigest.isNullOrEmpty()) {
+                "$image:$tag"
+            } else  {
+                repoDigest
+            }
+            val metadata = mapOf(
+                    "container" to imageId,
+                    "image" to image,
+                    "tag" to tag,
+                    "digest" to repoDigest,
+                    "runtime" to emptyArray<String>()
+            )
+            val updateRepo = Repository(repoName, metadata)
+            repositoriesApi.updateRepository(repoName, updateRepo)
+
+        } catch (t: Throwable) {
+            for (volume in titanVolumes) {
+                volumesApi.deleteVolume(repoName, volume.name)
+            }
+            throw t
+        }
+
+        val exposedPorts = imageInfo.getJSONObject("Config").optJSONObject("ExposedPorts")
+        val ports = mutableListOf<Int>()
+        for (rawPort in exposedPorts.keys()) {
+            val port = rawPort.split("/")[0]
+            ports.add(port.toInt())
+        }
+
+        kubernetes.createStatefulSet(repoName, "$image:$tag", ports, titanVolumes)
     }
 }

@@ -35,7 +35,6 @@ class Kubernetes: Provider {
     private val titanServerVersion = "0.6.5"
     private val dockerRegistryUrl = "titandata"
 
-    private var coreApi: CoreV1Api
     private val commandExecutor = CommandExecutor()
     private val docker = Docker(commandExecutor, Identity)
     private val kubernetes = io.titandata.titan.clients.Kubernetes()
@@ -50,12 +49,6 @@ class Kubernetes: Provider {
     companion object {
         val Identity = "titan-k8s"
         val Port = 5002
-    }
-
-    init {
-        val client = Config.defaultClient()
-        Configuration.setDefaultApiClient(client)
-        coreApi = CoreV1Api()
     }
 
     private fun exit(message:String, code: Int = 1) {
@@ -192,7 +185,8 @@ class Kubernetes: Provider {
     }
 
     override fun remove(container: String, force: Boolean) {
-        TODO("not implemented")
+        val removeCommand = Remove(kubernetes, repositoriesApi, volumesApi)
+        return removeCommand.remove(container, force)
     }
 
     override fun cp(container: String, driver: String, source: String, path: String) {
