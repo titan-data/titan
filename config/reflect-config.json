@@ -173,15 +173,6 @@
   "allPublicClasses":true
 },
 {
-  "name":"io.titandata.models.RepositoryVolumeStatus",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true,
-  "allDeclaredClasses":true,
-  "allPublicClasses":true
-},
-{
   "name":"io.titandata.models.Repository[]",
   "allDeclaredFields":true,
   "allPublicMethods":true,
@@ -192,6 +183,15 @@
 },
 {
   "name":"io.titandata.models.Volume",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true
+},
+{
+  "name":"io.titandata.models.VolumeStatus",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true,
