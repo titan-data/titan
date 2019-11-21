@@ -23,6 +23,7 @@ import io.kubernetes.client.models.V1ResourceRequirementsBuilder
 import io.kubernetes.client.models.V1ServiceBuilder
 import io.kubernetes.client.models.V1ServicePortBuilder
 import io.kubernetes.client.models.V1ServiceSpecBuilder
+import io.kubernetes.client.models.V1StatefulSet
 import io.kubernetes.client.models.V1StatefulSetBuilder
 import io.kubernetes.client.models.V1StatefulSetSpecBuilder
 import io.kubernetes.client.models.V1VolumeMountBuilder
@@ -37,6 +38,7 @@ import org.kohsuke.randname.RandomNameGenerator
 import kotlin.random.Random
 
 class Kubernetes() {
+    private val executor = CommandExecutor()
     private var coreApi: CoreV1Api
     private var appsApi: AppsV1Api
     private val defaultNamespace = "default"
@@ -119,4 +121,29 @@ class Kubernetes() {
             }
         }
     }
+
+    fun waitForStatefulSet(repoName: String) {
+        while (true) {
+            var set = appsApi.readNamespacedStatefulSet(repoName, defaultNamespace, null, null, null)
+            // TODO detect fatal conditions that will cause it to never reach readiness
+            if (set.status.readyReplicas == set.status.replicas) {
+                break
+            }
+            Thread.sleep(1000L)
+        }
+    }
+
+    /**
+     * Forward port for a container. For now, we're using a temporary solution of launching 'kubectl-forward' in the
+     * background. This is totally brittle, as the commands will fail in the background as pods are stopped and
+     * connections broken. And if you restart the host system, there is no way to restart them. But it's a quick
+     * hack to demonstrate the desired experience until we can build out a more full-featured port forwarder, such
+     * as: https://github.com/pixel-point/kube-forwarder
+     */
+    fun forwardPorts(repoName: String, ports: List<Int>) {
+        for (port in ports) {
+            executor.exec(listOf("sh", "-c", "kubectl port-forward svc/$repoName $port > /dev/null 2>&1 &"))
+        }
+    }
+
 }
