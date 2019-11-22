@@ -194,7 +194,7 @@ class Kubernetes: Provider {
         throw NotImplementedError("cp is not supported in kuberentes context")
     }
 
-    override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>) {
+    override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>, arguments: List<String>, disablePortMapping: Boolean) {
         TODO("not implemented")
     }
 }

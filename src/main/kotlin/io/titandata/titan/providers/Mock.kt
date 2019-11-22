@@ -89,7 +89,7 @@ class Mock: Provider {
         println("copying data into $container with $driver from $source")
     }
 
-    override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>) {
+    override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>, arguments: List<String>, disablePortMapping: Boolean) {
         println("cloning $container from $uri")
     }
 
