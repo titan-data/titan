@@ -19,6 +19,7 @@ class Remove (
 ) {
     fun remove(repo: String, force: Boolean) {
         // TODO check running  & force
+        // TODO why not working kubernetes.stopPortFowarding(repo)
         kubernetes.deleteStatefulSpec(repo)
         for (volume in volumeApi.listVolumes(repo)) {
             volumeApi.deleteVolume(repo, volume.name)

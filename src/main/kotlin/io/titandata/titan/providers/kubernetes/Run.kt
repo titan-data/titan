@@ -122,6 +122,6 @@ class Run (
 
         println("Forwarding local ports")
 
-        kubernetes.forwardPorts(repoName, ports)
+        kubernetes.startPortForwarding(repoName)
     }
 }

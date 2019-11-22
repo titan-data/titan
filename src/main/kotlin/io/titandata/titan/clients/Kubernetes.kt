@@ -13,9 +13,13 @@ import io.kubernetes.client.models.V1ContainerBuilder
 import io.kubernetes.client.models.V1ContainerPortBuilder
 import io.kubernetes.client.models.V1LabelSelectorBuilder
 import io.kubernetes.client.models.V1ObjectMetaBuilder
+import io.kubernetes.client.custom.V1Patch
+import io.kubernetes.client.models.V1PatchBuilder
 import io.kubernetes.client.models.V1PersistentVolumeClaimBuilder
 import io.kubernetes.client.models.V1PersistentVolumeClaimSpec
 import io.kubernetes.client.models.V1PersistentVolumeClaimSpecBuilder
+import io.kubernetes.client.models.V1PersistentVolumeClaimVolumeSource
+import io.kubernetes.client.models.V1PersistentVolumeClaimVolumeSourceBuilder
 import io.kubernetes.client.models.V1PodSpecBuilder
 import io.kubernetes.client.models.V1PodTemplateBuilder
 import io.kubernetes.client.models.V1PodTemplateSpecBuilder
@@ -26,7 +30,9 @@ import io.kubernetes.client.models.V1ServiceSpecBuilder
 import io.kubernetes.client.models.V1StatefulSet
 import io.kubernetes.client.models.V1StatefulSetBuilder
 import io.kubernetes.client.models.V1StatefulSetSpecBuilder
+import io.kubernetes.client.models.V1VolumeBuilder
 import io.kubernetes.client.models.V1VolumeMountBuilder
+import io.kubernetes.client.util.ClientBuilder
 import io.kubernetes.client.util.Config
 import io.titandata.models.Volume
 import io.titandata.titan.Version
@@ -86,23 +92,16 @@ class Kubernetes() {
                                                 .withPorts(ports.map { V1ContainerPortBuilder().withContainerPort(it).withName("port-$it").build() })
                                                 .withVolumeMounts(volumes.map { V1VolumeMountBuilder().withName(it.name).withMountPath(it.properties["path"] as String).build()})
                                                 .build())
+                                        .withVolumes(volumes.map { V1VolumeBuilder()
+                                                .withName(it.name)
+                                                .withPersistentVolumeClaim(V1PersistentVolumeClaimVolumeSourceBuilder()
+                                                        .withClaimName(it.config["pvc"] as String)
+                                                        .build())
+                                                .build() })
                                         .build())
                                 .build())
-                        .withVolumeClaimTemplates(volumes.map {
-                            V1PersistentVolumeClaimBuilder()
-                                    .withMetadata(V1ObjectMetaBuilder()
-                                            .withName(it.name)
-                                            .withLabels(mapOf("titanRepository" to repoName))
-                                            .build())
-                                    .withSpec(V1PersistentVolumeClaimSpecBuilder()
-                                            .withAccessModes("ReadWriteOnce")
-                                            .withResources(V1ResourceRequirementsBuilder()
-                                                    .withRequests(mapOf("storage" to Quantity.fromString(it.config["size"] as String)))
-                                                    .build())
-                                            .build())
-                                    .build()} )
-                            .build())
-                            .build(), null, null, null)
+                        .build())
+                .build(), null, null, null)
     }
 
     fun deleteStatefulSpec(repoName: String) {
@@ -126,7 +125,7 @@ class Kubernetes() {
         while (true) {
             var set = appsApi.readNamespacedStatefulSet(repoName, defaultNamespace, null, null, null)
             // TODO detect fatal conditions that will cause it to never reach readiness
-            if (set.status.readyReplicas == set.status.replicas) {
+            if (set.status.readyReplicas == set.status.replicas && set.status.updateRevision == set.status.currentRevision) {
                 break
             }
             Thread.sleep(1000L)
@@ -140,10 +139,43 @@ class Kubernetes() {
      * hack to demonstrate the desired experience until we can build out a more full-featured port forwarder, such
      * as: https://github.com/pixel-point/kube-forwarder
      */
-    fun forwardPorts(repoName: String, ports: List<Int>) {
-        for (port in ports) {
-            executor.exec(listOf("sh", "-c", "kubectl port-forward svc/$repoName $port > /dev/null 2>&1 &"))
+    fun startPortForwarding(repoName: String) {
+        val service = coreApi.readNamespacedService(repoName, defaultNamespace, null, null, null)
+        for (port in service.spec.ports) {
+            executor.exec(listOf("sh", "-c", "kubectl port-forward svc/$repoName ${port.port} > /dev/null 2>&1 &"))
         }
     }
 
+    /**
+     * This is horribly OS-specific, and should be replaced with a more complete solution as described above.
+     */
+    fun stopPortFowarding(repoName: String) {
+        val service = coreApi.readNamespacedService(repoName, defaultNamespace, null, null, null)
+        for (port in service.spec.ports) {
+            val output = executor.exec(listOf("sh", "-c", "ps -ef | grep \"kubectl port-forward svc/$repoName ${port.port}\""))
+            val pid = output.split("\\s+".toRegex())[2]
+            executor.exec(listOf("kill", pid))
+        }
+    }
+
+    /**
+     * Update the volumes within a given StatefulSet.
+     */
+    fun updateStatefulSetVolumes(repoName: String, volumes: List<Volume>) {
+        val set = appsApi.readNamespacedStatefulSet(repoName, defaultNamespace, null, null, null)
+
+        val patches = mutableListOf<String>()
+
+        for ((volumeIdx, volumeDef) in set.spec.template.spec.volumes.withIndex()) {
+            for (vol in volumes) {
+                if (vol.name == volumeDef.name) {
+                    patches.add("{\"op\":\"replace\",\"path\":\"/spec/template/spec/volumes/$volumeIdx/persistentVolumeClaim/claimName\",\"value\":\"${vol.config["pvc"]}\"}")
+                }
+            }
+        }
+        val json = "[" + patches.joinToString(",") + "]"
+        val jsonPatchClient = ClientBuilder.standard().setOverridePatchFormat(V1Patch.PATCH_FORMAT_JSON_PATCH).build();
+        val patchApi = AppsV1Api(jsonPatchClient)
+        patchApi.patchNamespacedStatefulSet(repoName, defaultNamespace, V1Patch(json), null, null, null, null)
+    }
 }

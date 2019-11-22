@@ -144,7 +144,8 @@ class Kubernetes: Provider {
     }
 
     override fun checkout(container: String, guid: String?, tags: List<String>) {
-        TODO("not implemented")
+        val checkoutCommand = Checkout(kubernetes, commitsApi, repositoriesApi, volumesApi)
+        return checkoutCommand.checkout(container, guid, tags)
     }
 
     override fun delete(repository: String, commit: String?, tags: List<String>) {
