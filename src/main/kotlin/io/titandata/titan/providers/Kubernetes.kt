@@ -4,9 +4,6 @@
 
 package io.titandata.titan.providers
 
-import io.kubernetes.client.Configuration
-import io.kubernetes.client.apis.CoreV1Api
-import io.kubernetes.client.util.Config
 import io.titandata.client.apis.CommitsApi
 import io.titandata.client.apis.OperationsApi
 import io.titandata.client.apis.RemotesApi
@@ -26,15 +23,19 @@ import io.titandata.titan.providers.generic.RemoteAdd
 import io.titandata.titan.providers.generic.RemoteList
 import io.titandata.titan.providers.generic.RemoteLog
 import io.titandata.titan.providers.generic.RemoteRemove
+import io.titandata.titan.providers.generic.RuntimeStatus
 import io.titandata.titan.providers.generic.Status
 import io.titandata.titan.providers.generic.Tag
+import io.titandata.titan.providers.generic.Upgrade
 import io.titandata.titan.utils.CommandExecutor
 import io.titandata.titan.providers.kubernetes.*
+import io.titandata.titan.utils.HttpHandler
 
 class Kubernetes: Provider {
     private val titanServerVersion = "0.6.5"
     private val dockerRegistryUrl = "titandata"
 
+    private val httpHandler = HttpHandler()
     private val commandExecutor = CommandExecutor()
     private val docker = Docker(commandExecutor, Identity)
     private val kubernetes = io.titandata.titan.clients.Kubernetes()
@@ -56,6 +57,15 @@ class Kubernetes: Provider {
             println(message)
         }
         exitProcess(code)
+    }
+    private fun getRuntimeStatus(): List<RuntimeStatus> {
+        val returnList = mutableListOf<RuntimeStatus>()
+        val repositories = repositoriesApi.listRepositories()
+        for (repo in repositories) {
+            val (status) = kubernetes.getStatefulSetStatus(repo.name)
+            returnList.add(RuntimeStatus(repo.name, status))
+        }
+        return returnList
     }
 
     override fun checkInstall() {
@@ -102,7 +112,8 @@ class Kubernetes: Provider {
     }
 
     override fun status(container: String) {
-        TODO("not implemented")
+        val statusCommand = Status(::getRuntimeStatus, repositoriesApi, volumesApi)
+        return statusCommand.status(container)
     }
 
     override fun remoteAdd(container:String, uri: String, remoteName: String?, params: Map<String, String>) {
@@ -140,7 +151,8 @@ class Kubernetes: Provider {
     }
 
     override fun upgrade(force: Boolean, version: String, finalize: Boolean, path: String?) {
-        TODO("not implemented")
+        val upgradeCommand = Upgrade(::start, ::stop, ::exit, ::getRuntimeStatus, commandExecutor, httpHandler)
+        return upgradeCommand.upgrade(force, version, finalize, path)
     }
 
     override fun checkout(container: String, guid: String?, tags: List<String>) {
@@ -167,8 +179,8 @@ class Kubernetes: Provider {
 
     override fun list() {
         System.out.printf("%-20s  %s${n}", "REPOSITORY", "STATUS")
-        for (repo in repositoriesApi.listRepositories()) {
-            System.out.printf("%-20s${n}", repo.name)
+        for (container in getRuntimeStatus()) {
+            System.out.printf("%-20s  %s${n}", container.name, container.status)
         }
     }
 
@@ -178,11 +190,13 @@ class Kubernetes: Provider {
     }
 
     override fun stop(container: String) {
-        TODO("not implemented")
+        val stopCommand = Stop(kubernetes)
+        return stopCommand.stop(container)
     }
 
     override fun start(container: String) {
-        TODO("not implemented")
+        val startCommand = Start(kubernetes)
+        return startCommand.start(container)
     }
 
     override fun remove(container: String, force: Boolean) {

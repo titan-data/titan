@@ -47,6 +47,7 @@ class Kubernetes() {
     private val executor = CommandExecutor()
     private var coreApi: CoreV1Api
     private var appsApi: AppsV1Api
+    private var appsApiPatch: AppsV1Api
     private val defaultNamespace = "default"
 
     init {
@@ -54,6 +55,9 @@ class Kubernetes() {
         Configuration.setDefaultApiClient(client)
         coreApi = CoreV1Api()
         appsApi = AppsV1Api()
+
+        val jsonPatchClient = ClientBuilder.standard().setOverridePatchFormat(V1Patch.PATCH_FORMAT_JSON_PATCH).build();
+        appsApiPatch = AppsV1Api(jsonPatchClient)
     }
 
     /**
@@ -121,28 +125,73 @@ class Kubernetes() {
         }
     }
 
-    fun waitForStatefulSet(repoName: String) {
-        while (true) {
+    /**
+     * Gets the status of a stateful set. We use the following:
+     *
+     *      detached        No such statefulset present (user deleted it)
+     *      updating        Update revision doesn't match current revision
+     *      stopped         Number of replicas is 0
+     *      running         Number of replicas and ready replicas is 1
+     *      failed          Terminal condition prevented stateful set from starting
+     *      starting        Number of replicas is 1 but ready replicas is 0
+     *
+     * We also return a pair, with the second element providing addtional context for the "failed" state
+     */
+    fun getStatefulSetStatus(repoName: String) : Pair<String, String?> {
+        try {
             var set = appsApi.readNamespacedStatefulSet(repoName, defaultNamespace, null, null, null)
-            if (set.status.readyReplicas == set.status.replicas && set.status.updateRevision == set.status.currentRevision) {
-                break
+
+            if (set.status.updateRevision != set.status.currentRevision) {
+                return "updating" to null
             }
 
-            // Check to see if the pod is unschedulable
+            if (set.status.replicas == 0) {
+                return "stopped" to null
+            }
+
+            if (set.status.replicas == set.status.readyReplicas) {
+                return "running" to null
+            }
+
             try {
                 var pod = coreApi.readNamespacedPod("$repoName-0", defaultNamespace, null, null, null)
                 val conditions = pod.status?.conditions
                 if (conditions != null) {
                     for (condition in conditions) {
                         if (condition.reason == "Unschedulable") {
-                            throw Exception("Pod failed to be scheduled: ${condition.message}")
+                            return "failed" to "Pod failed to be scheduled: ${condition.message}"
                         }
                     }
                 }
             } catch (e: ApiException) {
+                // Pod may not exist, yet
                 if (e.code != 404) {
                     throw e
                 }
+            }
+
+            return "starting" to null
+        } catch (e: ApiException) {
+            if (e.code == 404) {
+                return "detached" to null
+            } else {
+                throw e
+            }
+        }
+    }
+
+    /**
+     * Wait for the given statefulset to reach a terminal state (running or stopped), throwing an error if we've
+     * reached the failed state.
+     */
+    fun waitForStatefulSet(repoName: String) {
+        while (true) {
+            val (status, error) = getStatefulSetStatus(repoName)
+            if (status == "failed") {
+                throw Exception(error)
+            }
+            if (status == "running" || status == "stopped") {
+                break
             }
             Thread.sleep(1000L)
         }
@@ -174,6 +223,7 @@ class Kubernetes() {
         }
     }
 
+
     /**
      * Update the volumes within a given StatefulSet.
      */
@@ -190,8 +240,23 @@ class Kubernetes() {
             }
         }
         val json = "[" + patches.joinToString(",") + "]"
-        val jsonPatchClient = ClientBuilder.standard().setOverridePatchFormat(V1Patch.PATCH_FORMAT_JSON_PATCH).build();
-        val patchApi = AppsV1Api(jsonPatchClient)
-        patchApi.patchNamespacedStatefulSet(repoName, defaultNamespace, V1Patch(json), null, null, null, null)
+        appsApiPatch.patchNamespacedStatefulSet(repoName, defaultNamespace, V1Patch(json), null, null, null, null)
+    }
+
+    /**
+     * Stops a stateful set. This is equivalent to setting the number of replicas to zero and waiting for the
+     * deployment to update. Its up to callers to wait for the changes to take effect.
+     */
+    fun stopStatefulSet(repoName: String) {
+        val patch = "[{\"op\":\"replace\",\"path\":\"/spec/replicas\",\"value\":0}]"
+        appsApiPatch.patchNamespacedStatefulSet(repoName, defaultNamespace, V1Patch(patch), null, null, null, null)
+    }
+
+    /**
+     * Opposite of the above, set the number of replicas to one.
+     */
+    fun startStatefulSet(repoName: String) {
+        val patch = "[{\"op\":\"replace\",\"path\":\"/spec/replicas\",\"value\":1}]"
+        appsApiPatch.patchNamespacedStatefulSet(repoName, defaultNamespace, V1Patch(patch), null, null, null, null)
     }
 }
