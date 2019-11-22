@@ -82,8 +82,6 @@ class Run (
                 }
             }
 
-            println("Creating $repoName deployment")
-
             val repoDigest = imageInfo.optJSONArray("RepoDigests").optString(0)
             val imageId = if(repoDigest.isNullOrEmpty()) {
                 "$image:$tag"
@@ -114,6 +112,7 @@ class Run (
             ports.add(port.toInt())
         }
 
+        println("Creating $repoName deployment")
         kubernetes.createStatefulSet(repoName, "$image:$tag", ports, titanVolumes)
 
         println("Waiting for deployment to be ready")

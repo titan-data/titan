@@ -124,9 +124,25 @@ class Kubernetes() {
     fun waitForStatefulSet(repoName: String) {
         while (true) {
             var set = appsApi.readNamespacedStatefulSet(repoName, defaultNamespace, null, null, null)
-            // TODO detect fatal conditions that will cause it to never reach readiness
             if (set.status.readyReplicas == set.status.replicas && set.status.updateRevision == set.status.currentRevision) {
                 break
+            }
+
+            // Check to see if the pod is unschedulable
+            try {
+                var pod = coreApi.readNamespacedPod("$repoName-0", defaultNamespace, null, null, null)
+                val conditions = pod.status?.conditions
+                if (conditions != null) {
+                    for (condition in conditions) {
+                        if (condition.reason == "Unschedulable") {
+                            throw Exception("Pod failed to be scheduled: ${condition.message}")
+                        }
+                    }
+                }
+            } catch (e: ApiException) {
+                if (e.code != 404) {
+                    throw e
+                }
             }
             Thread.sleep(1000L)
         }
