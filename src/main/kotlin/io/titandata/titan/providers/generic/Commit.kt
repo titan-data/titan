@@ -7,6 +7,8 @@ package io.titandata.titan.providers.generic
 import io.titandata.client.apis.CommitsApi
 import io.titandata.client.apis.RepositoriesApi
 import io.titandata.models.Commit
+import io.titandata.titan.providers.Metadata
+import io.titandata.titan.providers.Metadata.Companion.toMap
 import java.util.*
 
 class Commit (
@@ -16,9 +18,9 @@ class Commit (
     private val commitsApi: CommitsApi = CommitsApi(),
     private val uuid: String = UUID.randomUUID().toString().replace("-","")
 ) {
-    fun commit(repository: String, message: String, tags: List<String>) {
-        val repoMetadata = repositoriesApi.getRepository(repository).properties
-        val repoStatus = repositoriesApi.getRepositoryStatus(repository)
+    fun commit(container: String, message: String, tags: List<String>) {
+        val metadata = Metadata.load(repositoriesApi.getRepository(container).properties)
+        val repoStatus = repositoriesApi.getRepositoryStatus(container)
         val sourceCommit = repoStatus.sourceCommit
         val tagMetadata = mutableMapOf<String, String>()
         for (tag in tags) {
@@ -29,22 +31,14 @@ class Commit (
             }
             tagMetadata[key] = value
         }
-
-        val metadata = mutableMapOf(
-                "user" to user,
-                "email" to email,
-                "message" to message,
-                "container" to repoMetadata["container"]!!,
-                "image" to repoMetadata["image"]!!,
-                "tag" to repoMetadata["tag"]!!,
-                "digest" to repoMetadata["digest"]!!,
-                "runtime" to repoMetadata["runtime"]!!,
-                "tags" to tagMetadata
-        )
+        metadata.user = user
+        metadata.email = email
+        metadata.message = message
+        metadata.tags = tagMetadata
         if (sourceCommit != null) {
-                metadata.put("source", sourceCommit)
+            metadata.source = sourceCommit
         }
-        val commit = Commit(uuid, metadata)
+        val commit = Commit(uuid, metadata.toMap())
         val response = commitsApi.createCommit(repository, commit)
         val hash = response.id
         println("Commit $hash")

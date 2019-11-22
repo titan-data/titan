@@ -13,6 +13,7 @@ import io.titandata.models.Repository
 import io.titandata.titan.utils.CommandExecutor
 import io.titandata.serialization.RemoteUtil
 import io.titandata.titan.exceptions.CommandException
+import io.titandata.titan.providers.Metadata
 import kotlin.system.exitProcess
 
 class Clone (
@@ -27,8 +28,7 @@ class Clone (
     private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
     private val remoteUtil: RemoteUtil = RemoteUtil()
 ) {
-    fun clone(uri: String, container: String?, guid: String?, params: Map<String, String>) {
-        /*
+    fun clone(uri: String, container: String?, guid: String?, params: Map<String, String>, arguments: List<String>, disablePortMapping: Boolean) {
         val repoName = when(container){
             null -> uri.split("/").last().substringBefore('#')
             else -> container
@@ -49,25 +49,22 @@ class Clone (
             } else {
                 commit = remotesApi.getRemoteCommit(repoName, remote.name, commitId, remoteUtil.getParameters(remote))
             }
+            val metadata = Metadata.load(commit.properties)
             try {
-                docker.inspectImage(commit.properties["container"] as String)
+                docker.inspectImage(metadata.image.digest)
             } catch (e: CommandException) {
                 try{
-                    docker.pull(commit.properties["container"] as String)
+                    docker.pull(metadata.image.digest)
                 } catch (e: CommandException) {
                     throw CommandException(
-                            "Unable to find image ${commit.properties["container"]} for ${commit.properties["repoTags"]}",
+                            "Unable to find image ${metadata.image.digest} for ${metadata.image.image}",
                             e.exitCode,
                             e.output
                     )
                 }
-                docker.pull(commit.properties["container"] as String)
+                docker.pull(metadata.image.digest)
             }
-            val runtime = commit.properties["runtime"] as String
-            val arguments = runtime.runtimeToArguments().toMutableList()
-            arguments[arguments.indexOf("--name") + 1] = repoName
-            arguments.add(commit.properties["container"] as String)
-            run(arguments, false)
+            run(metadata.image.digest, repoName, metadata.environment, arguments, disablePortMapping, false)
             pull(repoName, commit.id, null, listOf(), false)
             checkout(repoName, commit.id, listOf())
         } catch (e: CommandException) {
@@ -76,6 +73,5 @@ class Clone (
             remove(repository.name, true)
             exitProcess(1)
         }
-        */
     }
 }
