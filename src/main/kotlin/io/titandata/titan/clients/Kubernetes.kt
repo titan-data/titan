@@ -217,7 +217,7 @@ class Kubernetes() {
     fun stopPortFowarding(repoName: String) {
         val service = coreApi.readNamespacedService(repoName, defaultNamespace, null, null, null)
         for (port in service.spec.ports) {
-            val output = executor.exec(listOf("sh", "-c", "ps -ef | grep \"kubectl port-forward svc/$repoName ${port.port}\""))
+            val output = executor.exec(listOf("sh", "-c", "ps -ef | grep \"[k]ubectl port-forward svc/$repoName ${port.port}\""))
             val pid = output.split("\\s+".toRegex())[2]
             executor.exec(listOf("kill", pid))
         }
