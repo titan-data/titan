@@ -4,10 +4,6 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.custom.Quantity$QuantityAdapter",
-  "methods":[{"name":"<init>","parameterTypes":[] }]
-},
-{
   "name":"io.kubernetes.client.models.V1AWSElasticBlockStoreVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
