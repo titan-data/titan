@@ -67,12 +67,18 @@ class Run (
         }
 
         val argList = mutableListOf("-d", "--label","io.titandata.titan")
+        val metaVols = mutableListOf<Map<String, String>>()
         for ((index, path) in volumes.keys().withIndex()) {
             val volumeName = "$containerName/v$index"
             println("Creating docker volume $volumeName with path $path")
             docker.createVolume(volumeName, path)
             argList.add("--mount")
             argList.add("type=volume,src=$volumeName,dst=$path,volume-driver=titan")
+            val addVol = mapOf(
+                "name" to "v$index",
+                "path" to path
+            )
+            metaVols.add(addVol)
         }
 
         val argumentEdit= arguments.toMutableList()
@@ -87,12 +93,19 @@ class Run (
         argList.add("--name")
         argList.add(containerName)
 
+        val metaPorts = mutableListOf<Map<String, String>>()
         if (!disablePortMapping) {
             val exposedPorts = imageInfo.getJSONObject("Config").optJSONObject("ExposedPorts")
             for (rawPort in exposedPorts.keys()) {
                 val port = rawPort.split("/")[0]
+                val protocol = rawPort.split("/")[1]
                 argList.add("-p")
-                argList.add("$port:$port")
+                argList.add("$port:$port/$protocol")
+                val addPorts = mapOf(
+                        "protocol" to protocol,
+                        "port" to port
+                )
+                metaPorts.add(addPorts)
             }
         }
 
@@ -108,13 +121,17 @@ class Run (
             repoDigest
         }
         val metadata = mapOf(
-                "container" to dockerRunCommand,
-                "image" to image,
-                "tag" to tag,
-                "digest" to repoDigest,
-                "runtime" to argList.toString()
+            "v2" to mapOf(
+                "image" to mapOf(
+                    "image" to image,
+                    "tag" to tag,
+                    "digest" to repoDigest
+                ),
+                "environment" to environments,
+                "ports" to metaPorts,
+                "volumes" to metaVols
+            )
         )
-
         val updateRepo = Repository(containerName, metadata)
         repositoriesApi.updateRepository(containerName, updateRepo)
         docker.run(dockerRunCommand, "", argList)
