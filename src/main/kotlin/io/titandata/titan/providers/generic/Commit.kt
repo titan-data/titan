@@ -18,9 +18,9 @@ class Commit (
     private val commitsApi: CommitsApi = CommitsApi(),
     private val uuid: String = UUID.randomUUID().toString().replace("-","")
 ) {
-    fun commit(container: String, message: String, tags: List<String>) {
-        val metadata = Metadata.load(repositoriesApi.getRepository(container).properties)
-        val repoStatus = repositoriesApi.getRepositoryStatus(container)
+    fun commit(repository: String, message: String, tags: List<String>) {
+        val metadata = Metadata.load(repositoriesApi.getRepository(repository).properties)
+        val repoStatus = repositoriesApi.getRepositoryStatus(repository)
         val sourceCommit = repoStatus.sourceCommit
         val tagMetadata = mutableMapOf<String, String>()
         for (tag in tags) {
