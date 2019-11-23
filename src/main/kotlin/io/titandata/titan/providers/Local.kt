@@ -140,9 +140,9 @@ class Local: Provider {
         return migrateCommand.migrate(container, name)
     }
 
-    override fun run(arguments: List<String>) {
+    override fun run(image: String, repository: String?, environments: List<String>, arguments: List<String>, disablePortMapping: Boolean) {
         val runCommand = Run(::exit,  commandExecutor, docker)
-        return runCommand.run(arguments)
+        return runCommand.run(image, repository, environments, arguments, disablePortMapping)
     }
 
     override fun list() {
@@ -187,10 +187,10 @@ class Local: Provider {
         return cpCommand.cp(container, driver, source, path)
     }
 
-    override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>) {
+    override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>, arguments: List<String>, disablePortMapping: Boolean) {
         val runCommand = Run(::exit,  commandExecutor, docker)
         val cloneCommand = Clone(::remoteAdd, ::pull, ::checkout, runCommand::run, ::remove, commandExecutor, docker)
-        return cloneCommand.clone(uri, container, commit, params)
+        return cloneCommand.clone(uri, container, commit, params, arguments, disablePortMapping)
     }
 
     override fun delete(repository: String, commit: String?, tags: List<String>) {

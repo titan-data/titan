@@ -132,7 +132,7 @@ class Kubernetes: Provider {
         throw NotImplementedError("migrate is not supported in kubernetes context")
     }
 
-    override fun run(arguments: List<String>) {
+    override fun run(image: String, repository: String?, environments: List<String>, arguments: List<String>, disablePortMapping: Boolean) {
         TODO("not implemented")
     }
 
@@ -194,7 +194,7 @@ class Kubernetes: Provider {
         throw NotImplementedError("cp is not supported in kuberentes context")
     }
 
-    override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>) {
+    override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>, arguments: List<String>, disablePortMapping: Boolean) {
         TODO("not implemented")
     }
 }

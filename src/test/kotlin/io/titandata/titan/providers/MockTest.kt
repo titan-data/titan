@@ -114,10 +114,10 @@ class MockTest {
     fun `can run`(){
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.run(emptyList())
+        mockProvider.run("Container","Repo", emptyList(), emptyList(), true)
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
-        assertEquals(expected, "Running controlled container")
+        assertEquals(expected, "Running controlled image")
     }
 
     @Test
@@ -214,7 +214,7 @@ class MockTest {
     fun `can clone`(){
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.clone("http://user:pass@path", "container", null, emptyMap())
+        mockProvider.clone("http://user:pass@path", "container", null, emptyMap(), emptyList(), false)
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "cloning container from http://user:pass@path")

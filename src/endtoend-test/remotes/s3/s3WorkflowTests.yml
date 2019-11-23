@@ -20,7 +20,7 @@ tests:
       stdout:
         contains: Titan cli successfully installed, happy data versioning :)
   - "can clone hello-world/posrgres":
-      command: titan clone s3web://demo.titan-data.io/hello-world/postgres hello-world
+      command: titan clone -n hello-world s3web://demo.titan-data.io/hello-world/postgres
       stdout:
         contains:
           - Running controlled container hello-world
