@@ -3,10 +3,11 @@
 titan clone
 ===========
 
-Clones a new repository based on the latest commit from a remote repository.
-The docker image, configuration, and data is all derived from that commit,
-so it's not currently possible to specify a different docker configuration
-than what was used when creating the commit. For more information on managing
+Clones a new repository based on a commit from a remote repository.
+The docker image and data is all derived from that commit, to specify a different
+docker configuration than what was used when creating the commit pass arguments after
+``--``` for context specific runtime arguments. For more information about using the
+``--``` arguments, see the :ref:`_cli_cmd_run` section. For more information on managing
 the docker configuration, see the :ref:`local_docker` section.
 
 Syntax
@@ -14,7 +15,7 @@ Syntax
 
 ::
 
-    titan clone [-c id] [-p key=value ...] <uri> [repository]
+    titan clone [-c id] [-p key=value ...] [-n repository] <uri> -- [additional context specific arguments]...
 
 Arguments
 ---------
@@ -25,24 +26,28 @@ uri
     :ref:`remote` section.
 
 
-repository
-    Optional. Name of the new repository to create. If not specified, then
-    the name of the original repository is used (which may or may not match
-    the name used in the remote URI).
-
 Options
 -------
 
--c, --commit     id      Specify the commit ID to checkout.
+-c, --commit     id             Specify the commit ID to checkout.
 
--p, --parameters string  Key=Value pair for provider specific options.
+-p, --parameters string         Key=Value pair for provider specific options.
+
+-P, --disable-port-mapping      Default: false. Disable the automatic specific
+                                port mapping of exposed ports from the container
+                                to localhost.
+
+-n, --name      TEXT            Optional. Name of the new repository to create.
+                                If not specified, then the name of the original
+                                repository is used (which may or may not match
+                                the name used in the remote URI).
 
 Example
 -------
 
 ::
 
-    $ titan clone s3web://demo.titan-data.io/hello-world/postgres myrepo
+    $ titan clone -n myrepo s3web://demo.titan-data.io/hello-world/postgres
     Creating repository myrepo
     Creating docker volume myrepo/v0 with path /var/lib/postgresql/data
     Running controlled container myrepo
