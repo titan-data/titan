@@ -11,7 +11,7 @@ commit::
     $ titan clone -n hello-world s3web://demo.titan-data.io/hello-world/postgres
 
 The docker environment is persisted with each commit, but runtime parameters are
-not and can be specified with the ``--``` argument flag. See :ref:`_cli_cmd_clone`
+not and can be specified with the ``--``` argument flag. See :ref:`cli_cmd_clone`
 for more details.
 
 .. note::

@@ -7,7 +7,7 @@ Clones a new repository based on a commit from a remote repository.
 The docker image and data is all derived from that commit, to specify a different
 docker configuration than what was used when creating the commit pass arguments after
 ``--``` for context specific runtime arguments. For more information about using the
-``--``` arguments, see the :ref:`_cli_cmd_run` section. For more information on managing
+``--``` arguments, see the :ref:`cli_cmd_run` section. For more information on managing
 the docker configuration, see the :ref:`local_docker` section.
 
 Syntax
