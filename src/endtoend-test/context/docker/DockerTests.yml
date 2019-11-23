@@ -1,4 +1,7 @@
 tests:
+  - "can install titan":
+      command: titan install
+      wait: 10
   - "can build nginx-test":
       command: cd src/endtoend-test/context/docker && docker build -t nginx-test -f ./src/endtoend-test/context/docker/Dockerfile .
   - "can run nginx-test":

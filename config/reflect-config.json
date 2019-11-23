@@ -1,5 +1,9 @@
 [
 {
+  "name":"com.google.gson.internal.LinkedTreeMap",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"io.titandata.models.Commit",
   "allDeclaredFields":true,
   "allPublicMethods":true,
@@ -209,6 +213,18 @@
   "allPublicClasses":true
 },
 {
+  "name":"io.titandata.titan.providers.Image",
+  "allDeclaredFields":true
+},
+{
+  "name":"io.titandata.titan.providers.Port",
+  "allDeclaredFields":true
+},
+{
+  "name":"io.titandata.titan.providers.Volume",
+  "allDeclaredFields":true
+},
+{
   "name":"java.io.File",
   "methods":[{"name":"toPath","parameterTypes":[] }]
 },
@@ -241,6 +257,18 @@
 {
   "name":"java.nio.file.attribute.PosixFilePermissions",
   "methods":[{"name":"fromString","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"java.util.ArrayList",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"java.util.LinkedHashMap",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"kotlin.collections.EmptyList",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
   "name":"kotlin.jvm.internal.DefaultConstructorMarker"
