@@ -94,19 +94,19 @@ class Run (
         argList.add(containerName)
 
         val metaPorts = mutableListOf<Map<String, String>>()
-        if (!disablePortMapping) {
-            val exposedPorts = imageInfo.getJSONObject("Config").optJSONObject("ExposedPorts")
-            for (rawPort in exposedPorts.keys()) {
-                val port = rawPort.split("/")[0]
-                val protocol = rawPort.split("/")[1]
+        val exposedPorts = imageInfo.getJSONObject("Config").optJSONObject("ExposedPorts")
+        for (rawPort in exposedPorts.keys()) {
+            val port = rawPort.split("/")[0]
+            val protocol = rawPort.split("/")[1]
+            if (!disablePortMapping) {
                 argList.add("-p")
                 argList.add("$port:$port/$protocol")
-                val addPorts = mapOf(
-                        "protocol" to protocol,
-                        "port" to port
-                )
-                metaPorts.add(addPorts)
             }
+            val addPorts = mapOf(
+                    "protocol" to protocol,
+                    "port" to port
+            )
+            metaPorts.add(addPorts)
         }
 
         for (env in environments) {
