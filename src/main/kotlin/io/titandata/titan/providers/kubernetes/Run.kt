@@ -27,7 +27,7 @@ class Run (
     fun run(
             container: String,
             repository: String?,
-            environments: List<String>,
+            environment: List<String>,
             arguments: List<String>,
             disablePortMapping: Boolean,
             createRepo: Boolean = true
@@ -144,6 +144,11 @@ class Run (
         }
 
         val repoDigest = imageInfo.optJSONArray("RepoDigests").optString(0)
+        val containerImage = if(repoDigest.isNullOrEmpty()) {
+            "$image:$tag"
+        } else  {
+            repoDigest
+        }
         val metadata = mapOf(
                 "disablePortMapping" to disablePortMapping,
                 "v2" to mapOf(
@@ -152,7 +157,7 @@ class Run (
                                 "tag" to tag,
                                 "digest" to repoDigest
                         ),
-                        "environment" to environments,
+                        "environment" to environment,
                         "ports" to metaPorts,
                         "volumes" to metaVols
                 )
@@ -161,9 +166,7 @@ class Run (
         repositoriesApi.updateRepository(repoName, updateRepo)
 
         println("Creating $repoName deployment")
-        // TODO - support environment
-        // TODO - support repoDigest
-        kubernetes.createStatefulSet(repoName, "$image:$tag", ports, titanVolumes)
+        kubernetes.createStatefulSet(repoName, containerImage, ports, titanVolumes, environment)
 
         println("Waiting for deployment to be ready")
         kubernetes.waitForStatefulSet(repoName)

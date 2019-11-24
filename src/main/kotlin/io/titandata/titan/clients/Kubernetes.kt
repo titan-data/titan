@@ -14,6 +14,7 @@ import io.kubernetes.client.models.V1ContainerPortBuilder
 import io.kubernetes.client.models.V1LabelSelectorBuilder
 import io.kubernetes.client.models.V1ObjectMetaBuilder
 import io.kubernetes.client.custom.V1Patch
+import io.kubernetes.client.models.V1EnvVarBuilder
 import io.kubernetes.client.models.V1PatchBuilder
 import io.kubernetes.client.models.V1PersistentVolumeClaimBuilder
 import io.kubernetes.client.models.V1PersistentVolumeClaimSpec
@@ -65,7 +66,8 @@ class Kubernetes() {
      * the ports in the container. We then create a single replica stateful set with the given volumes (each with
      * existing PVCs) mapped in.
      */
-    fun createStatefulSet(repoName: String, imageId: String, ports: List<Int>, volumes: List<Volume>) {
+    fun createStatefulSet(repoName: String, imageId: String, ports: List<Int>, volumes: List<Volume>,
+                          environment: List<String>) {
         val metadata = V1ObjectMetaBuilder()
                 .withName(repoName)
                 .withLabels(mapOf("titanRepository" to repoName))
@@ -95,6 +97,7 @@ class Kubernetes() {
                                                 .withImage(imageId)
                                                 .withPorts(ports.map { V1ContainerPortBuilder().withContainerPort(it).withName("port-$it").build() })
                                                 .withVolumeMounts(volumes.map { V1VolumeMountBuilder().withName(it.name).withMountPath(it.properties["path"] as String).build()})
+                                                .withEnv(environment.map { V1EnvVarBuilder().withName(it.substringBefore("=")).withValue(it.substringAfter("=")).build() })
                                                 .build())
                                         .withVolumes(volumes.map { V1VolumeBuilder()
                                                 .withName(it.name)
