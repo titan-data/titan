@@ -4,14 +4,13 @@
 
 package io.titandata.titan.providers.generic
 
-import io.titandata.titan.providers.Container
 import io.titandata.client.apis.RepositoriesApi
 import io.titandata.client.apis.VolumesApi
 import java.text.DecimalFormat
 import kotlin.math.log10
 
 class Status (
-    private val getContainersStatus: () -> List<Container>,
+    private val getContainersStatus: () -> List<RuntimeStatus>,
     private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
     private val volumesApi: VolumesApi = VolumesApi()
 ){

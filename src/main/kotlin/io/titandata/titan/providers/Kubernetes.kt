@@ -4,7 +4,12 @@
 
 package io.titandata.titan.providers
 
+import io.titandata.client.apis.CommitsApi
+import io.titandata.client.apis.OperationsApi
+import io.titandata.client.apis.RemotesApi
 import io.titandata.client.apis.RepositoriesApi
+import io.titandata.client.apis.VolumesApi
+import io.titandata.serialization.RemoteUtil
 import kotlin.system.exitProcess
 import io.titandata.titan.clients.Docker
 import io.titandata.titan.exceptions.CommandException
@@ -18,18 +23,27 @@ import io.titandata.titan.providers.generic.RemoteAdd
 import io.titandata.titan.providers.generic.RemoteList
 import io.titandata.titan.providers.generic.RemoteLog
 import io.titandata.titan.providers.generic.RemoteRemove
+import io.titandata.titan.providers.generic.RuntimeStatus
 import io.titandata.titan.providers.generic.Status
 import io.titandata.titan.providers.generic.Tag
+import io.titandata.titan.providers.generic.Upgrade
 import io.titandata.titan.utils.CommandExecutor
 import io.titandata.titan.providers.kubernetes.*
+import io.titandata.titan.utils.HttpHandler
 
 class Kubernetes: Provider {
     private val titanServerVersion = "0.6.5"
     private val dockerRegistryUrl = "titandata"
 
+    private val httpHandler = HttpHandler()
     private val commandExecutor = CommandExecutor()
     private val docker = Docker(commandExecutor, Identity)
+    private val kubernetes = io.titandata.titan.clients.Kubernetes()
     private val repositoriesApi = RepositoriesApi("http://localhost:${Port}")
+    private val operationsApi = OperationsApi("http://localhost:${Port}")
+    private val remotesApi = RemotesApi("http://localhost:${Port}")
+    private val commitsApi = CommitsApi("http://localhost:${Port}")
+    private val volumesApi = VolumesApi("http://localhost:${Port}")
 
     private val n = System.lineSeparator()
 
@@ -44,18 +58,12 @@ class Kubernetes: Provider {
         }
         exitProcess(code)
     }
-
-    private fun getContainersStatus(): List<Container> {
-        val returnList = mutableListOf<Container>()
+    private fun getRuntimeStatus(): List<RuntimeStatus> {
+        val returnList = mutableListOf<RuntimeStatus>()
         val repositories = repositoriesApi.listRepositories()
         for (repo in repositories) {
-            val container = repo.name
-            var status = "detached"
-            try {
-                val containerInfo = docker.inspectContainer(container)!!
-                status = containerInfo.getJSONObject("State").getString("Status")
-            } catch (e: CommandException) {}
-            returnList.add(Container(container, status))
+            val (status) = kubernetes.getStatefulSetStatus(repo.name)
+            returnList.add(RuntimeStatus(repo.name, status))
         }
         return returnList
     }
@@ -67,13 +75,13 @@ class Kubernetes: Provider {
 
     override fun pull(container: String, commit: String?, remoteName: String?, tags: List<String>,
                       metadataOnly: Boolean) {
-        val pullCommand = Pull(::exit)
+        val pullCommand = Pull(::exit, remotesApi, operationsApi)
         return pullCommand.pull(container, commit, remoteName, tags, metadataOnly)
     }
 
     override fun push(container: String, commit: String?, remoteName: String?, tags: List<String>,
                       metadataOnly: Boolean) {
-        val pushCommand = Push(::exit)
+        val pushCommand = Push(::exit, commitsApi, remotesApi, operationsApi, RemoteUtil(), repositoriesApi)
         return pushCommand.push(container, commit, remoteName, tags, metadataOnly)
     }
 
@@ -81,7 +89,7 @@ class Kubernetes: Provider {
         try {
             val user= commandExecutor.exec(listOf("git", "config", "user.name")).trim()
             val email = commandExecutor.exec(listOf("git", "config", "user.email")).trim()
-            val commitCommand = Commit(user, email)
+            val commitCommand = Commit(user, email, repositoriesApi, commitsApi)
             return commitCommand.commit(container, message, tags)
         } catch (e: CommandException) {
             exit("Git not configured.")
@@ -99,32 +107,32 @@ class Kubernetes: Provider {
     }
 
     override fun abort(container: String) {
-        val abortCommand = Abort(::exit)
+        val abortCommand = Abort(::exit, operationsApi)
         return abortCommand.abort(container)
     }
 
     override fun status(container: String) {
-        val statusCommand = Status(::getContainersStatus)
+        val statusCommand = Status(::getRuntimeStatus, repositoriesApi, volumesApi)
         return statusCommand.status(container)
     }
 
     override fun remoteAdd(container:String, uri: String, remoteName: String?, params: Map<String, String>) {
-        val remoteAddCommand = RemoteAdd(::exit)
+        val remoteAddCommand = RemoteAdd(::exit, repositoriesApi, remotesApi)
         return remoteAddCommand.remoteAdd(container, uri, remoteName, params)
     }
 
     override fun remoteLog(container:String, remoteName: String?, tags: List<String>) {
-        val remoteLogCommand = RemoteLog(::exit)
+        val remoteLogCommand = RemoteLog(::exit, remotesApi)
         return remoteLogCommand.remoteLog(container, remoteName, tags)
     }
 
     override fun remoteList(container: String) {
-        val remoteListCommand = RemoteList()
+        val remoteListCommand = RemoteList(remotesApi)
         return remoteListCommand.list(container)
     }
 
     override fun remoteRemove(container: String, remote: String) {
-        val remoteRemoveCommand = RemoteRemove()
+        val remoteRemoveCommand = RemoteRemove(remotesApi)
         return remoteRemoveCommand.remove(container, remote)
     }
 
@@ -133,24 +141,27 @@ class Kubernetes: Provider {
     }
 
     override fun run(image: String, repository: String?, environments: List<String>, arguments: List<String>, disablePortMapping: Boolean) {
-        TODO("not implemented")
+        val runCommand = Run(::exit,  commandExecutor, docker, kubernetes, repositoriesApi, volumesApi)
+        return runCommand.run(image, repository, environments, arguments, disablePortMapping)
     }
 
     override fun uninstall(force: Boolean) {
-        val uninstallCommand = Uninstall(titanServerVersion, ::exit, ::remove,  commandExecutor, docker)
+        val uninstallCommand = Uninstall(titanServerVersion, ::exit, ::remove,  commandExecutor, docker, repositoriesApi)
         return uninstallCommand.uninstall(force)
     }
 
     override fun upgrade(force: Boolean, version: String, finalize: Boolean, path: String?) {
-        TODO("not implemented")
+        val upgradeCommand = Upgrade(::start, ::stop, ::exit, ::getRuntimeStatus, commandExecutor, httpHandler)
+        return upgradeCommand.upgrade(force, version, finalize, path)
     }
 
     override fun checkout(container: String, guid: String?, tags: List<String>) {
-        TODO("not implemented")
+        val checkoutCommand = Checkout(kubernetes, commitsApi, repositoriesApi, volumesApi)
+        return checkoutCommand.checkout(container, guid, tags)
     }
 
     override fun delete(repository: String, commit: String?, tags: List<String>) {
-        val deleteCommand = Delete()
+        val deleteCommand = Delete(commitsApi)
         if (!commit.isNullOrEmpty()) {
             if (!tags.isEmpty()) {
                 return deleteCommand.deleteTags(repository, commit, tags)
@@ -162,32 +173,35 @@ class Kubernetes: Provider {
     }
 
     override fun tag(repository: String, commit: String, tags: List<String>) {
-        val tagCommand = Tag()
+        val tagCommand = Tag(commitsApi)
         return tagCommand.tagCommit(repository, commit, tags)
     }
 
     override fun list() {
         System.out.printf("%-20s  %s${n}", "REPOSITORY", "STATUS")
-        for (container in getContainersStatus()) {
+        for (container in getRuntimeStatus()) {
             System.out.printf("%-20s  %s${n}", container.name, container.status)
         }
     }
 
     override fun log(container: String, tags: List<String>) {
-        val logCommand = Log()
+        val logCommand = Log(commitsApi)
         return logCommand.log(container, tags)
     }
 
     override fun stop(container: String) {
-        TODO("not implemented")
+        val stopCommand = Stop(kubernetes, repositoriesApi)
+        return stopCommand.stop(container)
     }
 
     override fun start(container: String) {
-        TODO("not implemented")
+        val startCommand = Start(kubernetes, repositoriesApi)
+        return startCommand.start(container)
     }
 
     override fun remove(container: String, force: Boolean) {
-        TODO("not implemented")
+        val removeCommand = Remove(kubernetes, repositoriesApi, volumesApi)
+        return removeCommand.remove(container, force)
     }
 
     override fun cp(container: String, driver: String, source: String, path: String) {

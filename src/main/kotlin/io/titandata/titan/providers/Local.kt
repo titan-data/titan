@@ -18,16 +18,13 @@ import io.titandata.titan.providers.generic.RemoteAdd
 import io.titandata.titan.providers.generic.RemoteList
 import io.titandata.titan.providers.generic.RemoteLog
 import io.titandata.titan.providers.generic.RemoteRemove
+import io.titandata.titan.providers.generic.RuntimeStatus
 import io.titandata.titan.providers.generic.Status
 import io.titandata.titan.providers.generic.Tag
+import io.titandata.titan.providers.generic.Upgrade
 import io.titandata.titan.utils.CommandExecutor
 import io.titandata.titan.utils.HttpHandler
 import io.titandata.titan.providers.local.*
-
-data class Container (
-    val name: String,
-    val status: String
-)
 
 class Local: Provider {
     private val titanServerVersion = "0.6.5"
@@ -47,8 +44,8 @@ class Local: Provider {
         exitProcess(code)
     }
 
-    private fun getContainersStatus(): List<Container> {
-        val returnList = mutableListOf<Container>()
+    private fun getContainersStatus(): List<RuntimeStatus> {
+        val returnList = mutableListOf<RuntimeStatus>()
         val repositories = repositoriesApi.listRepositories()
         for (repo in repositories) {
             val container = repo.name
@@ -57,7 +54,7 @@ class Local: Provider {
                 val containerInfo = docker.inspectContainer(container)!!
                 status = containerInfo.getJSONObject("State").getString("Status")
             } catch (e: CommandException) {}
-            returnList.add(Container(container, status))
+            returnList.add(RuntimeStatus(container, status))
         }
         return returnList
     }

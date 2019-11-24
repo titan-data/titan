@@ -2,12 +2,11 @@
  * Copyright (c) 2019 by Delphix. All rights reserved.
  */
 
-package io.titandata.titan.providers.local
+package io.titandata.titan.providers.generic
 
 import io.titandata.titan.Version
 import io.titandata.titan.Version.Companion.compare
 import io.titandata.titan.exceptions.CommandException
-import io.titandata.titan.providers.Container
 import io.titandata.titan.utils.CommandExecutor
 import io.titandata.titan.utils.HttpHandler
 import io.titandata.titan.utils.HttpHandler.Companion.asBytes
@@ -21,7 +20,7 @@ class Upgrade(
     private val start: (container: String) -> Unit,
     private val stop: (container: String) -> Unit,
     private val exit: (message: String, code: Int) -> Unit,
-    private val getContainersStatus: () -> List<Container>,
+    private val getContainersStatus: () -> List<RuntimeStatus>,
     private val executor: CommandExecutor = CommandExecutor(),
     private val httpHandler: HttpHandler = HttpHandler()
 ) {
