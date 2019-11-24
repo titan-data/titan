@@ -5,12 +5,12 @@
 package io.titandata.titan
 
 import io.titandata.titan.commands.*
-import io.titandata.titan.providers.ProviderFactory
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.options.versionOption
 import io.titandata.client.infrastructure.ApiClient
 import io.titandata.titan.exceptions.CommandException
+import io.titandata.titan.providers.ProviderFactory
 import okhttp3.logging.HttpLoggingInterceptor
 import org.apache.log4j.BasicConfigurator
 import org.kodein.di.Kodein
@@ -23,13 +23,7 @@ object Cli {
     class Titan: CliktCommand(help = "Titan CLI") {
 
         override fun run() {
-            val providerFactory = ProviderFactory()
-            val type = System.getenv("TITAN_CONTEXT") ?: "local"
-            val provider = providerFactory.getFactory(type)
-            context.obj = Dependencies(provider)
-            if (context.invokedSubcommand?.commandName != "install") {
-                provider.checkInstall()
-            }
+            context.obj = Dependencies(ProviderFactory())
         }
     }
 

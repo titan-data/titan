@@ -25,7 +25,7 @@ class Migrate : CliktCommand(
     private val repository by argument()
     private val source by option("-s", "--source", help="Required. Source docker database container").required()
     override fun run() {
-        val provider = dependencies.provider
+        val provider = dependencies.providers.defaultProvider
         provider.migrate(source, repository)
     }
 }

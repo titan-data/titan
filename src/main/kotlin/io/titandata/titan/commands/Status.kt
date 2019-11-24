@@ -18,7 +18,7 @@ class Status : CliktCommand(help = "Display current status for a repository") {
     private val repository: String by argument()
 
     override fun run() {
-        val provider = dependencies.provider
+        val provider = dependencies.providers.byRepository(repository)
         provider.status(repository)
     }
 }

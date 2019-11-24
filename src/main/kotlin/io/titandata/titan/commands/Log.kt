@@ -20,7 +20,7 @@ class Log : CliktCommand(help = "List commits for a repository") {
     private val repository by argument()
     private val tags by option("-t", "--tag", help="Tag to set").multiple()
     override fun run() {
-        val provider = dependencies.provider
+        val provider = dependencies.providers.byRepository(repository)
         provider.log(repository, tags)
     }
 }
