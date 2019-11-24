@@ -15,7 +15,7 @@ tests:
       env:
         set: SSH_HOST
   - "run empty mongo db":
-      command:  titan run -- --name sshTest -p 27017:27017 -d mongo:latest
+      command:  titan run -n sshTest mongo
       wait: 10
       stdout:
         contains: Running controlled container sshTest

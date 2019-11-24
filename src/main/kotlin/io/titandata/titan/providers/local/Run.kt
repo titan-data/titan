@@ -19,30 +19,39 @@ class Run (
     private val docker: Docker = Docker(commandExecutor),
     private val repositoriesApi: RepositoriesApi = RepositoriesApi()
 ) {
-    fun run(arguments: List<String>, createRepo: Boolean = true) {
-        if (!arguments.hasDetach()) {
-            exit("No detach (-d or --detach) argument found, only detached containers are supported",1)
+    fun run(
+        container: String,
+        repository: String?,
+        environments: List<String>,
+        arguments: List<String>,
+        disablePortMapping: Boolean,
+        createRepo: Boolean = true
+    ) {
+
+        if(!repository.isNullOrEmpty() && repository.contains("/")) {
+            exit("Repository name cannot contain a slash",1)
         }
-        val containerName = arguments.fetchName()
-        if(containerName.contains("/")) {
-            exit("Container name cannot contain a slash",1)
+
+        val containerName = when {
+            repository.isNullOrEmpty() -> container
+            else -> repository
         }
-        val imageArray = arguments.last().split(":")
-        val image = imageArray[0]
-        val tag = if (imageArray[1].isNullOrEmpty()) {
-            "latest"
-        } else {
-            imageArray[1]
+        val image = when{
+            container.contains(":") -> container.split(":")[0]
+            else -> container
+        }
+        val tag =  when {
+            container.contains(":") -> container.split(":")[1]
+            else -> "latest"
         }
 
         var imageInfo: JSONObject? = null
         try {
-             imageInfo = docker.inspectImage("$image:$tag")
+            imageInfo = docker.inspectImage("$image:$tag")
         } catch (e: CommandException) {
             docker.pull("$image:$tag")
             imageInfo = docker.inspectImage("$image:$tag")
         }
-
         if (imageInfo == null) {
             exit("Image information is not available",1)
         }
@@ -50,21 +59,28 @@ class Run (
         if (volumes == null) {
             exit("No volumes found for image $image",1)
         }
+
         println("Creating repository $containerName")
         val repo = Repository(containerName, emptyMap())
         if (createRepo) {
             repositoriesApi.createRepository(repo)
         }
-        val argList = mutableListOf("--label","io.titandata.titan")
+
+        val argList = mutableListOf("-d", "--label","io.titandata.titan")
+        val metaVols = mutableListOf<Map<String, String>>()
         for ((index, path) in volumes.keys().withIndex()) {
             val volumeName = "$containerName/v$index"
             println("Creating docker volume $volumeName with path $path")
-
             docker.createVolume(volumeName, path)
-
             argList.add("--mount")
             argList.add("type=volume,src=$volumeName,dst=$path,volume-driver=titan")
+            val addVol = mapOf(
+                "name" to "v$index",
+                "path" to path
+            )
+            metaVols.add(addVol)
         }
+
         val argumentEdit= arguments.toMutableList()
         if (argumentEdit.contains("--name")) {
             argumentEdit.removeAt((argumentEdit.indexOf("--name") + 1))
@@ -73,9 +89,31 @@ class Run (
         if (argumentEdit.contains("$image:$tag")) {
             argumentEdit.removeAt(argumentEdit.indexOf("$image:$tag"))
         }
+        argList.addAll(argumentEdit)
         argList.add("--name")
         argList.add(containerName)
-        argList.addAll(argumentEdit)
+
+        val metaPorts = mutableListOf<Map<String, String>>()
+        if (!disablePortMapping) {
+            val exposedPorts = imageInfo.getJSONObject("Config").optJSONObject("ExposedPorts")
+            for (rawPort in exposedPorts.keys()) {
+                val port = rawPort.split("/")[0]
+                val protocol = rawPort.split("/")[1]
+                argList.add("-p")
+                argList.add("$port:$port/$protocol")
+                val addPorts = mapOf(
+                        "protocol" to protocol,
+                        "port" to port
+                )
+                metaPorts.add(addPorts)
+            }
+        }
+
+        for (env in environments) {
+            argList.add("--env")
+            argList.add(env)
+        }
+
         val repoDigest = imageInfo.optJSONArray("RepoDigests").optString(0)
         val dockerRunCommand = if(repoDigest.isNullOrEmpty()) {
             "$image:$tag"
@@ -83,13 +121,17 @@ class Run (
             repoDigest
         }
         val metadata = mapOf(
-                "container" to dockerRunCommand,
-                "image" to image,
-                "tag" to tag,
-                "digest" to repoDigest,
-                "runtime" to argList.toString()
+            "v2" to mapOf(
+                "image" to mapOf(
+                    "image" to image,
+                    "tag" to tag,
+                    "digest" to repoDigest
+                ),
+                "environment" to environments,
+                "ports" to metaPorts,
+                "volumes" to metaVols
+            )
         )
-
         val updateRepo = Repository(containerName, metadata)
         repositoriesApi.updateRepository(containerName, updateRepo)
         docker.run(dockerRunCommand, "", argList)

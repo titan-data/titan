@@ -591,6 +591,9 @@
 {
   "name":"io.kubernetes.client.models.V1WeightedPodAffinityTerm",
   "allDeclaredFields":true,
+},
+{
+  "name":"com.google.gson.internal.LinkedTreeMap",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
@@ -812,6 +815,18 @@
   "allPublicClasses":true
 },
 {
+  "name":"io.titandata.titan.providers.Image",
+  "allDeclaredFields":true
+},
+{
+  "name":"io.titandata.titan.providers.Port",
+  "allDeclaredFields":true
+},
+{
+  "name":"io.titandata.titan.providers.Volume",
+  "allDeclaredFields":true
+},
+{
   "name":"java.io.File",
   "methods":[{"name":"toPath","parameterTypes":[] }]
 },
@@ -857,6 +872,10 @@
 },
 {
   "name":"java.util.LinkedHashMap",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"kotlin.collections.EmptyList",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {

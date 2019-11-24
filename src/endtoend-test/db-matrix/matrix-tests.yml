@@ -1,6 +1,6 @@
 tests:
   - "$DB > $VERSION > run":
-      command: titan run -- --name $DB-test -p $PORT -d $DB:$VERSION
+      command: titan run -n $DB-test $DB:$VERSION
       stdout:
         contains:
           - Creating repository $DB-test
@@ -9,7 +9,6 @@ tests:
         get:
           - DB
           - VERSION
-          - PORT
   - "$DB > $VERSION > commit":
       command: [titan, commit, -m, Test Commit, $DB-test]
       stdout:
@@ -131,7 +130,7 @@ tests:
           - DB
           - VERSION
   - "$DB > $VERSION > clone":
-      command: titan clone $URI $DB-test
+      command: titan clone -n $DB-test $URI
       stdout:
         contains:
           - Creating repository $DB-test

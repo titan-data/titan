@@ -49,8 +49,8 @@ class Mock: Provider {
         println("Migrating $container to $name controlled environment")
     }
 
-    override fun run(arguments: List<String>) {
-        println("Running controlled container")
+    override fun run(image: String, repository: String?, environments: List<String>, arguments: List<String>, disablePortMapping: Boolean) {
+        println("Running controlled image")
     }
 
     override fun uninstall(force: Boolean) {
@@ -89,7 +89,7 @@ class Mock: Provider {
         println("copying data into $container with $driver from $source")
     }
 
-    override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>) {
+    override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>, arguments: List<String>, disablePortMapping: Boolean) {
         println("cloning $container from $uri")
     }
 
