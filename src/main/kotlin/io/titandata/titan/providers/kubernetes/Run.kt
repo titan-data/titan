@@ -24,26 +24,42 @@ class Run (
     private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
     private val volumesApi: VolumesApi = VolumesApi()
 ) {
-    fun run(arguments: List<String>, createRepo: Boolean = true) {
-        if (arguments.size != 1) {
-            exit("kubernetes context currently supports only a single image argument", 1)
+    fun run(
+            container: String,
+            repository: String?,
+            environments: List<String>,
+            arguments: List<String>,
+            disablePortMapping: Boolean,
+            createRepo: Boolean = true
+    ) {
+        if (!arguments.isEmpty()) {
+            exit("kubernetes provider doesn't support additional arguments", 1)
         }
-        val imageArray = arguments.last().split(":")
-        val image = imageArray[0]
-        val tag = if (imageArray[1].isNullOrEmpty()) {
-            "latest"
-        } else {
-            imageArray[1]
+
+        if(!repository.isNullOrEmpty() && repository.contains("/")) {
+            exit("Repository name cannot contain a slash",1)
+        }
+
+        val repoName = when {
+            repository.isNullOrEmpty() -> container
+            else -> repository
+        }
+        val image = when{
+            container.contains(":") -> container.split(":")[0]
+            else -> container
+        }
+        val tag =  when {
+            container.contains(":") -> container.split(":")[1]
+            else -> "latest"
         }
 
         var imageInfo: JSONObject? = null
         try {
-             imageInfo = docker.inspectImage("$image:$tag")
+            imageInfo = docker.inspectImage("$image:$tag")
         } catch (e: CommandException) {
             docker.pull("$image:$tag")
             imageInfo = docker.inspectImage("$image:$tag")
         }
-
         if (imageInfo == null) {
             exit("Image information is not available",1)
         }
@@ -51,19 +67,27 @@ class Run (
         if (volumes == null) {
             exit("No volumes found for image $image",1)
         }
-        val repoName = image
+
         println("Creating repository $repoName")
-        val repo = Repository(image, emptyMap())
+        val repo = Repository(repoName, emptyMap())
         if (createRepo) {
             repositoriesApi.createRepository(repo)
         }
+
         val titanVolumes = mutableListOf<Volume>()
+        val metaVols = mutableListOf<Map<String, String>>()
         try {
             for ((index, path) in volumes.keys().withIndex()) {
                 val volumeName = "v$index"
                 println("Creating titan volume $volumeName with path $path")
 
                 titanVolumes.add(volumesApi.createVolume(repoName, Volume(name = volumeName, properties = mapOf("path" to path))))
+
+                val addVol = mapOf(
+                        "name" to "v$index",
+                        "path" to path
+                )
+                metaVols.add(addVol)
             }
 
             println("Waiting for volumes to be ready")
@@ -105,22 +129,48 @@ class Run (
             throw t
         }
 
+        val metaPorts = mutableListOf<Map<String, String>>()
         val exposedPorts = imageInfo.getJSONObject("Config").optJSONObject("ExposedPorts")
         val ports = mutableListOf<Int>()
         for (rawPort in exposedPorts.keys()) {
             val port = rawPort.split("/")[0]
+            val protocol = rawPort.split("/")[1]
             ports.add(port.toInt())
+            val addPorts = mapOf(
+                    "protocol" to protocol,
+                    "port" to port
+            )
+            metaPorts.add(addPorts)
         }
 
+        val repoDigest = imageInfo.optJSONArray("RepoDigests").optString(0)
+        val metadata = mapOf(
+                "disablePortMapping" to disablePortMapping,
+                "v2" to mapOf(
+                        "image" to mapOf(
+                                "image" to image,
+                                "tag" to tag,
+                                "digest" to repoDigest
+                        ),
+                        "environment" to environments,
+                        "ports" to metaPorts,
+                        "volumes" to metaVols
+                )
+        )
+        val updateRepo = Repository(repoName, metadata)
+        repositoriesApi.updateRepository(repoName, updateRepo)
+
         println("Creating $repoName deployment")
+        // TODO - support environment
+        // TODO - support repoDigest
         kubernetes.createStatefulSet(repoName, "$image:$tag", ports, titanVolumes)
 
         println("Waiting for deployment to be ready")
-
         kubernetes.waitForStatefulSet(repoName)
 
-        println("Forwarding local ports")
-
-        kubernetes.startPortForwarding(repoName)
+        if (!disablePortMapping) {
+            println("Forwarding local ports")
+            kubernetes.startPortForwarding(repoName)
+        }
     }
 }

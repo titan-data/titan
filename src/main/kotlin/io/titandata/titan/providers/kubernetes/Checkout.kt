@@ -15,16 +15,16 @@ class Checkout (
         private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
         private val volumesApi: VolumesApi = VolumesApi()
 ) {
-    fun checkout(repo: String, guid: String?, tags: List<String>) {
+    fun checkout(repoName: String, guid: String?, tags: List<String>) {
         val sourceCommit = if (guid == null) {
             if (tags.isNotEmpty()) {
-                val commits = commitsApi.listCommits(repo, tags)
+                val commits = commitsApi.listCommits(repoName, tags)
                 if (commits.size == 0) {
                     throw IllegalStateException("no matching commits found")
                 }
                 commits.first().id
             } else {
-                val status = repositoriesApi.getRepositoryStatus(repo)
+                val status = repositoriesApi.getRepositoryStatus(repoName)
                 if (status.sourceCommit == null) {
                     throw IllegalStateException("no commits present, run 'titan commit' first")
                 }
@@ -37,11 +37,13 @@ class Checkout (
             guid
         }
 
-        val status = commitsApi.getCommitStatus(repo, sourceCommit)
+        val repo = repositoriesApi.getRepository(repoName)
+
+        val status = commitsApi.getCommitStatus(repoName, sourceCommit)
         if (!status.ready) {
             println("Waiting for commit to be ready")
             while (true) {
-                val commitStatus = commitsApi.getCommitStatus(repo, sourceCommit)
+                val commitStatus = commitsApi.getCommitStatus(repoName, sourceCommit)
                 if (commitStatus.ready) {
                     break
                 }
@@ -50,18 +52,18 @@ class Checkout (
         }
 
         println("Checkout $sourceCommit")
-        commitsApi.checkoutCommit(repo, sourceCommit)
+        commitsApi.checkoutCommit(repoName, sourceCommit)
 
         println("Stopping port forwarding")
-        kubernetes.stopPortFowarding(repo)
+        kubernetes.stopPortFowarding(repoName)
 
         println("Updating deployment")
-        kubernetes.updateStatefulSetVolumes(repo, volumesApi.listVolumes(repo).toList())
+        kubernetes.updateStatefulSetVolumes(repoName, volumesApi.listVolumes(repoName).toList())
 
         println("Waiting for deployment to be ready")
-        kubernetes.waitForStatefulSet(repo)
+        kubernetes.waitForStatefulSet(repoName)
 
         println("Starting port forwarding")
-        kubernetes.startPortForwarding(repo)
+        kubernetes.startPortForwarding(repoName)
     }
 }

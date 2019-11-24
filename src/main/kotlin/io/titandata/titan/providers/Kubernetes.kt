@@ -141,8 +141,8 @@ class Kubernetes: Provider {
     }
 
     override fun run(image: String, repository: String?, environments: List<String>, arguments: List<String>, disablePortMapping: Boolean) {
-        val runCommand = Run(::exit, commandExecutor, docker, kubernetes, repositoriesApi, volumesApi)
-        return runCommand.run(arguments)
+        val runCommand = Run(::exit,  commandExecutor, docker, kubernetes, repositoriesApi, volumesApi)
+        return runCommand.run(image, repository, environments, arguments, disablePortMapping)
     }
 
     override fun uninstall(force: Boolean) {
@@ -190,12 +190,12 @@ class Kubernetes: Provider {
     }
 
     override fun stop(container: String) {
-        val stopCommand = Stop(kubernetes)
+        val stopCommand = Stop(kubernetes, repositoriesApi)
         return stopCommand.stop(container)
     }
 
     override fun start(container: String) {
-        val startCommand = Start(kubernetes)
+        val startCommand = Start(kubernetes, repositoriesApi)
         return startCommand.start(container)
     }
 
