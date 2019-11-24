@@ -19,7 +19,7 @@ class ProviderFactory {
 
     fun byRepositoryName(repoName: String?) : Provider {
         if (repoName == null) {
-            return defaultProvider
+            return default()
         } else {
             return provider
         }
@@ -29,6 +29,10 @@ class ProviderFactory {
         return provider
     }
 
-    val defaultProvider : Provider
-        get() = provider
+    fun default(checkInstall : Boolean = true) : Provider {
+        if (checkInstall) {
+            provider.checkInstall()
+        }
+        return provider
+    }
 }

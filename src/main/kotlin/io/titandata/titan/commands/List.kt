@@ -17,6 +17,8 @@ class List : CliktCommand(help = "List repositories", name = "ls") {
     private val n = System.lineSeparator()
 
     override fun run() {
+        // Check that we have at least one context installed
+        dependencies.providers.default()
         System.out.printf("%-20s  %s${n}", "REPOSITORY", "STATUS")
         for (provider in dependencies.providers.list()) {
             provider.list()

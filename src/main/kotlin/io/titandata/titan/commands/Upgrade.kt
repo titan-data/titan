@@ -24,7 +24,7 @@ class Upgrade : CliktCommand(help = "Upgrade titan CLI and infrastructure") {
     private val path by option("-p", "--path", help="Full installation path of Titan").default("")
     override fun run() {
         // TODO This command is not really provider-specific
-        val provider = dependencies.providers.defaultProvider
+        val provider = dependencies.providers.default()
 
         provider.upgrade(force, version, finalize, path)
     }
