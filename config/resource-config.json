@@ -8,6 +8,8 @@
     {"pattern":"log4j.properties"}, 
     {"pattern":"org/jline/utils/capabilities.txt"}, 
     {"pattern":"org/jline/utils/xterm-256color.caps"}, 
+    {"pattern":"org/joda/time/tz/data/America/New_York"}, 
+    {"pattern":"org/joda/time/tz/data/ZoneInfoMap"}, 
     {"pattern":"org/slf4j/impl/StaticLoggerBinder.class"}, 
     {"pattern":"sun/net/idn/uidna.spp"}, 
     {"pattern":"sun/text/resources/CharacterBreakIteratorData"}, 

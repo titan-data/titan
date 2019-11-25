@@ -6,19 +6,19 @@ package io.titandata.titan.providers.local
 
 import io.titandata.client.apis.RepositoriesApi
 import io.titandata.client.apis.VolumesApi
-import io.titandata.titan.clients.Docker
 import io.titandata.models.Repository
+import io.titandata.titan.clients.Docker
 import io.titandata.titan.utils.CommandExecutor
 import org.json.JSONArray
 import org.json.JSONObject
 
-class Migrate (
-        private val exit: (message: String, code: Int) -> Unit,
-        private val commit: (container: String, message: String, tags: List<String>) -> Unit,
-        private val commandExecutor: CommandExecutor = CommandExecutor(),
-        private val docker: Docker = Docker(commandExecutor),
-        private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
-        private val volumeApi: VolumesApi = VolumesApi()
+class Migrate(
+    private val exit: (message: String, code: Int) -> Unit,
+    private val commit: (container: String, message: String, tags: List<String>) -> Unit,
+    private val commandExecutor: CommandExecutor = CommandExecutor(),
+    private val docker: Docker = Docker(commandExecutor),
+    private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
+    private val volumeApi: VolumesApi = VolumesApi()
 ) {
 
     private fun getLocalSrcFromPath(path: String, containerInfo: JSONObject): String {
@@ -35,25 +35,25 @@ class Migrate (
     fun migrate(container: String, name: String) {
         val containerInfo = docker.inspectContainer(container)
         if (containerInfo == null) {
-            exit("Container information is not available",1)
+            exit("Container information is not available", 1)
         }
-        if(containerInfo!!.getJSONObject("State").getBoolean("Running")) {
-            exit("Cannot migrate a running container. Please stop $container",1)
+        if (containerInfo!!.getJSONObject("State").getBoolean("Running")) {
+            exit("Cannot migrate a running container. Please stop $container", 1)
         }
-        if(name.contains("/")) {
-            exit("Container name cannot contain a slash",1)
+        if (name.contains("/")) {
+            exit("Container name cannot contain a slash", 1)
         }
         val image = containerInfo.getString("Image")
         val imageInfo = docker.inspectImage(image)
         if (imageInfo == null) {
-            exit("Image information is not available",1)
+            exit("Image information is not available", 1)
         }
         val volumes = imageInfo!!.getJSONObject("Config").optJSONObject("Volumes")
         if (volumes == null) {
             exit("No volumes found for image $image", 1)
         }
         println("Creating repository $name")
-        val arguments = mutableListOf("-d","--label","io.titandata.titan")
+        val arguments = mutableListOf("-d", "--label", "io.titandata.titan")
         val repo = Repository(name, emptyMap())
         repositoriesApi.createRepository(repo)
         var i = 0
@@ -79,7 +79,7 @@ class Migrate (
             val host = port[0] as JSONObject
             val containerPort = item.split("/")[0]
             arguments.add("-p")
-            if (host.optString("HostIp").isNotEmpty()){
+            if (host.optString("HostIp").isNotEmpty()) {
                 arguments.add("${host.optString("HostIp")}:${host.getString("HostPort")}:$containerPort")
             } else {
                 arguments.add("${host.getString("HostPort")}:$containerPort")
@@ -94,7 +94,7 @@ class Migrate (
                 "runtime" to arguments.toString()
         )
 
-        //TODO check for arguments to run validation since switch to array
+        // TODO check for arguments to run validation since switch to array
 
         val updateRepo = Repository(name, metadata)
         repositoriesApi.updateRepository(name, updateRepo)

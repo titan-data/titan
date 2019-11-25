@@ -4,13 +4,12 @@
 
 package io.titandata.titan.commands
 
-import io.titandata.titan.Dependencies
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.requireObject
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
-import com.github.ajalt.clikt.parameters.options.required
+import io.titandata.titan.Dependencies
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.inSet
@@ -20,7 +19,7 @@ class Checkout : CliktCommand(help = "Checkout a specific commit") {
     private val dependencies: Dependencies by requireObject()
     private val repository by argument()
     private val commit by option("-c", "--commit", help = "Commit to checkout")
-    private val tags by option("-t", "--tag", help="Tag to filter latest commit, if commit is not specified").multiple()
+    private val tags by option("-t", "--tag", help = "Tag to filter latest commit, if commit is not specified").multiple()
     override fun run() {
         val provider = dependencies.providers.byRepository(repository)
         provider.checkout(repository, commit, tags)

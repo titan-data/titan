@@ -8,7 +8,7 @@ import io.titandata.client.apis.OperationsApi
 import io.titandata.client.infrastructure.ClientException
 import io.titandata.models.Operation
 
-class Abort (
+class Abort(
     private val exit: (message: String, code: Int) -> Unit,
     private val operationsApi: OperationsApi = OperationsApi()
 ) {
@@ -19,17 +19,15 @@ class Abort (
             for (operation in operations) {
                 if (operation.state == Operation.State.RUNNING) {
                     println("aborting operation ${operation.id}")
-                    operationsApi.deleteOperation(repository, operation.id)
+                    operationsApi.deleteOperation(operation.id)
                     abortCount++
                 }
             }
             if (abortCount == 0) {
                 exit("no operation in progress", 0)
             }
-
         } catch (e: ClientException) {
-            exit(e.message!!,1)
+            exit(e.message!!, 1)
         }
-
     }
 }

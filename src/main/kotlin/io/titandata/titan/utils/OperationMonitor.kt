@@ -5,16 +5,18 @@ import io.titandata.client.infrastructure.ClientException
 import io.titandata.models.Operation
 import io.titandata.models.ProgressEntry
 
-class OperationMonitor(val repo: String,
-                       val operation : Operation,
-                       private val operationsApi: OperationsApi = OperationsApi()) {
+class OperationMonitor(
+    val repo: String,
+    val operation: Operation,
+    private val operationsApi: OperationsApi = OperationsApi()
+) {
 
-    fun isTerminal(state: ProgressEntry.Type) : Boolean {
+    fun isTerminal(state: ProgressEntry.Type): Boolean {
         return (state == ProgressEntry.Type.FAILED || state == ProgressEntry.Type.ABORT ||
                 state == ProgressEntry.Type.COMPLETE)
     }
 
-    fun monitor() : Boolean {
+    fun monitor(): Boolean {
         /*
          * The behavior of the API is such that we can keep reading progress entries, and we must "drain" all such
          * entries for the operation to be considered complete. Once we read the last entry, the operation will
@@ -23,9 +25,10 @@ class OperationMonitor(val repo: String,
         var padLen = 0
         var aborted = false
         var state = ProgressEntry.Type.START
+        var lastId = 0
         while (!isTerminal(state)) {
             try {
-                val entries = operationsApi.getProgress(repo, operation.id)
+                val entries = operationsApi.getProgress(operation.id, lastId)
 
                 if (entries.size > 0) {
                     state = entries.last().type
@@ -44,6 +47,9 @@ class OperationMonitor(val repo: String,
                         }
                         System.out.printf("\r%s", subMessage.padEnd((padLen - subMessage.length) + 1, ' '))
                     }
+                    if (e.id > lastId) {
+                        lastId = e.id
+                    }
                 }
 
                 Thread.sleep(2000)
@@ -58,7 +64,7 @@ class OperationMonitor(val repo: String,
                     throw e
                 } else {
                     try {
-                        operationsApi.deleteOperation(repo, operation.id)
+                        operationsApi.deleteOperation(operation.id)
                     } catch (e: ClientException) {
                         if (e.code != "NoSuchObjectException") {
                             throw e

@@ -9,11 +9,11 @@ import io.titandata.client.apis.RepositoriesApi
 import io.titandata.titan.clients.Docker
 import io.titandata.titan.utils.CommandExecutor
 
-class Checkout (
-        private val commandExecutor: CommandExecutor = CommandExecutor(),
-        private val docker: Docker = Docker(commandExecutor),
-        private val commitsApi: CommitsApi = CommitsApi(),
-        private val repositoriesApi: RepositoriesApi = RepositoriesApi()
+class Checkout(
+    private val commandExecutor: CommandExecutor = CommandExecutor(),
+    private val docker: Docker = Docker(commandExecutor),
+    private val commitsApi: CommitsApi = CommitsApi(),
+    private val repositoriesApi: RepositoriesApi = RepositoriesApi()
 ) {
     fun checkout(container: String, guid: String?, tags: List<String>) {
         val sourceCommit = if (guid == null) {

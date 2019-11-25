@@ -1,17 +1,17 @@
 package io.titandata.titan.providers
 
-import org.junit.Test
-import java.io.PrintStream
 import io.titandata.titan.providers.Mock as MockProvider
 import java.io.ByteArrayOutputStream
+import java.io.PrintStream
 import kotlin.test.assertEquals
+import org.junit.Test
 
 class MockTest {
 
     private val mockProvider = MockProvider()
 
     @Test
-    fun `can check install`(){
+    fun `can check install`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.checkInstall()
@@ -21,7 +21,7 @@ class MockTest {
     }
 
     @Test
-    fun `can pull`(){
+    fun `can pull`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.pull("container", "commit", null, listOf(), false)
@@ -31,7 +31,7 @@ class MockTest {
     }
 
     @Test
-    fun `can push`(){
+    fun `can push`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.push("container", "commit", null, listOf(), false)
@@ -41,7 +41,7 @@ class MockTest {
     }
 
     @Test
-    fun `can commit`(){
+    fun `can commit`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.commit("container", "message", listOf())
@@ -51,7 +51,7 @@ class MockTest {
     }
 
     @Test
-    fun `can install`(){
+    fun `can install`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.install("registry", false)
@@ -61,7 +61,7 @@ class MockTest {
     }
 
     @Test
-    fun `can abort`(){
+    fun `can abort`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.abort("container")
@@ -71,7 +71,7 @@ class MockTest {
     }
 
     @Test
-    fun `can status`(){
+    fun `can status`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.status("container")
@@ -91,7 +91,7 @@ class MockTest {
     }
 
     @Test
-    fun `can remoteLog`(){
+    fun `can remoteLog`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.remoteLog("container", null, listOf())
@@ -101,7 +101,7 @@ class MockTest {
     }
 
     @Test
-    fun `can migrate`(){
+    fun `can migrate`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.migrate("container", "name")
@@ -111,17 +111,17 @@ class MockTest {
     }
 
     @Test
-    fun `can run`(){
+    fun `can run`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.run("Container","Repo", emptyList(), emptyList(), true)
+        mockProvider.run("Container", "Repo", emptyList(), emptyList(), true)
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "Running controlled image")
     }
 
     @Test
-    fun `can uninstall`(){
+    fun `can uninstall`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.uninstall(true)
@@ -131,7 +131,7 @@ class MockTest {
     }
 
     @Test
-    fun `can upgrade`(){
+    fun `can upgrade`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.upgrade(true, "0.0.1", false, "")
@@ -141,7 +141,7 @@ class MockTest {
     }
 
     @Test
-    fun `can checkout`(){
+    fun `can checkout`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.checkout("container", "hash", listOf())
@@ -151,7 +151,7 @@ class MockTest {
     }
 
     @Test
-    fun `can list`(){
+    fun `can list`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.list()
@@ -161,7 +161,7 @@ class MockTest {
     }
 
     @Test
-    fun `can log`(){
+    fun `can log`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.log("container", listOf())
@@ -171,7 +171,7 @@ class MockTest {
     }
 
     @Test
-    fun `can stop`(){
+    fun `can stop`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.stop("container")
@@ -181,7 +181,7 @@ class MockTest {
     }
 
     @Test
-    fun `can start`(){
+    fun `can start`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.start("container")
@@ -191,7 +191,7 @@ class MockTest {
     }
 
     @Test
-    fun `can remove`(){
+    fun `can remove`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.remove("container", true)
@@ -201,7 +201,7 @@ class MockTest {
     }
 
     @Test
-    fun `can cp`(){
+    fun `can cp`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.cp("container", "driver", "source", "path")
@@ -211,7 +211,7 @@ class MockTest {
     }
 
     @Test
-    fun `can clone`(){
+    fun `can clone`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
         mockProvider.clone("http://user:pass@path", "container", null, emptyMap(), emptyList(), false)
@@ -219,5 +219,4 @@ class MockTest {
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "cloning container from http://user:pass@path")
     }
-
 }

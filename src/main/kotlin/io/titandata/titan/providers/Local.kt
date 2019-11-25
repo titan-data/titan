@@ -5,7 +5,6 @@
 package io.titandata.titan.providers
 
 import io.titandata.client.apis.RepositoriesApi
-import kotlin.system.exitProcess
 import io.titandata.titan.clients.Docker
 import io.titandata.titan.exceptions.CommandException
 import io.titandata.titan.providers.generic.Abort
@@ -18,19 +17,27 @@ import io.titandata.titan.providers.generic.RemoteAdd
 import io.titandata.titan.providers.generic.RemoteList
 import io.titandata.titan.providers.generic.RemoteLog
 import io.titandata.titan.providers.generic.RemoteRemove
+import io.titandata.titan.providers.generic.RuntimeStatus
 import io.titandata.titan.providers.generic.Status
 import io.titandata.titan.providers.generic.Tag
+import io.titandata.titan.providers.generic.Upgrade
+import io.titandata.titan.providers.local.CheckInstall
+import io.titandata.titan.providers.local.Checkout
+import io.titandata.titan.providers.local.Clone
+import io.titandata.titan.providers.local.Cp
+import io.titandata.titan.providers.local.Install
+import io.titandata.titan.providers.local.Migrate
+import io.titandata.titan.providers.local.Remove
+import io.titandata.titan.providers.local.Run
+import io.titandata.titan.providers.local.Start
+import io.titandata.titan.providers.local.Stop
+import io.titandata.titan.providers.local.Uninstall
 import io.titandata.titan.utils.CommandExecutor
 import io.titandata.titan.utils.HttpHandler
-import io.titandata.titan.providers.local.*
+import kotlin.system.exitProcess
 
-data class Container (
-    val name: String,
-    val status: String
-)
-
-class Local: Provider {
-    private val titanServerVersion = "0.6.5"
+class Local : Provider {
+    private val titanServerVersion = "0.6.6"
     private val dockerRegistryUrl = "titandata"
 
     private val httpHandler = HttpHandler()
@@ -40,15 +47,15 @@ class Local: Provider {
 
     private val n = System.lineSeparator()
 
-    private fun exit(message:String, code: Int = 1) {
+    private fun exit(message: String, code: Int = 1) {
         if (message != "") {
             println(message)
         }
         exitProcess(code)
     }
 
-    private fun getContainersStatus(): List<Container> {
-        val returnList = mutableListOf<Container>()
+    private fun getContainersStatus(): List<RuntimeStatus> {
+        val returnList = mutableListOf<RuntimeStatus>()
         val repositories = repositoriesApi.listRepositories()
         for (repo in repositories) {
             val container = repo.name
@@ -57,7 +64,7 @@ class Local: Provider {
                 val containerInfo = docker.inspectContainer(container)!!
                 status = containerInfo.getJSONObject("State").getString("Status")
             } catch (e: CommandException) {}
-            returnList.add(Container(container, status))
+            returnList.add(RuntimeStatus(container, status))
         }
         return returnList
     }
@@ -67,14 +74,24 @@ class Local: Provider {
         return upgradeCommand.upgrade(force, version, finalize, path)
     }
 
-    override fun pull(container: String, commit: String?, remoteName: String?, tags: List<String>,
-                      metadataOnly: Boolean) {
+    override fun pull(
+        container: String,
+        commit: String?,
+        remoteName: String?,
+        tags: List<String>,
+        metadataOnly: Boolean
+    ) {
         val pullCommand = Pull(::exit)
         return pullCommand.pull(container, commit, remoteName, tags, metadataOnly)
     }
 
-    override fun push(container: String, commit: String?, remoteName: String?, tags: List<String>,
-                      metadataOnly: Boolean) {
+    override fun push(
+        container: String,
+        commit: String?,
+        remoteName: String?,
+        tags: List<String>,
+        metadataOnly: Boolean
+    ) {
         val pushCommand = Push(::exit)
         return pushCommand.push(container, commit, remoteName, tags, metadataOnly)
     }
@@ -96,7 +113,7 @@ class Local: Provider {
 
     override fun commit(container: String, message: String, tags: List<String>) {
         try {
-            val user= commandExecutor.exec(listOf("git", "config", "user.name")).trim()
+            val user = commandExecutor.exec(listOf("git", "config", "user.name")).trim()
             val email = commandExecutor.exec(listOf("git", "config", "user.email")).trim()
             val commitCommand = Commit(user, email)
             return commitCommand.commit(container, message, tags)
@@ -115,12 +132,12 @@ class Local: Provider {
         return statusCommand.status(container)
     }
 
-    override fun remoteAdd(container:String, uri: String, remoteName: String?, params: Map<String, String>) {
+    override fun remoteAdd(container: String, uri: String, remoteName: String?, params: Map<String, String>) {
         val remoteAddCommand = RemoteAdd(::exit)
         return remoteAddCommand.remoteAdd(container, uri, remoteName, params)
     }
 
-    override fun remoteLog(container:String, remoteName: String?, tags: List<String>) {
+    override fun remoteLog(container: String, remoteName: String?, tags: List<String>) {
         val remoteLogCommand = RemoteLog(::exit)
         return remoteLogCommand.remoteLog(container, remoteName, tags)
     }
@@ -136,23 +153,23 @@ class Local: Provider {
     }
 
     override fun migrate(container: String, name: String) {
-        val migrateCommand = Migrate(::exit, ::commit,  commandExecutor, docker)
+        val migrateCommand = Migrate(::exit, ::commit, commandExecutor, docker)
         return migrateCommand.migrate(container, name)
     }
 
     override fun run(image: String, repository: String?, environments: List<String>, arguments: List<String>, disablePortMapping: Boolean) {
-        val runCommand = Run(::exit,  commandExecutor, docker)
+        val runCommand = Run(::exit, commandExecutor, docker)
         return runCommand.run(image, repository, environments, arguments, disablePortMapping)
     }
 
     override fun list() {
         for (container in getContainersStatus()) {
-            System.out.printf("%-20s  %s${n}", container.name, container.status)
+            System.out.printf("%-20s  %s$n", container.name, container.status)
         }
     }
 
     override fun uninstall(force: Boolean) {
-        val uninstallCommand = Uninstall(titanServerVersion, ::exit, ::remove,  commandExecutor, docker)
+        val uninstallCommand = Uninstall(titanServerVersion, ::exit, ::remove, commandExecutor, docker)
         return uninstallCommand.uninstall(force)
     }
 
@@ -182,12 +199,12 @@ class Local: Provider {
     }
 
     override fun cp(container: String, driver: String, source: String, path: String) {
-       val cpCommand = Cp(::exit, ::start, ::stop, commandExecutor, docker)
+        val cpCommand = Cp(::exit, ::start, ::stop, commandExecutor, docker)
         return cpCommand.cp(container, driver, source, path)
     }
 
     override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>, arguments: List<String>, disablePortMapping: Boolean) {
-        val runCommand = Run(::exit,  commandExecutor, docker)
+        val runCommand = Run(::exit, commandExecutor, docker)
         val cloneCommand = Clone(::remoteAdd, ::pull, ::checkout, runCommand::run, ::remove, commandExecutor, docker)
         return cloneCommand.clone(uri, container, commit, params, arguments, disablePortMapping)
     }

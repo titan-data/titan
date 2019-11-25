@@ -27,7 +27,7 @@ data class Metadata(
         V2("v2"),
         V1("v1")
     }
-    companion object{
+    companion object {
         fun Metadata.toMap(): Map<String, Any> {
             val returnMap = mutableMapOf<String, Any>()
             if (!this.user.isNullOrEmpty()) {
@@ -105,7 +105,7 @@ data class Metadata(
             val image = Image(imageMap["image"]!!, imageMap["tag"]!!, imageMap["digest"]!!)
 
             @Suppress("UNCHECKED_CAST")
-            val environment =  meta["environment"] as List<String>
+            val environment = meta["environment"] as List<String>
 
             @Suppress("UNCHECKED_CAST")
             val mapPorts = meta["ports"] as List<Map<String, String>>
@@ -159,7 +159,7 @@ data class Metadata(
                 metaMap.containsKey("tag") -> metaMap["tag"] as String
                 else -> null
             }
-            val image =  Image(imageName, imageTag, digest)
+            val image = Image(imageName, imageTag, digest)
             val runtimeString = metaMap["runtime"] as String
             val runtime = runtimeString.removePrefix("[").removeSuffix("]").toList(", ")
 
@@ -186,7 +186,7 @@ data class Metadata(
                     val vols = runtime[index + 1].split(",")
                     var name = ""
                     var path = ""
-                    for (vol in vols){
+                    for (vol in vols) {
                         val splitVol = vol.split("=")
                         when (splitVol[0]) {
                             "src" -> name = splitVol[1].split("/")[1]

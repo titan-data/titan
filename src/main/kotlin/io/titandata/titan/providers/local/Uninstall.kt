@@ -9,7 +9,7 @@ import io.titandata.titan.clients.Docker
 import io.titandata.titan.utils.CommandExecutor
 import io.titandata.titan.utils.ProgressTracker
 
-class Uninstall (
+class Uninstall(
     private val titanServerVersion: String,
     private val exit: (message: String, code: Int) -> Unit,
     private val remove: (container: String, force: Boolean) -> Unit,
@@ -30,13 +30,13 @@ class Uninstall (
         }
         if (docker.titanServerIsAvailable()) docker.rm("titan-server", true)
         if (docker.titanLaunchIsAvailable()) docker.rm("titan-launch", true)
-        track ("Tearing down Titan servers") {
+        track("Tearing down Titan servers") {
             docker.teardownTitanServers()
         }
-        track ("Removing titan-data Docker volume") {
+        track("Removing titan-data Docker volume") {
             docker.removeVolume("titan-data")
         }
-        track ("Removing Titan Docker image") {
+        track("Removing Titan Docker image") {
             docker.removeTitanImages(titanServerVersion)
         }
         println("Uninstalled titan infrastructure")

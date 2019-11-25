@@ -10,8 +10,7 @@ class UninstallTest {
     private val command = Uninstall("version", ::exit, ::remove)
 
     @Test
-    fun `can instantiate`(){
+    fun `can instantiate`() {
         Assert.assertThat(command, CoreMatchers.instanceOf(Uninstall::class.java))
     }
-
 }

@@ -9,7 +9,7 @@ import io.titandata.titan.clients.Docker
 import io.titandata.titan.utils.CommandExecutor
 import io.titandata.titan.utils.ProgressTracker
 
-class Install (
+class Install(
     private val titanServerVersion: String,
     private val dockerRegistryUrl: String,
     private val verbose: Boolean = false,
@@ -22,10 +22,10 @@ class Install (
         track("Checking docker installation") { docker.version() }
         if (!docker.titanLatestIsDownloaded(Version.fromString(titanServerVersion))) {
             track("Pulling titan docker image (may take a while)") {
-                docker.pull("${dockerRegistryUrl}/titan:$titanServerVersion")
+                docker.pull("$dockerRegistryUrl/titan:$titanServerVersion")
             }
-            docker.tag("${dockerRegistryUrl}/titan:$titanServerVersion", "titan:$titanServerVersion")
-            docker.tag("${dockerRegistryUrl}/titan:$titanServerVersion", "titan")
+            docker.tag("$dockerRegistryUrl/titan:$titanServerVersion", "titan:$titanServerVersion")
+            docker.tag("$dockerRegistryUrl/titan:$titanServerVersion", "titan")
         }
         if (docker.titanServerIsAvailable()) {
             track("Removing stale titan-server container") {
@@ -33,7 +33,7 @@ class Install (
             }
         }
         if (docker.titanLaunchIsAvailable()) {
-            track( "Removing stale titan-launch container") {
+            track("Removing stale titan-launch container") {
                 docker.rm("titan-launch", true)
             }
         }
@@ -44,7 +44,7 @@ class Install (
         docker.fetchLogs("titan-launch")
         var finished = false
         var output = false
-        loop@ while(!finished) {
+        loop@ while (!finished) {
             for (item in docker.logs) {
                 if (!item.value) {
                     val line = item.key

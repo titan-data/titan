@@ -4,12 +4,12 @@
 
 package io.titandata.titan.commands
 
-import io.titandata.titan.Dependencies
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.requireObject
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
+import io.titandata.titan.Dependencies
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.inSet
@@ -23,7 +23,7 @@ class Migrate : CliktCommand(
 ) {
     private val dependencies: Dependencies by requireObject()
     private val repository by argument()
-    private val source by option("-s", "--source", help="Required. Source docker database container").required()
+    private val source by option("-s", "--source", help = "Required. Source docker database container").required()
     override fun run() {
         val provider = dependencies.providers.default()
         provider.migrate(source, repository)

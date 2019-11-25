@@ -9,17 +9,17 @@ import io.titandata.client.apis.RemotesApi
 import io.titandata.serialization.RemoteUtil
 import io.titandata.titan.utils.OperationMonitor
 
-class Pull (
-        private val exit: (message: String, code: Int) -> Unit,
-        private val remotesApi: RemotesApi = RemotesApi(),
-        private val operationsApi: OperationsApi = OperationsApi(),
-        private val remoteUtil: RemoteUtil = RemoteUtil()
+class Pull(
+    private val exit: (message: String, code: Int) -> Unit,
+    private val remotesApi: RemotesApi = RemotesApi(),
+    private val operationsApi: OperationsApi = OperationsApi(),
+    private val remoteUtil: RemoteUtil = RemoteUtil()
 ) {
 
     fun pull(container: String, guid: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean) {
         val name = remoteName ?: "origin"
         val remotes = remotesApi.listRemotes(container)
-        if(remotes.isEmpty()) {
+        if (remotes.isEmpty()) {
             exit("remote is not set, run 'remote add' first", 1)
         }
 
@@ -38,7 +38,7 @@ class Pull (
             }
             commit = remoteCommits.first()
         }
-        if(commit.id == "id") {
+        if (commit.id == "id") {
             exit("remote commit not found", 1)
         }
         var operation = operationsApi.pull(container, remote.name, commit.id, remoteUtil.getParameters(remote),
