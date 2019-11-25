@@ -17,7 +17,7 @@ class Abort : CliktCommand(help = "Abort current push or pull operation") {
     private val dependencies: Dependencies by requireObject()
     private val repository: String by argument()
     override fun run() {
-        val provider = dependencies.provider
+        val provider = dependencies.providers.byRepository(repository)
         provider.abort(repository)
     }
 }

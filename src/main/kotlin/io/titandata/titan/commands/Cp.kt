@@ -25,7 +25,7 @@ class Cp : CliktCommand(
     private val source by option("-s", "--source", help = "Required. Source location of the files on the local machine").required()
     private val destination by option("-d", "--destination", help = "Destination of the files inside of the container").default("")
     override fun run() {
-        val provider = dependencies.provider
+        val provider = dependencies.providers.byRepository(repository)
         provider.cp(repository, "local", source, destination)
     }
 }

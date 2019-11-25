@@ -17,7 +17,7 @@ class Stop : CliktCommand(help = "Stop a running container for a repository") {
     private val dependencies: Dependencies by requireObject()
     private val repository by argument()
     override fun run() {
-        val provider = dependencies.provider
+        val provider = dependencies.providers.byRepository(repository)
         provider.stop(repository)
     }
 }

@@ -29,7 +29,7 @@ class RemoteAdd : CliktCommand(help = "Set remote destination for a repository",
     private val repository: String by argument()
 
     override fun run() {
-        val provider = dependencies.provider
+        val provider = dependencies.providers.byRepository(repository)
         val params = mutableMapOf<String, String>()
         for (param in parameters) {
             val split = param.split("=")
@@ -49,7 +49,7 @@ class RemoteLog : CliktCommand(help = "Display log on remote", name = "log") {
     private val tags by option("-t", "--tag", help = "Tag to set").multiple()
 
     override fun run() {
-        val provider = dependencies.provider
+        val provider = dependencies.providers.byRepository(repository)
         provider.remoteLog(repository, remote, tags)
     }
 }
@@ -59,7 +59,7 @@ class RemoteList : CliktCommand(help = "List remotes for a repository", name = "
     private val repository: String by argument()
 
     override fun run() {
-        val provider = dependencies.provider
+        val provider = dependencies.providers.byRepository(repository)
         provider.remoteList(repository)
     }
 }
@@ -70,7 +70,7 @@ class RemoteRemove : CliktCommand(help = "Remove remote from a repository", name
     private val remote: String by argument()
 
     override fun run() {
-        val provider = dependencies.provider
+        val provider = dependencies.providers.byRepository(repository)
         provider.remoteRemove(repository, remote)
     }
 }

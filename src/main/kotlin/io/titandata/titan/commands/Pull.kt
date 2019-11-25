@@ -25,7 +25,7 @@ class Pull : CliktCommand(help = "Pull a new data state from remote") {
     private val repository by argument()
 
     override fun run() {
-        val provider = dependencies.provider
+        val provider = dependencies.providers.byRepository(repository)
         provider.pull(repository, commit, remote, tags, metadataOnly)
     }
 }

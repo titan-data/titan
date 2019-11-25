@@ -17,7 +17,7 @@ class Start : CliktCommand(help = "Start a container for a repository") {
     private val dependencies: Dependencies by requireObject()
     private val repository by argument()
     override fun run() {
-        val provider = dependencies.provider
+        val provider = dependencies.providers.byRepository(repository)
         provider.start(repository)
     }
 }

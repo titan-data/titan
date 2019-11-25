@@ -18,8 +18,9 @@ class Uninstall : CliktCommand(help = "Uninstall titan infrastructure") {
     private val force by option("-f", "--force", help = "Destroy all repositories").flag(default = false)
     private val dependencies: Dependencies by requireObject()
     override fun run() {
-        val provider = dependencies.provider
-        provider.uninstall(force)
+        for (provider in dependencies.providers.list()) {
+            provider.uninstall(force)
+        }
     }
 }
 

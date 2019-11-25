@@ -1,5 +1,5 @@
 package io.titandata.titan
 
-import io.titandata.titan.providers.Provider
+import io.titandata.titan.providers.ProviderFactory
 
-data class Dependencies(val provider: Provider)
+data class Dependencies(val providers: ProviderFactory)

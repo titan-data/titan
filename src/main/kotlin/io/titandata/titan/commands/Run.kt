@@ -30,7 +30,7 @@ class Run : CliktCommand(
     private val repository by option("-n", "--name", help = "Optional new name for repository.")
     private val arguments by argument().multiple()
     override fun run() {
-        val provider = dependencies.provider
+        val provider = dependencies.providers.byRepositoryName(repository)
         provider.run(image, repository, environments, arguments, disablePortMapping)
     }
 }

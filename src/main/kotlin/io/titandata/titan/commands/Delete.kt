@@ -23,7 +23,7 @@ class Delete : CliktCommand(
     private val commit by option("-c", "--commit", help = "Commit GUID to delete")
     private val tags by option("-t", "--tag", help = "Tags to remove from a commit").multiple()
     override fun run() {
-        val provider = dependencies.provider
+        val provider = dependencies.providers.byRepository(repository)
         provider.delete(repository, commit, tags)
     }
 }

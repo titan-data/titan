@@ -43,13 +43,7 @@ object Cli {
     class Titan : CliktCommand(help = "Titan CLI") {
 
         override fun run() {
-            val providerFactory = ProviderFactory()
-            val type = System.getenv("TITAN_CONTEXT") ?: "local"
-            val provider = providerFactory.getFactory(type)
-            context.obj = Dependencies(provider)
-            if (context.invokedSubcommand?.commandName != "install") {
-                provider.checkInstall()
-            }
+            context.obj = Dependencies(ProviderFactory())
         }
     }
 
