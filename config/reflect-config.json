@@ -590,7 +590,7 @@
 },
 {
   "name":"io.kubernetes.client.models.V1WeightedPodAffinityTerm",
-  "allDeclaredFields":true,
+  "allDeclaredFields":true
 },
 {
   "name":"com.google.gson.internal.LinkedTreeMap",
