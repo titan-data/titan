@@ -8,27 +8,18 @@ import io.kubernetes.client.ApiException
 import io.kubernetes.client.Configuration
 import io.kubernetes.client.apis.AppsV1Api
 import io.kubernetes.client.apis.CoreV1Api
-import io.kubernetes.client.custom.Quantity
+import io.kubernetes.client.custom.V1Patch
 import io.kubernetes.client.models.V1ContainerBuilder
 import io.kubernetes.client.models.V1ContainerPortBuilder
+import io.kubernetes.client.models.V1EnvVarBuilder
 import io.kubernetes.client.models.V1LabelSelectorBuilder
 import io.kubernetes.client.models.V1ObjectMetaBuilder
-import io.kubernetes.client.custom.V1Patch
-import io.kubernetes.client.models.V1EnvVarBuilder
-import io.kubernetes.client.models.V1PatchBuilder
-import io.kubernetes.client.models.V1PersistentVolumeClaimBuilder
-import io.kubernetes.client.models.V1PersistentVolumeClaimSpec
-import io.kubernetes.client.models.V1PersistentVolumeClaimSpecBuilder
-import io.kubernetes.client.models.V1PersistentVolumeClaimVolumeSource
 import io.kubernetes.client.models.V1PersistentVolumeClaimVolumeSourceBuilder
 import io.kubernetes.client.models.V1PodSpecBuilder
-import io.kubernetes.client.models.V1PodTemplateBuilder
 import io.kubernetes.client.models.V1PodTemplateSpecBuilder
-import io.kubernetes.client.models.V1ResourceRequirementsBuilder
 import io.kubernetes.client.models.V1ServiceBuilder
 import io.kubernetes.client.models.V1ServicePortBuilder
 import io.kubernetes.client.models.V1ServiceSpecBuilder
-import io.kubernetes.client.models.V1StatefulSet
 import io.kubernetes.client.models.V1StatefulSetBuilder
 import io.kubernetes.client.models.V1StatefulSetSpecBuilder
 import io.kubernetes.client.models.V1VolumeBuilder
@@ -36,13 +27,7 @@ import io.kubernetes.client.models.V1VolumeMountBuilder
 import io.kubernetes.client.util.ClientBuilder
 import io.kubernetes.client.util.Config
 import io.titandata.models.Volume
-import io.titandata.titan.Version
-import io.titandata.titan.Version.Companion.compare
 import io.titandata.titan.utils.CommandExecutor
-import org.json.JSONArray
-import org.json.JSONObject
-import org.kohsuke.randname.RandomNameGenerator
-import kotlin.random.Random
 
 class Kubernetes() {
     private val executor = CommandExecutor()
@@ -57,7 +42,7 @@ class Kubernetes() {
         coreApi = CoreV1Api()
         appsApi = AppsV1Api()
 
-        val jsonPatchClient = ClientBuilder.standard().setOverridePatchFormat(V1Patch.PATCH_FORMAT_JSON_PATCH).build();
+        val jsonPatchClient = ClientBuilder.standard().setOverridePatchFormat(V1Patch.PATCH_FORMAT_JSON_PATCH).build()
         appsApiPatch = AppsV1Api(jsonPatchClient)
     }
 
@@ -66,8 +51,13 @@ class Kubernetes() {
      * the ports in the container. We then create a single replica stateful set with the given volumes (each with
      * existing PVCs) mapped in.
      */
-    fun createStatefulSet(repoName: String, imageId: String, ports: List<Int>, volumes: List<Volume>,
-                          environment: List<String>) {
+    fun createStatefulSet(
+        repoName: String,
+        imageId: String,
+        ports: List<Int>,
+        volumes: List<Volume>,
+        environment: List<String>
+    ) {
         val metadata = V1ObjectMetaBuilder()
                 .withName(repoName)
                 .withLabels(mapOf("titanRepository" to repoName))
@@ -96,7 +86,7 @@ class Kubernetes() {
                                                 .withName(repoName)
                                                 .withImage(imageId)
                                                 .withPorts(ports.map { V1ContainerPortBuilder().withContainerPort(it).withName("port-$it").build() })
-                                                .withVolumeMounts(volumes.map { V1VolumeMountBuilder().withName(it.name).withMountPath(it.properties["path"] as String).build()})
+                                                .withVolumeMounts(volumes.map { V1VolumeMountBuilder().withName(it.name).withMountPath(it.properties["path"] as String).build() })
                                                 .withEnv(environment.map { V1EnvVarBuilder().withName(it.substringBefore("=")).withValue(it.substringAfter("=")).build() })
                                                 .build())
                                         .withVolumes(volumes.map { V1VolumeBuilder()
@@ -140,7 +130,7 @@ class Kubernetes() {
      *
      * We also return a pair, with the second element providing addtional context for the "failed" state
      */
-    fun getStatefulSetStatus(repoName: String) : Pair<String, String?> {
+    fun getStatefulSetStatus(repoName: String): Pair<String, String?> {
         try {
             var set = appsApi.readNamespacedStatefulSet(repoName, defaultNamespace, null, null, null)
 
@@ -225,7 +215,6 @@ class Kubernetes() {
             executor.exec(listOf("kill", pid))
         }
     }
-
 
     /**
      * Update the volumes within a given StatefulSet.

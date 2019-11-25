@@ -4,13 +4,17 @@
 
 package io.titandata.titan.utils
 
-import okhttp3.*
-import org.json.JSONArray
-import org.json.JSONObject
 import java.io.IOException
 import java.util.concurrent.TimeUnit
+import okhttp3.MediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import org.json.JSONArray
+import org.json.JSONObject
 
-class HttpHandler(private val timeout: Long = 60, private val timeoutUnit: TimeUnit = TimeUnit.MINUTES){
+class HttpHandler(private val timeout: Long = 60, private val timeoutUnit: TimeUnit = TimeUnit.MINUTES) {
 
     private fun call(request: Request): ResponseBody {
         val caller = OkHttpClient.Builder()
@@ -32,7 +36,7 @@ class HttpHandler(private val timeout: Long = 60, private val timeoutUnit: TimeU
 
     fun post(url: String, data: Map<String, Any>): ResponseBody {
         val json = MediaType.parse("application/json; charset=utf-8")
-        val requestBody = RequestBody.create(json, JSONObject(data).toString());
+        val requestBody = RequestBody.create(json, JSONObject(data).toString())
         val request = Request.Builder()
                 .url(url)
                 .post(requestBody)

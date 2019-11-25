@@ -3,10 +3,10 @@
  */
 package io.titandata.titan.utils
 
-import me.tongfei.progressbar.ProgressBarBuilder
-import me.tongfei.progressbar.ProgressBarStyle
 import java.io.Console
 import kotlin.concurrent.thread
+import me.tongfei.progressbar.ProgressBarBuilder
+import me.tongfei.progressbar.ProgressBarStyle
 
 class ProgressTracker {
 
@@ -17,8 +17,8 @@ class ProgressTracker {
 
     private fun getStyle(): ProgressBarStyle {
         val term = System.getenv("TERM")
-        //TODO get better list of switches
-        return when  {
+        // TODO get better list of switches
+        return when {
             term.contains("xterm") -> ProgressBarStyle.COLORFUL_UNICODE_BLOCK
             else -> ProgressBarStyle.ASCII
         }

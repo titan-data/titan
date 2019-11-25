@@ -7,17 +7,16 @@ package io.titandata.titan.providers.local
 import io.titandata.client.apis.RemotesApi
 import io.titandata.client.apis.RepositoriesApi
 import io.titandata.models.Commit
-import io.titandata.titan.clients.Docker
-import io.titandata.titan.clients.Docker.Companion.runtimeToArguments
 import io.titandata.models.Repository
-import io.titandata.titan.utils.CommandExecutor
 import io.titandata.serialization.RemoteUtil
+import io.titandata.titan.clients.Docker
 import io.titandata.titan.exceptions.CommandException
 import io.titandata.titan.providers.Metadata
+import io.titandata.titan.utils.CommandExecutor
 import kotlin.system.exitProcess
 
-class Clone (
-    private val remoteAdd: (container:String, uri: String, remoteName: String?, params: Map<String, String>) -> Unit,
+class Clone(
+    private val remoteAdd: (container: String, uri: String, remoteName: String?, params: Map<String, String>) -> Unit,
     private val pull: (container: String, commit: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean) -> Unit,
     private val checkout: (container: String, hash: String?, tags: List<String>) -> Unit,
     private val run: (container: String, repository: String?, environments: List<String>, arguments: List<String>, disablePortMapping: Boolean, createRepo: Boolean) -> Unit,
@@ -29,7 +28,7 @@ class Clone (
     private val remoteUtil: RemoteUtil = RemoteUtil()
 ) {
     fun clone(uri: String, container: String?, guid: String?, params: Map<String, String>, arguments: List<String>, disablePortMapping: Boolean) {
-        val repoName = when(container){
+        val repoName = when (container) {
             null -> uri.split("/").last().substringBefore('#')
             else -> container
         }
@@ -53,7 +52,7 @@ class Clone (
             try {
                 docker.inspectImage(metadata.image.digest)
             } catch (e: CommandException) {
-                try{
+                try {
                     docker.pull(metadata.image.digest)
                 } catch (e: CommandException) {
                     throw CommandException(

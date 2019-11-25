@@ -11,12 +11,12 @@ import io.titandata.titan.exceptions.CommandException
 import io.titandata.titan.utils.CommandExecutor
 import java.lang.Exception
 
-class Remove (
-        private val exit: (message: String, code: Int) -> Unit,
-        private val commandExecutor: CommandExecutor = CommandExecutor(),
-        private val docker: Docker = Docker(commandExecutor),
-        private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
-        private val volumeApi: VolumesApi = VolumesApi()
+class Remove(
+    private val exit: (message: String, code: Int) -> Unit,
+    private val commandExecutor: CommandExecutor = CommandExecutor(),
+    private val docker: Docker = Docker(commandExecutor),
+    private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
+    private val volumeApi: VolumesApi = VolumesApi()
 ) {
     fun remove(container: String, force: Boolean) {
         try {
@@ -30,7 +30,7 @@ class Remove (
                 println("Removing container $container")
                 if (docker.containerIsRunning(container)) {
                     docker.rm(container, force)
-                } else  {
+                } else {
                     docker.rmStopped(container)
                 }
             }

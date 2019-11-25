@@ -9,14 +9,14 @@ import io.titandata.client.apis.RepositoriesApi
 import io.titandata.models.Commit
 import io.titandata.titan.providers.Metadata
 import io.titandata.titan.providers.Metadata.Companion.toMap
-import java.util.*
+import java.util.UUID
 
-class Commit (
+class Commit(
     private val user: String,
     private val email: String,
     private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
     private val commitsApi: CommitsApi = CommitsApi(),
-    private val uuid: String = UUID.randomUUID().toString().replace("-","")
+    private val uuid: String = UUID.randomUUID().toString().replace("-", "")
 ) {
     fun commit(repository: String, message: String, tags: List<String>) {
         val metadata = Metadata.load(repositoriesApi.getRepository(repository).properties)
@@ -43,5 +43,4 @@ class Commit (
         val hash = response.id
         println("Commit $hash")
     }
-
 }

@@ -4,23 +4,20 @@
 
 package io.titandata.titan.utils
 
-import org.junit.Test
+import io.titandata.titan.utils.HttpHandler.Companion.asBytes
+import io.titandata.titan.utils.HttpHandler.Companion.asJsonArray
+import io.titandata.titan.utils.HttpHandler.Companion.asJsonObject
+import io.titandata.titan.utils.HttpHandler.Companion.asString
+import java.io.IOException
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
+import okhttp3.ResponseBody
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
-
-import io.titandata.titan.utils.HttpHandler.Companion.asString
-import io.titandata.titan.utils.HttpHandler.Companion.asBytes
-import io.titandata.titan.utils.HttpHandler.Companion.asJsonObject
-import io.titandata.titan.utils.HttpHandler.Companion.asJsonArray
-import okhttp3.ResponseBody
 import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Assert.assertThat
-import org.mockito.BDDMockito.then
-import org.mockito.BDDMockito.given
-import java.io.IOException
-import kotlin.test.assertFailsWith
+import org.junit.Test
 
 class HttpHandlerTest {
     private val mockServer = MockWebServer()

@@ -1,6 +1,6 @@
 package io.titandata.titan.providers
 
-class Mock: Provider {
+class Mock : Provider {
     override fun checkInstall() {
         println("Mock Provider Installed")
     }

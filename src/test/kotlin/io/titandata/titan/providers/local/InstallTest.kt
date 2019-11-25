@@ -8,7 +8,7 @@ class InstallTest {
     private val command = Install("0.3.0", "delphix")
 
     @Test
-    fun `can instantiate`(){
+    fun `can instantiate`() {
         Assert.assertThat(command, CoreMatchers.instanceOf(Install::class.java))
     }
 }

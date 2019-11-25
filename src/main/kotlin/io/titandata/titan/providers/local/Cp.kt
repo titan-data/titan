@@ -9,7 +9,7 @@ import io.titandata.titan.clients.Docker
 import io.titandata.titan.utils.CommandExecutor
 import org.json.JSONObject
 
-class Cp (
+class Cp(
     private val exit: (message: String, code: Int) -> Unit,
     private val start: (container: String) -> Unit,
     private val stop: (container: String) -> Unit,
@@ -21,15 +21,15 @@ class Cp (
         var mutablePath = path
         val containerInfo = docker.inspectContainer(container)
         if (containerInfo == null) {
-            exit("Container information is not available",1)
+            exit("Container information is not available", 1)
         }
         val running = containerInfo!!.getJSONObject("State").getBoolean("Running")
-        if(running) {
+        if (running) {
             stop(container)
         }
         val mounts = containerInfo.getJSONObject("HostConfig").optJSONArray("Mounts")
         if (mounts.count() > 1 && mutablePath.isEmpty()) {
-            exit("$container has more than 1 volume mount. --path is required.",1)
+            exit("$container has more than 1 volume mount. --path is required.", 1)
         }
         if (mutablePath.isEmpty()) {
             val mount = mounts[0] as JSONObject
