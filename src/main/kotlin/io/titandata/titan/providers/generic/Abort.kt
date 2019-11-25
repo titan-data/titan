@@ -19,7 +19,7 @@ class Abort(
             for (operation in operations) {
                 if (operation.state == Operation.State.RUNNING) {
                     println("aborting operation ${operation.id}")
-                    operationsApi.deleteOperation(repository, operation.id)
+                    operationsApi.deleteOperation(operation.id)
                     abortCount++
                 }
             }
