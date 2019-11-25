@@ -6,7 +6,7 @@ package io.titandata.titan.providers.generic
 
 import io.titandata.client.apis.RemotesApi
 
-class RemoteRemove (
+class RemoteRemove(
     private val remotesApi: RemotesApi = RemotesApi()
 ) {
     fun remove(container: String, remote: String) {

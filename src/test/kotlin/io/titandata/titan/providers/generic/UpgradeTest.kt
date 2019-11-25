@@ -14,8 +14,7 @@ class UpgradeTest {
     private val command = Upgrade(::start, ::stop, ::exit, ::getContainersStatus)
 
     @Test
-    fun `can instantiate`(){
+    fun `can instantiate`() {
         Assert.assertThat(command, CoreMatchers.instanceOf(Upgrade::class.java))
     }
-  
 }

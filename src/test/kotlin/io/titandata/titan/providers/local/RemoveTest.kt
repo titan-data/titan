@@ -9,8 +9,7 @@ class RemoveTest {
     private val command = Remove(::exit)
 
     @Test
-    fun `can instantiate`(){
+    fun `can instantiate`() {
         Assert.assertThat(command, CoreMatchers.instanceOf(Remove::class.java))
     }
-
 }

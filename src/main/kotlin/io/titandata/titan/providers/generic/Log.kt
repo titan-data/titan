@@ -6,7 +6,7 @@ package io.titandata.titan.providers.generic
 
 import io.titandata.client.apis.CommitsApi
 
-class Log (
+class Log(
     private val commitsApi: CommitsApi = CommitsApi()
 ) {
     private val n = System.lineSeparator()

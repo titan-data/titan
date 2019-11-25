@@ -6,7 +6,7 @@ package io.titandata.titan.providers.generic
 
 import io.titandata.client.apis.CommitsApi
 
-class Delete (
+class Delete(
     private val commitsApi: CommitsApi = CommitsApi()
 ) {
     fun deleteCommit(repository: String, commit: String) {
@@ -33,6 +33,6 @@ class Delete (
         val metadata = commit.properties.toMutableMap()
         metadata["tags"] = commitTags
 
-        commitsApi.updateCommit(repository, io.titandata.models.Commit(id=commit.id, properties=metadata))
+        commitsApi.updateCommit(repository, io.titandata.models.Commit(id = commit.id, properties = metadata))
     }
 }

@@ -1,13 +1,13 @@
 package io.titandata.titan.providers.generic
 
-import org.junit.Test
 import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Assert.assertThat
+import org.junit.Test
 
 class CommitTest {
 
     @Test
-    fun `can instantiate`(){
+    fun `can instantiate`() {
         val command = Commit("user", "email")
         assertThat(command, instanceOf(Commit::class.java))
     }

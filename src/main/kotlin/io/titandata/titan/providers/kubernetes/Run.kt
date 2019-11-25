@@ -6,17 +6,15 @@ package io.titandata.titan.providers.kubernetes
 
 import io.titandata.client.apis.RepositoriesApi
 import io.titandata.client.apis.VolumesApi
-import io.titandata.titan.clients.Docker
-import io.titandata.titan.clients.Docker.Companion.fetchName
-import io.titandata.titan.clients.Docker.Companion.hasDetach
 import io.titandata.models.Repository
 import io.titandata.models.Volume
+import io.titandata.titan.clients.Docker
 import io.titandata.titan.clients.Kubernetes
 import io.titandata.titan.exceptions.CommandException
 import io.titandata.titan.utils.CommandExecutor
 import org.json.JSONObject
 
-class Run (
+class Run(
     private val exit: (message: String, code: Int) -> Unit,
     private val commandExecutor: CommandExecutor = CommandExecutor(),
     private val docker: Docker = Docker(commandExecutor),
@@ -25,30 +23,30 @@ class Run (
     private val volumesApi: VolumesApi = VolumesApi()
 ) {
     fun run(
-            container: String,
-            repository: String?,
-            environment: List<String>,
-            arguments: List<String>,
-            disablePortMapping: Boolean,
-            createRepo: Boolean = true
+        container: String,
+        repository: String?,
+        environment: List<String>,
+        arguments: List<String>,
+        disablePortMapping: Boolean,
+        createRepo: Boolean = true
     ) {
         if (!arguments.isEmpty()) {
             exit("kubernetes provider doesn't support additional arguments", 1)
         }
 
-        if(!repository.isNullOrEmpty() && repository.contains("/")) {
-            exit("Repository name cannot contain a slash",1)
+        if (!repository.isNullOrEmpty() && repository.contains("/")) {
+            exit("Repository name cannot contain a slash", 1)
         }
 
         val repoName = when {
             repository.isNullOrEmpty() -> container
             else -> repository
         }
-        val image = when{
+        val image = when {
             container.contains(":") -> container.split(":")[0]
             else -> container
         }
-        val tag =  when {
+        val tag = when {
             container.contains(":") -> container.split(":")[1]
             else -> "latest"
         }
@@ -61,11 +59,11 @@ class Run (
             imageInfo = docker.inspectImage("$image:$tag")
         }
         if (imageInfo == null) {
-            exit("Image information is not available",1)
+            exit("Image information is not available", 1)
         }
         val volumes = imageInfo!!.getJSONObject("Config").optJSONObject("Volumes")
         if (volumes == null) {
-            exit("No volumes found for image $image",1)
+            exit("No volumes found for image $image", 1)
         }
 
         println("Creating repository $repoName")
@@ -107,9 +105,9 @@ class Run (
             }
 
             val repoDigest = imageInfo.optJSONArray("RepoDigests").optString(0)
-            val imageId = if(repoDigest.isNullOrEmpty()) {
+            val imageId = if (repoDigest.isNullOrEmpty()) {
                 "$image:$tag"
-            } else  {
+            } else {
                 repoDigest
             }
             val metadata = mapOf(
@@ -121,7 +119,6 @@ class Run (
             )
             val updateRepo = Repository(repoName, metadata)
             repositoriesApi.updateRepository(repoName, updateRepo)
-
         } catch (t: Throwable) {
             for (volume in titanVolumes) {
                 volumesApi.deleteVolume(repoName, volume.name)
@@ -144,9 +141,9 @@ class Run (
         }
 
         val repoDigest = imageInfo.optJSONArray("RepoDigests").optString(0)
-        val containerImage = if(repoDigest.isNullOrEmpty()) {
+        val containerImage = if (repoDigest.isNullOrEmpty()) {
             "$image:$tag"
-        } else  {
+        } else {
             repoDigest
         }
         val metadata = mapOf(

@@ -5,11 +5,11 @@
 package io.titandata.titan.clients
 
 import io.titandata.titan.utils.HttpHandler
-import org.junit.Test
+import kotlin.test.assertEquals
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.json.JSONObject
-import kotlin.test.assertEquals
+import org.junit.Test
 
 class VolumeDriverTest {
     private val mockServer = MockWebServer()
@@ -25,7 +25,7 @@ class VolumeDriverTest {
     private val volumeDriver = VolumeDriver(HttpHandler(), mockServer.url("/").toString())
 
     @Test
-    fun `can get volume driver list`(){
+    fun `can get volume driver list`() {
         mockServer.enqueue(listResponse)
         val list = volumeDriver.list()
         val array = list.getJSONArray("Volumes")[0] as JSONObject
@@ -33,17 +33,16 @@ class VolumeDriverTest {
     }
 
     @Test
-    fun `can mount new volume`(){
+    fun `can mount new volume`() {
         mockServer.enqueue(mountResponse)
         val response = volumeDriver.mount("volumeName")
         assertEquals("/var/lib/titan/mnt/elaine/v1", response.getString("Mountpoint"))
     }
 
     @Test
-    fun `can unmount volume`(){
+    fun `can unmount volume`() {
         mockServer.enqueue(unmountResponse)
         val response = volumeDriver.unmount("volumeName")
         assertEquals("", response.getString("Err"))
     }
-
 }

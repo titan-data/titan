@@ -9,8 +9,7 @@ class RunTest {
     private val command = Run(::exit)
 
     @Test
-    fun `can instantiate`(){
+    fun `can instantiate`() {
         Assert.assertThat(command, CoreMatchers.instanceOf(Run::class.java))
     }
-
 }

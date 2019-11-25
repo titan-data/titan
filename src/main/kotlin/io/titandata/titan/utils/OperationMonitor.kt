@@ -5,16 +5,18 @@ import io.titandata.client.infrastructure.ClientException
 import io.titandata.models.Operation
 import io.titandata.models.ProgressEntry
 
-class OperationMonitor(val repo: String,
-                       val operation : Operation,
-                       private val operationsApi: OperationsApi = OperationsApi()) {
+class OperationMonitor(
+    val repo: String,
+    val operation: Operation,
+    private val operationsApi: OperationsApi = OperationsApi()
+) {
 
-    fun isTerminal(state: ProgressEntry.Type) : Boolean {
+    fun isTerminal(state: ProgressEntry.Type): Boolean {
         return (state == ProgressEntry.Type.FAILED || state == ProgressEntry.Type.ABORT ||
                 state == ProgressEntry.Type.COMPLETE)
     }
 
-    fun monitor() : Boolean {
+    fun monitor(): Boolean {
         /*
          * The behavior of the API is such that we can keep reading progress entries, and we must "drain" all such
          * entries for the operation to be considered complete. Once we read the last entry, the operation will

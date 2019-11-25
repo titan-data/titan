@@ -6,16 +6,16 @@ package io.titandata.titan.providers.generic
 
 import io.titandata.client.apis.RemotesApi
 import io.titandata.client.infrastructure.ClientException
-import io.titandata.serialization.RemoteUtil
 import io.titandata.models.Remote
+import io.titandata.serialization.RemoteUtil
 
-class RemoteLog (
-        private val exit: (message: String, code: Int) -> Unit,
-        private val remotesApi: RemotesApi = RemotesApi(),
-        private val remoteUtil: RemoteUtil = RemoteUtil()
+class RemoteLog(
+    private val exit: (message: String, code: Int) -> Unit,
+    private val remotesApi: RemotesApi = RemotesApi(),
+    private val remoteUtil: RemoteUtil = RemoteUtil()
 ) {
     private val n = System.lineSeparator()
-    
+
     private fun getRemotes(container: String, remoteName: String?): Array<Remote> {
         return try {
             when (remoteName.isNullOrBlank()) {
@@ -27,9 +27,9 @@ class RemoteLog (
         }
     }
 
-    fun remoteLog(container:String, remoteName: String?, tags: List<String>) {
+    fun remoteLog(container: String, remoteName: String?, tags: List<String>) {
         val remotes = getRemotes(container, remoteName)
-        if(remotes.isEmpty()) {
+        if (remotes.isEmpty()) {
             exit("remote is not set, run 'remote add' first", 1)
         }
 

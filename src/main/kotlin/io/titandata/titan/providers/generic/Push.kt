@@ -5,13 +5,13 @@
 package io.titandata.titan.providers.generic
 
 import io.titandata.client.apis.CommitsApi
-import io.titandata.client.apis.RemotesApi
 import io.titandata.client.apis.OperationsApi
+import io.titandata.client.apis.RemotesApi
 import io.titandata.client.apis.RepositoriesApi
 import io.titandata.serialization.RemoteUtil
 import io.titandata.titan.utils.OperationMonitor
 
-class Push (
+class Push(
     private val exit: (message: String, code: Int) -> Unit,
     private val commitsApi: CommitsApi = CommitsApi(),
     private val remotesApi: RemotesApi = RemotesApi(),
@@ -23,13 +23,13 @@ class Push (
     fun push(container: String, guid: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean) {
         val name = remoteName ?: "origin"
         val remotes = remotesApi.listRemotes(container)
-        if(remotes.isEmpty()) {
+        if (remotes.isEmpty()) {
             exit("remote is not set, run 'remote add' first", 1)
         }
 
         val repoStatus = repositoriesApi.getRepositoryStatus(container)
-        if(repoStatus.lastCommit.isNullOrEmpty()) {
-            exit("container has no history, run 'commit' to first commit state",1)
+        if (repoStatus.lastCommit.isNullOrEmpty()) {
+            exit("container has no history, run 'commit' to first commit state", 1)
         }
         val commit = if (guid != null) {
             if (!tags.isEmpty()) {

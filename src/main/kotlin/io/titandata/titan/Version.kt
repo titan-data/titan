@@ -4,11 +4,11 @@
 
 package io.titandata.titan
 
-data class Version (
-        val major: Int = 0,
-        val minor: Int = 0,
-        val micro: Int = 0,
-        val preRelease: String? = null
+data class Version(
+    val major: Int = 0,
+    val minor: Int = 0,
+    val micro: Int = 0,
+    val preRelease: String? = null
 ) {
     companion object {
         @JvmStatic
@@ -38,7 +38,7 @@ data class Version (
             if (this.minor < to.minor) return -1
             if (this.micro > to.micro) return 1
             if (this.micro < to.micro) return -1
-            //TODO compare preRelease tag
+            // TODO compare preRelease tag
             return 0
         }
     }

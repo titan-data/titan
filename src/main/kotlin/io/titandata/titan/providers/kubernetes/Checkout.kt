@@ -9,11 +9,11 @@ import io.titandata.client.apis.RepositoriesApi
 import io.titandata.client.apis.VolumesApi
 import io.titandata.titan.clients.Kubernetes
 
-class Checkout (
-        private val kubernetes: Kubernetes = Kubernetes(),
-        private val commitsApi: CommitsApi = CommitsApi(),
-        private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
-        private val volumesApi: VolumesApi = VolumesApi()
+class Checkout(
+    private val kubernetes: Kubernetes = Kubernetes(),
+    private val commitsApi: CommitsApi = CommitsApi(),
+    private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
+    private val volumesApi: VolumesApi = VolumesApi()
 ) {
     fun checkout(repoName: String, guid: String?, tags: List<String>) {
         val sourceCommit = if (guid == null) {

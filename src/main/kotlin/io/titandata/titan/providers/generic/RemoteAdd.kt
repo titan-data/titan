@@ -10,17 +10,17 @@ import io.titandata.client.infrastructure.ClientException
 import io.titandata.models.Repository
 import io.titandata.serialization.RemoteUtil
 
-class RemoteAdd (
-        private val exit: (message: String, code: Int) -> Unit,
-        private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
-        private val remotesApi: RemotesApi = RemotesApi(),
-        private val remoteUtil: RemoteUtil = RemoteUtil()
+class RemoteAdd(
+    private val exit: (message: String, code: Int) -> Unit,
+    private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
+    private val remotesApi: RemotesApi = RemotesApi(),
+    private val remoteUtil: RemoteUtil = RemoteUtil()
 ) {
     fun remoteAdd(
-            container:String,
-            uri: String,
-            remoteName: String?,
-            params: Map<String, String>
+        container: String,
+        uri: String,
+        remoteName: String?,
+        params: Map<String, String>
     ) {
         val name = remoteName ?: "origin"
         try {
@@ -32,6 +32,6 @@ class RemoteAdd (
         val metadata = repositoriesApi.getRepository(container).properties.toMutableMap()
         metadata["remote"] = remoteName ?: container
         val repo = Repository(container, metadata)
-        repositoriesApi.updateRepository(container,repo)
+        repositoriesApi.updateRepository(container, repo)
     }
 }

@@ -1,8 +1,8 @@
 package io.titandata.titan.providers
 
-import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import org.junit.Test
 
 class MetadataTest {
     private val oldMetadata: Map<String, Any> = mapOf(
@@ -37,35 +37,35 @@ class MetadataTest {
     private val v2Loaded = Metadata.load(v2Metadata)
 
     @Test
-    fun `v1 can get tags`(){
+    fun `v1 can get tags`() {
         assertNull(v1Loaded.tags)
     }
 
     @Test
-    fun `v1 can get timestamp`(){
+    fun `v1 can get timestamp`() {
         assertNull(v1Loaded.timestamp)
     }
 
     @Test
-    fun `v1 can get image`(){
+    fun `v1 can get image`() {
         assertEquals("mongo", v1Loaded.image.image)
         assertEquals("latest", v1Loaded.image.tag)
         assertEquals("mongo@sha256:7d9fe4ae781849afc70a29a0e1e4a37a2236c93a75786c576f34258e5983efbe", v1Loaded.image.digest)
     }
 
     @Test
-    fun `v1 can get envs`(){
+    fun `v1 can get envs`() {
         assertEquals("DEBUG=TRUE", v1Loaded.environment[0])
     }
 
     @Test
-    fun `v1 can get ports`(){
+    fun `v1 can get ports`() {
         assertEquals("tcp", v1Loaded.ports[0].protocol)
         assertEquals("27017", v1Loaded.ports[0].port)
     }
 
     @Test
-    fun `v1 can get vols`(){
+    fun `v1 can get vols`() {
         assertEquals("v0", v1Loaded.volumes[0].name)
         assertEquals("/data/configdb", v1Loaded.volumes[0].path)
         assertEquals("v1", v1Loaded.volumes[1].name)
@@ -73,35 +73,35 @@ class MetadataTest {
     }
 
     @Test
-    fun `v2 can get tags`(){
+    fun `v2 can get tags`() {
         assertNull(v2Loaded.tags)
     }
 
     @Test
-    fun `v2 can get timestamp`(){
+    fun `v2 can get timestamp`() {
         assertNull(v2Loaded.timestamp)
     }
 
     @Test
-    fun `v2 can get image`(){
+    fun `v2 can get image`() {
         assertEquals("mongo", v2Loaded.image.image)
         assertEquals("latest", v2Loaded.image.tag)
         assertEquals("mongo@sha256:7d9fe4ae781849afc70a29a0e1e4a37a2236c93a75786c576f34258e5983efbe", v2Loaded.image.digest)
     }
 
     @Test
-    fun `v2 can get envs`(){
+    fun `v2 can get envs`() {
         assertEquals("DEBUG=TRUE", v2Loaded.environment[0])
     }
 
     @Test
-    fun `v2 can get ports`(){
+    fun `v2 can get ports`() {
         assertEquals("tcp", v2Loaded.ports[0].protocol)
         assertEquals("27017", v2Loaded.ports[0].port)
     }
 
     @Test
-    fun `v2 can get vols`(){
+    fun `v2 can get vols`() {
         assertEquals("v0", v2Loaded.volumes[0].name)
         assertEquals("/data/configdb", v2Loaded.volumes[0].path)
         assertEquals("v1", v2Loaded.volumes[1].name)

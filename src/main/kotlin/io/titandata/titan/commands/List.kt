@@ -4,9 +4,9 @@
 
 package io.titandata.titan.commands
 
-import io.titandata.titan.Dependencies
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.requireObject
+import io.titandata.titan.Dependencies
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.inSet

@@ -7,10 +7,10 @@ package io.titandata.titan.clients
 import io.titandata.titan.Version
 import io.titandata.titan.Version.Companion.compare
 import io.titandata.titan.utils.CommandExecutor
+import kotlin.random.Random
 import org.json.JSONArray
 import org.json.JSONObject
 import org.kohsuke.randname.RandomNameGenerator
-import kotlin.random.Random
 
 class Docker(private val executor: CommandExecutor, val identity: String = "titan") {
 
@@ -21,7 +21,7 @@ class Docker(private val executor: CommandExecutor, val identity: String = "tita
         "--pid=host",
         "--network=host",
         "-d",
-        "--restart","always",
+        "--restart", "always",
         "--name=$identity-launch",
         "-v", "/var/lib:/var/lib",
         "-v", "/run/docker:/run/docker",
@@ -51,7 +51,7 @@ class Docker(private val executor: CommandExecutor, val identity: String = "tita
     }
 
     fun titanLatestIsDownloaded(titanServerVersion: Version): Boolean {
-        val images= executor.exec(listOf("docker", "images", "titan", "--format", "\"{{.Tag}}\""))
+        val images = executor.exec(listOf("docker", "images", "titan", "--format", "\"{{.Tag}}\""))
         val tags = images.split(System.lineSeparator())
         for (item in tags) {
             val tag = item.replace("\"", "")
@@ -73,7 +73,7 @@ class Docker(private val executor: CommandExecutor, val identity: String = "tita
         return result.isNotEmpty()
     }
 
-    fun titanLaunchIsAvailable():Boolean {
+    fun titanLaunchIsAvailable(): Boolean {
         return containerIsRunning("$identity-launch")
     }
 
@@ -128,7 +128,7 @@ class Docker(private val executor: CommandExecutor, val identity: String = "tita
         return executor.exec(argList).trim()
     }
 
-    fun rmStopped(container:String): String {
+    fun rmStopped(container: String): String {
         val containerId = executor.exec(listOf("docker", "ps", "-f", "status=exited", "-f", "name=$container", "--format", "{{.ID}}")).trim()
         return executor.exec(listOf("docker", "container", "rm", containerId))
     }
@@ -147,21 +147,21 @@ class Docker(private val executor: CommandExecutor, val identity: String = "tita
     }
 
     fun inspectContainer(container: String): JSONObject? {
-        val results = executor.exec(listOf("docker", "inspect",  "--type", "container", container))
+        val results = executor.exec(listOf("docker", "inspect", "--type", "container", container))
         return JSONArray(results).optJSONObject(0)
     }
 
     fun fetchLogs(container: String) {
         val lines = executor.exec(listOf("docker", "logs", container)).lines()
         for (line in lines) {
-            if (!this.logs.containsKey(line) && !line.isNullOrEmpty()){
+            if (!this.logs.containsKey(line) && !line.isNullOrEmpty()) {
                 this.logs[line] = false
             }
         }
     }
 
     fun inspectImage(image: String): JSONObject? {
-        val results = executor.exec(listOf("docker", "inspect",  "--type", "image", image))
+        val results = executor.exec(listOf("docker", "inspect", "--type", "image", image))
         return JSONArray(results).optJSONObject(0)
     }
 
@@ -200,16 +200,16 @@ class Docker(private val executor: CommandExecutor, val identity: String = "tita
             val rawArguments = this.removePrefix("[").removeSuffix("]").toList(", ")
             val returnArgs = mutableListOf<String>()
             for (arg in rawArguments) {
-               if (arg != "--mount" && !arg.contains("type=volume")) {
-                   returnArgs.add(arg)
-               }
+                if (arg != "--mount" && !arg.contains("type=volume")) {
+                    returnArgs.add(arg)
+                }
             }
             return returnArgs
         }
 
         fun List<String>.fetchName(): String {
             return when {
-                this.contains("--name") -> this[(this.indexOf("--name")+1)]
+                this.contains("--name") -> this[(this.indexOf("--name") + 1)]
                 else -> RandomNameGenerator(Random.nextInt()).next()
             }
         }
