@@ -27,6 +27,7 @@ import io.kubernetes.client.models.V1VolumeMountBuilder
 import io.kubernetes.client.util.ClientBuilder
 import io.kubernetes.client.util.Config
 import io.titandata.models.Volume
+import io.titandata.titan.exceptions.CommandException
 import io.titandata.titan.utils.CommandExecutor
 
 class Kubernetes() {
@@ -210,9 +211,13 @@ class Kubernetes() {
     fun stopPortFowarding(repoName: String) {
         val service = coreApi.readNamespacedService(repoName, defaultNamespace, null, null, null)
         for (port in service.spec.ports) {
-            val output = executor.exec(listOf("sh", "-c", "ps -ef | grep \"[k]ubectl port-forward svc/$repoName ${port.port}\""))
-            val pid = output.split("\\s+".toRegex())[2]
-            executor.exec(listOf("kill", pid))
+            try {
+                val output = executor.exec(listOf("sh", "-c", "ps -ef | grep \"[k]ubectl port-forward svc/$repoName ${port.port}\""))
+                val pid = output.split("\\s+".toRegex())[2]
+                executor.exec(listOf("kill", pid))
+            } catch (e: CommandException) {
+                // Ignore errors in case port forwarding dies
+            }
         }
     }
 
