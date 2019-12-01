@@ -8,6 +8,7 @@ import io.titandata.client.apis.RepositoriesApi
 import io.titandata.titan.clients.Docker
 import io.titandata.titan.exceptions.CommandException
 import io.titandata.titan.providers.generic.Abort
+import io.titandata.titan.providers.generic.Clone
 import io.titandata.titan.providers.generic.Commit
 import io.titandata.titan.providers.generic.Delete
 import io.titandata.titan.providers.generic.Log
@@ -23,7 +24,6 @@ import io.titandata.titan.providers.generic.Tag
 import io.titandata.titan.providers.generic.Upgrade
 import io.titandata.titan.providers.local.CheckInstall
 import io.titandata.titan.providers.local.Checkout
-import io.titandata.titan.providers.local.Clone
 import io.titandata.titan.providers.local.Cp
 import io.titandata.titan.providers.local.Install
 import io.titandata.titan.providers.local.Migrate

@@ -43,7 +43,7 @@ class Pull(
         }
         var operation = operationsApi.pull(container, remote.name, commit.id, remoteUtil.getParameters(remote),
                 metadataOnly)
-        if (!OperationMonitor(container, operation).monitor()) {
+        if (!OperationMonitor(container, operation, operationsApi).monitor()) {
             exit("", 1)
         }
     }

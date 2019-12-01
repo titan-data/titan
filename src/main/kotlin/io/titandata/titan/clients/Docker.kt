@@ -106,8 +106,18 @@ class Docker(private val executor: CommandExecutor, val identity: String = "tita
         return run("titan:latest", "/bin/bash /titan/teardown", titanLaunchArgs)
     }
 
-    fun launchTitanKubernetesServers(): String {
-        return run("titan:latest", "/bin/bash /titan/run", titanLaunchKubernetesArgs)
+    fun launchTitanKubernetesServers(titanServerVersion: String): String {
+        var config = System.getenv("TITAN_CONFIG") ?: ""
+        if (!config.contains("titanImage")) {
+            if (config != "") {
+                config += ","
+            }
+            config += "titanImage=titandata/titan:$titanServerVersion"
+        }
+        val launchArgs = titanLaunchKubernetesArgs.toMutableList()
+        launchArgs.add("-e")
+        launchArgs.add("TITAN_CONFIG=$config")
+        return run("titan:latest", "/bin/bash /titan/run", launchArgs)
     }
 
     fun pull(image: String): String {
