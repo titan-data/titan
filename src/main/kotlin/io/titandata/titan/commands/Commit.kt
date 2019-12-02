@@ -22,8 +22,8 @@ class Commit : CliktCommand(help = "Commit current data state") {
     private val message by option("-m", "--message", help = "Commit message").default("")
     private val tags by option("-t", "--tag", help = "Tag to set").multiple()
     override fun run() {
-        val provider = dependencies.providers.byRepository(repository)
-        provider.commit(repository, message, tags)
+        val (provider, repoName) = dependencies.providers.byRepository(repository)
+        provider.commit(repoName, message, tags)
     }
 }
 

@@ -24,8 +24,8 @@ class Tag : CliktCommand(
     private val commit by option("-c", "--commit", help = "Commit GUID to tag").required()
     private val tags by option("-t", "--tag", help = "Tags to add").multiple()
     override fun run() {
-        val provider = dependencies.providers.byRepository(repository)
-        provider.tag(repository, commit, tags)
+        val (provider, repoName) = dependencies.providers.byRepository(repository)
+        provider.tag(repoName, commit, tags)
     }
 }
 

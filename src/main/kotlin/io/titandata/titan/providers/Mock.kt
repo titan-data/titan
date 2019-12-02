@@ -1,6 +1,18 @@
 package io.titandata.titan.providers
 
 class Mock : Provider {
+    override fun getType(): String {
+        return "mock"
+    }
+
+    override fun getProperties(): Map<String, String> {
+        return emptyMap()
+    }
+
+    override fun repositoryExists(repository: String): Boolean {
+        return true
+    }
+
     override fun checkInstall() {
         println("Mock Provider Installed")
     }
@@ -65,7 +77,7 @@ class Mock : Provider {
         println("Checking out data set $guid")
     }
 
-    override fun list() {
+    override fun list(context: String) {
         println("List containers")
     }
 

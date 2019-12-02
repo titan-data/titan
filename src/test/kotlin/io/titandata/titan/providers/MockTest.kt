@@ -154,7 +154,7 @@ class MockTest {
     fun `can list`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.list()
+        mockProvider.list("mock")
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "List containers")

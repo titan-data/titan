@@ -1,6 +1,9 @@
 package io.titandata.titan.providers
 
 interface Provider {
+    fun getType(): String
+    fun getProperties(): Map<String, String>
+    fun repositoryExists(repository: String): Boolean
     fun checkInstall()
     fun pull(container: String, commit: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean)
     fun push(container: String, commit: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean)
@@ -19,7 +22,7 @@ interface Provider {
     fun checkout(container: String, guid: String?, tags: List<String>)
     fun delete(repository: String, commit: String?, tags: List<String>)
     fun tag(repository: String, commit: String, tags: List<String>)
-    fun list()
+    fun list(context: String)
     fun log(container: String, tags: List<String>)
     fun stop(container: String)
     fun start(container: String)

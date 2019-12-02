@@ -5,6 +5,7 @@
 package io.titandata.titan.providers
 
 import io.titandata.client.apis.CommitsApi
+import io.titandata.client.apis.ContextApi
 import io.titandata.client.apis.OperationsApi
 import io.titandata.client.apis.RemotesApi
 import io.titandata.client.apis.RepositoriesApi
@@ -39,19 +40,21 @@ import io.titandata.titan.utils.CommandExecutor
 import io.titandata.titan.utils.HttpHandler
 import kotlin.system.exitProcess
 
-class Kubernetes : Provider {
+class Kubernetes(val host: String = "localhost", val port: Int = 5001) : Provider {
     private val titanServerVersion = "0.6.6"
     private val dockerRegistryUrl = "titandata"
+    private val uri = "http://$host/$port"
 
     private val httpHandler = HttpHandler()
     private val commandExecutor = CommandExecutor()
     private val docker = Docker(commandExecutor, Identity)
     private val kubernetes = io.titandata.titan.clients.Kubernetes()
-    private val repositoriesApi = RepositoriesApi("http://localhost:$Port")
-    private val operationsApi = OperationsApi("http://localhost:$Port")
-    private val remotesApi = RemotesApi("http://localhost:$Port")
-    private val commitsApi = CommitsApi("http://localhost:$Port")
-    private val volumesApi = VolumesApi("http://localhost:$Port")
+    private val repositoriesApi = RepositoriesApi(uri)
+    private val operationsApi = OperationsApi(uri)
+    private val remotesApi = RemotesApi(uri)
+    private val commitsApi = CommitsApi(uri)
+    private val volumesApi = VolumesApi(uri)
+    private val contextApi = ContextApi(uri)
 
     private val n = System.lineSeparator()
 
@@ -74,6 +77,23 @@ class Kubernetes : Provider {
             returnList.add(RuntimeStatus(repo.name, status))
         }
         return returnList
+    }
+
+    override fun getType(): String {
+        return "kubernetes"
+    }
+
+    override fun getProperties(): Map<String, String> {
+        return contextApi.getContext().properties
+    }
+
+    override fun repositoryExists(repository: String): Boolean {
+        try {
+            repositoriesApi.getRepository(repository)
+        } catch (t: Throwable) {
+            return false
+        }
+        return true
     }
 
     override fun checkInstall() {
@@ -195,9 +215,9 @@ class Kubernetes : Provider {
         return tagCommand.tagCommit(repository, commit, tags)
     }
 
-    override fun list() {
+    override fun list(context: String) {
         for (container in getRuntimeStatus()) {
-            System.out.printf("%-20s  %s$n", container.name, container.status)
+            System.out.printf("%-10s  %-20s  %s$n", context, container.name, container.status)
         }
     }
 

@@ -20,8 +20,8 @@ class Remove : CliktCommand(help = "Remove a repository", name = "rm") {
     private val dependencies: Dependencies by requireObject()
     private val repository by argument()
     override fun run() {
-        val provider = dependencies.providers.byRepository(repository)
-        provider.remove(repository, force)
+        val (provider, repoName) = dependencies.providers.byRepository(repository)
+        provider.remove(repoName, force)
     }
 }
 
