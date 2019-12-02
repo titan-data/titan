@@ -40,7 +40,7 @@ import io.titandata.titan.utils.HttpHandler
 import kotlin.system.exitProcess
 
 class Kubernetes : Provider {
-    private val titanServerVersion = "0.6.6"
+    private val titanServerVersion = "0.7.0"
     private val dockerRegistryUrl = "titandata"
 
     private val httpHandler = HttpHandler()
