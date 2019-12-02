@@ -51,7 +51,7 @@ class Push(
         val remote = remotesApi.getRemote(container, name)
         var operation = operationsApi.push(container, remote.name, commit, remoteUtil.getParameters(remote),
                 metadataOnly)
-        if (!OperationMonitor(container, operation).monitor()) {
+        if (!OperationMonitor(container, operation, operationsApi).monitor()) {
             exit("", 1)
         }
     }

@@ -13,6 +13,7 @@ import io.titandata.serialization.RemoteUtil
 import io.titandata.titan.clients.Docker
 import io.titandata.titan.exceptions.CommandException
 import io.titandata.titan.providers.generic.Abort
+import io.titandata.titan.providers.generic.Clone
 import io.titandata.titan.providers.generic.Commit
 import io.titandata.titan.providers.generic.Delete
 import io.titandata.titan.providers.generic.Log
@@ -221,10 +222,13 @@ class Kubernetes : Provider {
     }
 
     override fun cp(container: String, driver: String, source: String, path: String) {
-        throw NotImplementedError("cp is not supported in kuberentes context")
+        throw NotImplementedError("cp is not supported in kubernetes context")
     }
 
     override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>, arguments: List<String>, disablePortMapping: Boolean) {
-        TODO("not implemented")
+        val runCommand = Run(::exit, commandExecutor, docker, kubernetes, repositoriesApi, volumesApi)
+        val cloneCommand = Clone(::remoteAdd, ::pull, ::checkout, runCommand::run, ::remove, commandExecutor, docker,
+                remotesApi, repositoriesApi)
+        return cloneCommand.clone(uri, container, commit, params, arguments, disablePortMapping)
     }
 }

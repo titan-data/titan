@@ -34,7 +34,7 @@ class Install(
             }
         }
         track("Starting titan server docker containers") {
-            docker.launchTitanKubernetesServers()
+            docker.launchTitanKubernetesServers(titanServerVersion)
         }
 
         println("Titan cli successfully installed, happy data versioning :)")
