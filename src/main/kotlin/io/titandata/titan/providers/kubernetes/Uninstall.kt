@@ -31,7 +31,7 @@ class Uninstall(
         }
         if (docker.titanServerIsAvailable()) docker.rm("${docker.identity}-server", true)
         track("Removing titan-data Docker volume") {
-            docker.removeVolume("titan-data")
+            docker.removeVolume("titan-k8s-data")
         }
         track("Removing Titan Docker image") {
             docker.removeTitanImages(titanServerVersion)
