@@ -42,14 +42,14 @@ import io.titandata.titan.utils.CommandExecutor
 import io.titandata.titan.utils.HttpHandler
 import kotlin.system.exitProcess
 
-class Local(val host: String = "localhost", val port: Int = 5001) : Provider {
+class Local(val contextName: String = "local", val host: String = "localhost", val port: Int = 5001) : Provider {
     private val titanServerVersion = "0.6.6"
     private val dockerRegistryUrl = "titandata"
     private val uri = "http://$host:$port"
 
     private val httpHandler = HttpHandler()
     private val commandExecutor = CommandExecutor()
-    private val docker = Docker(commandExecutor)
+    private val docker = Docker(commandExecutor, contextName, port)
     private val repositoriesApi = RepositoriesApi(uri)
     private val operationsApi = OperationsApi(uri)
     private val remotesApi = RemotesApi(uri)
@@ -129,14 +129,10 @@ class Local(val host: String = "localhost", val port: Int = 5001) : Provider {
         return checkInstallCommand.checkInstall()
     }
 
-    override fun install(registry: String?, verbose: Boolean) {
-        val regVal = if (registry.isNullOrEmpty()) {
-            dockerRegistryUrl
-        } else {
-            registry
-        }
+    override fun install(properties: Map<String, String>, verbose: Boolean) {
+        val regVal = properties.get("registry") ?: dockerRegistryUrl
         val installCommand = Install(titanServerVersion, regVal, verbose, commandExecutor, docker)
-        return installCommand.install()
+        installCommand.install()
     }
 
     override fun commit(container: String, message: String, tags: List<String>) {

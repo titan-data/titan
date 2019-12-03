@@ -19,8 +19,12 @@ class Install : CliktCommand(help = "Install titan infrastructure") {
     private val registry by option("-r", "--registry", help = "Registry URL for titan docker image, defaults to titandata")
     private val verbose by option("-V", "--verbose", help = "Verbose output of Titan Server installation steps.").flag(default = false)
     override fun run() {
+        val props = mutableMapOf<String, String>()
+        if (registry != null) {
+            props["registry"] = registry!!
+        }
         val provider = dependencies.providers.default(false)
-        provider.install(registry, verbose)
+        provider.install(props, verbose)
     }
 }
 

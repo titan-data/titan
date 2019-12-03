@@ -5,13 +5,12 @@
 package io.titandata.titan.providers.kubernetes
 
 import io.titandata.titan.clients.Docker
-import io.titandata.titan.providers.Kubernetes
 import io.titandata.titan.utils.CommandExecutor
 
 class CheckInstall(
     private val exit: (message: String, code: Int) -> Unit,
     private val commandExecutor: CommandExecutor = CommandExecutor(),
-    private val docker: Docker = Docker(commandExecutor, Kubernetes.Identity)
+    private val docker: Docker = Docker(commandExecutor)
 ) {
 
     fun checkInstall() {

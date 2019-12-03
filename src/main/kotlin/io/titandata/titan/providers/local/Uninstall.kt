@@ -28,13 +28,13 @@ class Uninstall(
                 remove(repo.name, true)
             }
         }
-        if (docker.titanServerIsAvailable()) docker.rm("titan-server", true)
-        if (docker.titanLaunchIsAvailable()) docker.rm("titan-launch", true)
+        if (docker.titanServerIsAvailable()) docker.rm("titan-${docker.identity}-server", true)
+        if (docker.titanLaunchIsAvailable()) docker.rm("titan-${docker.identity}-launch", true)
         track("Tearing down Titan servers") {
             docker.teardownTitanServers()
         }
         track("Removing titan-data Docker volume") {
-            docker.removeVolume("titan-data")
+            docker.removeVolume("titan-${docker.identity}-data")
         }
         track("Removing Titan Docker image") {
             docker.removeTitanImages(titanServerVersion)

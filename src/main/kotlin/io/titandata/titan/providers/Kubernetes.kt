@@ -40,14 +40,14 @@ import io.titandata.titan.utils.CommandExecutor
 import io.titandata.titan.utils.HttpHandler
 import kotlin.system.exitProcess
 
-class Kubernetes(val host: String = "localhost", val port: Int = 5001) : Provider {
+class Kubernetes(val contextName: String = "kubernetes", val host: String = "localhost", val port: Int = 5002) : Provider {
     private val titanServerVersion = "0.6.6"
     private val dockerRegistryUrl = "titandata"
     private val uri = "http://$host/$port"
 
     private val httpHandler = HttpHandler()
     private val commandExecutor = CommandExecutor()
-    private val docker = Docker(commandExecutor, Identity)
+    private val docker = Docker(commandExecutor, contextName, port)
     private val kubernetes = io.titandata.titan.clients.Kubernetes()
     private val repositoriesApi = RepositoriesApi(uri)
     private val operationsApi = OperationsApi(uri)
@@ -59,7 +59,6 @@ class Kubernetes(val host: String = "localhost", val port: Int = 5001) : Provide
     private val n = System.lineSeparator()
 
     companion object {
-        val Identity = "titan-k8s"
         val Port = 5002
     }
 
@@ -134,14 +133,11 @@ class Kubernetes(val host: String = "localhost", val port: Int = 5001) : Provide
         }
     }
 
-    override fun install(registry: String?, verbose: Boolean) {
-        val regVal = if (registry.isNullOrEmpty()) {
-            dockerRegistryUrl
-        } else {
-            registry
-        }
-        val installCommand = Install(titanServerVersion, regVal, verbose, commandExecutor, docker)
-        return installCommand.install()
+    override fun install(properties: Map<String, String>, verbose: Boolean) {
+        val regVal = properties.get("registry") ?: dockerRegistryUrl
+        val config = properties.filterKeys { it != "registry" }
+        val installCommand = Install(contextName, titanServerVersion, regVal, verbose, commandExecutor, docker)
+        installCommand.install()
     }
 
     override fun abort(container: String) {

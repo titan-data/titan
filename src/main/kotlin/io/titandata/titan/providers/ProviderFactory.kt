@@ -49,8 +49,8 @@ class ProviderFactory {
         val result = mutableMapOf<String, Provider>()
         for (entry in config.contexts.entries) {
             result[entry.key] = when {
-                entry.value.type == "local" -> Local(entry.value.host, entry.value.port)
-                entry.value.type == "kubernetes" -> Kubernetes(entry.value.host, entry.value.port)
+                entry.value.type == "local" -> Local(entry.key, entry.value.host, entry.value.port)
+                entry.value.type == "kubernetes" -> Kubernetes(entry.key, entry.value.host, entry.value.port)
                 else -> error("unknown context type '${entry.value.type}")
             }
         }
@@ -76,8 +76,26 @@ class ProviderFactory {
         gson.toJson(config, writer)
     }
 
+    fun addProvider(name: String, type: String, port: Int) {
+        val contexts = config.contexts.toMutableMap()
+        contexts[name] = TitanProvider(port = port, type = type)
+        writeConfig(config.copy(contexts = contexts))
+    }
+
     fun list(): Map<String, Provider> {
         return providers
+    }
+
+    fun byName(name: String): Provider {
+        return providers.get(name) ?: error("no such context '$name'")
+    }
+
+    fun create(contextName: String, providerType: String, port: Int): Provider {
+        return when (providerType) {
+            "local" -> Local(contextName, providerType, port)
+            "kubernetes" -> Kubernetes(contextName, providerType, port)
+            else -> error("unknown context type '$providerType'")
+        }
     }
 
     fun byRepositoryName(repoName: String?): Pair<Provider, String?> {

@@ -54,10 +54,10 @@ class MockTest {
     fun `can install`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.install("registry", false)
+        mockProvider.install(emptyMap(), false)
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
-        assertEquals(expected, "Initializing new repository")
+        assertEquals(expected, "Installing infrastructure")
     }
 
     @Test
