@@ -3,7 +3,6 @@ package io.titandata.titan.providers
 import com.google.gson.GsonBuilder
 import java.io.File
 import java.io.FileReader
-import java.io.FileWriter
 
 data class TitanProvider(
     val host: String = "localhost",
@@ -76,8 +75,7 @@ class ProviderFactory {
         if (!dir.exists()) {
             dir.mkdir()
         }
-        val writer = FileWriter(File("$configDir/config"))
-        gson.toJson(config, writer)
+        File("$configDir/config").writeText(gson.toJson(config))
     }
 
     fun addProvider(name: String, type: String, port: Int) {

@@ -12,7 +12,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import org.kohsuke.randname.RandomNameGenerator
 
-class Docker(private val executor: CommandExecutor, val identity: String = "titan", val port: Int = 5001) {
+class Docker(private val executor: CommandExecutor, val identity: String = "local", val port: Int = 5001) {
 
     val logs = mutableMapOf<String, Boolean>()
 
@@ -25,8 +25,8 @@ class Docker(private val executor: CommandExecutor, val identity: String = "tita
         "--name=titan-$identity-launch",
         "-v", "/var/lib:/var/lib",
         "-v", "/run/docker:/run/docker",
-        "-v", "/lib:/var/lib/$identity/system",
-        "-v", "titan-$identity-data:/var/lib/$identity/data",
+        "-v", "/lib:/var/lib/titan-$identity/system",
+        "-v", "titan-$identity-data:/var/lib/titan-$identity/data",
         "-v", "/var/run/docker.sock:/var/run/docker.sock"
     )
 
@@ -95,7 +95,7 @@ class Docker(private val executor: CommandExecutor, val identity: String = "tita
         titanLaunchArgs.add("-e")
         titanLaunchArgs.add("TITAN_IMAGE=titan:latest")
         titanLaunchArgs.add("-e")
-        titanLaunchArgs.add("TITAN_IDENTITY=$identity")
+        titanLaunchArgs.add("TITAN_IDENTITY=titan-$identity")
         return run("titan:latest", "/bin/bash /titan/launch", titanLaunchArgs)
     }
 

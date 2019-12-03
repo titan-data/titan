@@ -43,7 +43,7 @@ import kotlin.system.exitProcess
 class Kubernetes(val contextName: String = "kubernetes", val host: String = "localhost", val port: Int = 5002) : Provider {
     private val titanServerVersion = "0.6.6"
     private val dockerRegistryUrl = "titandata"
-    private val uri = "http://$host/$port"
+    private val uri = "http://$host:$port"
 
     private val httpHandler = HttpHandler()
     private val commandExecutor = CommandExecutor()
