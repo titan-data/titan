@@ -58,10 +58,6 @@ class Kubernetes(val contextName: String = "kubernetes", val host: String = "loc
 
     private val n = System.lineSeparator()
 
-    companion object {
-        val Port = 5002
-    }
-
     private fun exit(message: String, code: Int = 1) {
         if (message != "") {
             println(message)

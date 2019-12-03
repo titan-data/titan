@@ -58,11 +58,15 @@ class ProviderFactory {
     }
 
     private fun readConfig(): TitanConfig {
-        val file = File("$configDir/config")
-        if (file.exists()) {
-            val reader = FileReader(File("$configDir/config"))
-            return gson.fromJson(reader, TitanConfig::class.java)
-        } else {
+        try {
+            val file = File("$configDir/config")
+            if (file.exists()) {
+                val reader = FileReader(File("$configDir/config"))
+                return gson.fromJson(reader, TitanConfig::class.java)
+            } else {
+                return TitanConfig()
+            }
+        } catch (t: Throwable) {
             return TitanConfig()
         }
     }
