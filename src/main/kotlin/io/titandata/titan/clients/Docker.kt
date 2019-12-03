@@ -177,7 +177,7 @@ class Docker(private val executor: CommandExecutor, val identity: String = "loca
         return JSONArray(results).optJSONObject(0)
     }
 
-    fun createVolume(name: String, path: String, driver: String = "titan"): String {
+    fun createVolume(name: String, path: String, driver: String = "titan-$identity"): String {
         return executor.exec(listOf("docker", "volume", "create", "-d", driver, "-o", "path=$path", name))
     }
 

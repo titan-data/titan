@@ -17,6 +17,7 @@ import org.kodein.di.generic.provider
 class Uninstall : CliktCommand(help = "Uninstall titan infrastructure") {
     private val force by option("-f", "--force", help = "Destroy all repositories").flag(default = false)
     private val dependencies: Dependencies by requireObject()
+
     override fun run() {
         for (providerEntry in dependencies.providers.list()) {
             providerEntry.value.uninstall(force)

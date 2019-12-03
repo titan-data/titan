@@ -28,12 +28,9 @@ class Uninstall(
                 remove(repo.name, true)
             }
         }
-        if (docker.titanServerIsAvailable()) docker.rm("${docker.identity}-server", true)
+        if (docker.titanServerIsAvailable()) docker.rm("titan-${docker.identity}-server", true)
         track("Removing Titan Docker volume") {
             docker.removeVolume("titan-${docker.identity}-data")
-        }
-        track("Removing Titan Docker image") {
-            docker.removeTitanImages(titanServerVersion)
         }
         println("Uninstalled titan infrastructure")
     }

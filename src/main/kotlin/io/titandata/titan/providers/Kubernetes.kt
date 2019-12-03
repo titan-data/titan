@@ -209,7 +209,7 @@ class Kubernetes(val contextName: String = "kubernetes", val host: String = "loc
 
     override fun list(context: String) {
         for (container in getRuntimeStatus()) {
-            System.out.printf("%-10s  %-20s  %s$n", context, container.name, container.status)
+            System.out.printf("%-12s  %-20s  %s$n", context, container.name, container.status)
         }
     }
 

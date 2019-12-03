@@ -41,7 +41,7 @@ class Install(
             docker.launchTitanServers()
         }
 
-        docker.fetchLogs("titan--${docker.identity}-launch")
+        docker.fetchLogs("titan-${docker.identity}-launch")
         var finished = false
         var output = false
         loop@ while (!finished) {
