@@ -29,7 +29,7 @@ class Uninstall(
             }
         }
         if (docker.titanServerIsAvailable()) docker.rm("${docker.identity}-server", true)
-        track("Removing titan-data Docker volume") {
+        track("Removing Titan Docker volume") {
             docker.removeVolume("titan-${docker.identity}-data")
         }
         track("Removing Titan Docker image") {
