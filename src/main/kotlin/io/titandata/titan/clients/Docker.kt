@@ -37,7 +37,7 @@ class Docker(private val executor: CommandExecutor, val identity: String = "loca
             "-v", "${System.getProperty("user.home")}/.kube:/root/.kube",
             "-v", "titan-$identity-data:/var/lib/$identity",
             "-e", "TITAN_CONTEXT=kubernetes-csi",
-            "-e", "TITAN_DATA=$identity",
+            "-e", "TITAN_IDENTITY=titan-$identity",
             "-p", "$port:5001"
     )
 

@@ -40,7 +40,7 @@ Status: Downloaded newer image for titan:latest
         "Id": "48a93f6ac01c054dc8eb02313dc28450b48e4368cf29d8a8366200368f0e7789",
     }
 ]"""
-        on { exec(listOf("docker", "volume", "create", "-d", "titan", "-o", "path=path", "volume")) } doReturn "volume"
+        on { exec(listOf("docker", "volume", "create", "-d", "titan-local", "-o", "path=path", "volume")) } doReturn "volume"
         on { exec(listOf("docker", "volume", "rm", "volume")) } doReturn "volume"
         on { exec(listOf("docker", "cp", "-a", "source/.", "titan-local-server:/var/lib/titan/mnt/target")) } doReturn ""
         on { exec(listOf("docker", "rm", "-f", "container")) } doReturn ""
