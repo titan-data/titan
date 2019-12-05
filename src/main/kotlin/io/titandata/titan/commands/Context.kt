@@ -64,15 +64,25 @@ class ContextUninstall : CliktCommand(help = "Uninstall a context", name = "unin
     override fun run() {
         val provider = dependencies.providers.byName(contextName)
         provider.uninstall(force)
+        dependencies.providers.removeProvider(contextName)
     }
 }
 
 class ContextList : CliktCommand(help = "List available contexts", name = "ls") {
     private val dependencies: Dependencies by requireObject()
+    private val n = System.lineSeparator()
 
     override fun run() {
+        System.out.printf("%-12s  %-12  %s$n", "CONTEXT", "TYPE", "CONFIGURATION")
         for (providerEntry in dependencies.providers.list()) {
-            println(providerEntry.key)
+            val context = providerEntry.key
+            val type = providerEntry.value.getType()
+            val config = if (providerEntry.value.getProperties().isEmpty()) {
+                "-"
+            } else {
+                providerEntry.value.getProperties().map { "${it.key}=${it.value}" }.joinToString(",")
+            }
+            System.out.printf("%-12s  %-12  %s$n", context, type, config)
         }
     }
 }

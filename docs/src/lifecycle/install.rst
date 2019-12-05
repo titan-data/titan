@@ -33,9 +33,8 @@ While Titan is delivered as a standalone executable, it relies on a
 containerized service to do a lot of the heavy lifting. The ``titan install``
 command will download and run these containers. It may take some time
 to download the titan image, but once complete you should be able to see
-two containers running named ``titan-launch`` and ``titan-server``::
+two containers running named ``titan-docker-launch`` and ``titan-docker-server``::
 
-    $ titan install
     $ titan install
     Initializing titan infrastructure ...
     	√ Checking docker installation
@@ -43,36 +42,21 @@ two containers running named ``titan-launch`` and ``titan-server``::
     Titan cli successfully installed, happy data versioning :)
     $ docker ps
     CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
-    ff80dcdf8d0e        titan:latest        "/titan/run"             9 seconds ago       Up 7 seconds        0.0.0.0:5001->5001/tcp   titan-server
-    6b09cccc407a        titan:latest        "/bin/bash /titan/la…"   29 seconds ago      Up 14 seconds                                titan-launch
+    ff80dcdf8d0e        titan:latest        "/titan/run"             9 seconds ago       Up 7 seconds        0.0.0.0:5001->5001/tcp   titan-docker-server
+    6b09cccc407a        titan:latest        "/bin/bash /titan/la…"   29 seconds ago      Up 14 seconds                                titan-docker-launch
 
-If you are operating in a corporate environment without access to the main
-docker registry, you can manually load the ```titandata/titan`` image into
-a private registry and use the ``-r registry`` option to ``titan install``
-to pull from there instead.
+By deafult, this installs a local docker context, and is equivalent to
+``titan context install -t docker``. If you want to install Titan
+for use with Kubernetes, see the :ref:`lifecycle_context` and
+:ref:`lifecycle_kubernetes` sections. If you are operating in a corporate
+environment without access to the main docker registry, you can manually load
+the ```titandata/titan`` image into a private registry and use the ``-r
+registry`` option to ``titan install`` to pull from there instead.
 
-Among other things, the ``titan-launch`` container is responsible for installing
-ZFS on the Docker or host VM. This is the primary area where
-:ref:`lifecycle_supported` comes into play. For Windows and MacOS, docker is
-running on the same HyperKit VM, and so it is relatively easy for the
-community to keep delivering pre-built ZFS binaries for those installations.
-With Linux, however, the story is much different as there are a wide variety
-of distributions, each with their own mechanism of fetching required
-dependencies to build ZFS. For the distributions noted in the
-:ref:`lifecycle_supported` list, we attempt to keep up-to-date with the
-latest releases.
-
-If we do not have a pre-built version of the ZFS binaries, we will attempt to
-build them on the fly. For Linux, we are still limited to the set of supported
-distributions, but we can built for slightly different variations or versions
-if needed. If you are running a Linux system other than a supported
-distribution, you can also compile and install ZFS yourself, provided it's
-version `0.8.1`, and Titan will use that instead of trying to install its own.
-
-If the installation is taking a while, and you see a ``zfs-builder``
-container in ``docker ps`` output, then it's off building a custom version
-of ZFS. If you are running a supported operating system, then reach out to the
-community to see if new pre-built binaries need to be created.
+When using the local docker context, the ``titan-docker-launch`` container is
+responsible for installing ZFS on the Docker or host VM. For more information
+on how this works and supported configurations, see the :ref:`lifecycle_docker`
+section.
 
 If you can successfully run ``titan ls``, then you should be all set::
 

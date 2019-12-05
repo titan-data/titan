@@ -10,6 +10,8 @@ Coming Soon!
    :caption: Managing Titan Software
 
    install
+   config
+   kubernetes
    supported
    upgrade
    diagnosis

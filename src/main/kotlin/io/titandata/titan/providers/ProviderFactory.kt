@@ -80,7 +80,20 @@ class ProviderFactory {
 
     fun addProvider(name: String, type: String, port: Int) {
         val contexts = config.contexts.toMutableMap()
-        contexts[name] = TitanProvider(port = port, type = type)
+        contexts[name] = TitanProvider(port = port, type = type, default = contexts.isEmpty())
+        writeConfig(config.copy(contexts = contexts))
+    }
+
+    fun removeProvider(name: String) {
+        val contexts = config.contexts.toMutableMap()
+        val current = contexts[name]
+        contexts.remove(name)
+        // If we delete the default provider, just pick one at random to be default
+        if (current?.default == true) {
+            contexts.keys.firstOrNull()?.let {
+                contexts[it] = contexts[it]!!.copy(default = true)
+            }
+        }
         writeConfig(config.copy(contexts = contexts))
     }
 
