@@ -53,7 +53,7 @@ environment without access to the main docker registry, you can manually load
 the ```titandata/titan`` image into a private registry and use the ``-r
 registry`` option to ``titan install`` to pull from there instead.
 
-When using the local docker context, the ``titan-docker-launch`` container is
+When using the local docker context, the ``titan-<context>-launch`` container is
 responsible for installing ZFS on the Docker or host VM. For more information
 on how this works and supported configurations, see the :ref:`lifecycle_docker`
 section.

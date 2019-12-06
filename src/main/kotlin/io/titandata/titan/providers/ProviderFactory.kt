@@ -165,6 +165,17 @@ class ProviderFactory {
         }
     }
 
+    fun setDefault(name: String) {
+        val contexts = config.contexts.toMutableMap()
+        byName(name) // check it exists
+        val oldDefault = defaultName()
+
+        contexts[oldDefault] = contexts[oldDefault]!!.copy(default = false)
+        contexts[name] = contexts[name]!!.copy(default = true)
+
+        writeConfig(config.copy(contexts = contexts))
+    }
+
     fun default(checkInstall: Boolean = true): Provider {
         val defaultName = defaultName()
         return providers[defaultName] ?: error("No such provider '$defaultName'")

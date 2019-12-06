@@ -11,8 +11,9 @@ Coming Soon!
 
    install
    config
+   context
+   docker
    kubernetes
-   supported
    upgrade
    diagnosis
    uninstall

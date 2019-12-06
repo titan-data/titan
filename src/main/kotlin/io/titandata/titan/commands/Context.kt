@@ -8,6 +8,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.requireObject
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.arguments.argument
+import com.github.ajalt.clikt.parameters.arguments.optional
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.multiple
@@ -73,7 +74,7 @@ class ContextList : CliktCommand(help = "List available contexts", name = "ls") 
     private val n = System.lineSeparator()
 
     override fun run() {
-        System.out.printf("%-20s  %-12s  %s$n", "CONTEXT", "TYPE", "CONFIGURATION")
+        System.out.printf("%-20s  %-12s  %s$n", "NAME", "TYPE", "CONFIGURATION")
         val providers = dependencies.providers.list()
         if (!providers.isEmpty()) {
             val defaultName = dependencies.providers.defaultName()
@@ -93,12 +94,25 @@ class ContextList : CliktCommand(help = "List available contexts", name = "ls") 
         }
     }
 }
+class ContextDefault : CliktCommand(help = "Get or set default context", name = "default") {
+    private val dependencies: Dependencies by requireObject()
+    private val contextName by argument().optional()
+
+    override fun run() {
+        if (contextName != null) {
+            dependencies.providers.setDefault(contextName!!)
+        } else {
+            println(dependencies.providers.defaultName())
+        }
+    }
+}
 
 val contextModule = Kodein.Module("context") {
     bind<CliktCommand>().inSet() with provider {
         Context().subcommands(
                 ContextInstall(),
                 ContextUninstall(),
+                ContextDefault(),
                 ContextList()
         )
     }
