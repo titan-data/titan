@@ -1,13 +1,15 @@
 package io.titandata.titan.providers
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.google.gson.GsonBuilder
 import java.io.File
-import java.io.FileReader
 
 data class TitanProvider(
     val host: String = "localhost",
     val port: Int = 5001,
-    val type: String = "local",
+    val type: String = "docker",
     val default: Boolean = false
 )
 
@@ -29,7 +31,7 @@ data class TitanConfig(
  *
  * Additional configuration, such as the provider type and provider-specific configuration, is stored within
  * the titan-server instance and accessible through the getContext() client method. When a context is created, it
- * can be given a type ("local" or "kubernetes") as well as context-specific configuration.
+ * can be given a type ("docker" or "kubernetes") as well as context-specific configuration.
  *
  * Each repository is associated with a particular context, and can be referred to as "context/repo", or just
  * "repo" for convenience (if there is only one known context, or no conflicts exists).
@@ -48,7 +50,7 @@ class ProviderFactory {
         val result = mutableMapOf<String, Provider>()
         for (entry in config.contexts.entries) {
             result[entry.key] = when {
-                entry.value.type == "local" -> Local(entry.key, entry.value.host, entry.value.port)
+                entry.value.type == "docker" -> Local(entry.key, entry.value.host, entry.value.port)
                 entry.value.type == "kubernetes" -> Kubernetes(entry.key, entry.value.host, entry.value.port)
                 else -> error("unknown context type '${entry.value.type}")
             }
@@ -60,8 +62,9 @@ class ProviderFactory {
         try {
             val file = File("$configDir/config")
             if (file.exists()) {
-                val reader = FileReader(File("$configDir/config"))
-                return gson.fromJson(reader, TitanConfig::class.java)
+                val mapper = ObjectMapper(YAMLFactory())
+                mapper.registerModule(KotlinModule())
+                return mapper.readValue(File("$configDir/config"), TitanConfig::class.java)
             } else {
                 return TitanConfig()
             }
@@ -75,7 +78,9 @@ class ProviderFactory {
         if (!dir.exists()) {
             dir.mkdir()
         }
-        File("$configDir/config").writeText(gson.toJson(config))
+        val mapper = ObjectMapper(YAMLFactory())
+        mapper.registerModule(KotlinModule())
+        mapper.writeValue(File("$configDir/config"), config)
     }
 
     fun addProvider(name: String, type: String, port: Int) {
@@ -107,7 +112,7 @@ class ProviderFactory {
 
     fun create(contextName: String, providerType: String, port: Int): Provider {
         return when (providerType) {
-            "local" -> Local(contextName, providerType, port)
+            "docker" -> Local(contextName, providerType, port)
             "kubernetes" -> Kubernetes(contextName, providerType, port)
             else -> error("unknown context type '$providerType'")
         }
@@ -149,15 +154,19 @@ class ProviderFactory {
         }
     }
 
-    fun default(checkInstall: Boolean = true): Provider {
+    fun defaultName(): String {
         return if (providers.isEmpty()) {
             error("No context is configured, run 'titan install' or 'titan context install' to configure titan")
         } else if (providers.size == 1) {
-            providers.entries.first().value
+            providers.entries.first().key
         } else {
-            val defaultName = config.contexts.filter { it.value.default }.keys.firstOrNull()
+            config.contexts.filter { it.value.default }.keys.firstOrNull()
                     ?: error("More than one context specified, but no default set")
-            providers[defaultName] ?: error("No such provider '$defaultName")
         }
+    }
+
+    fun default(checkInstall: Boolean = true): Provider {
+        val defaultName = defaultName()
+        return providers[defaultName] ?: error("No such provider '$defaultName'")
     }
 }

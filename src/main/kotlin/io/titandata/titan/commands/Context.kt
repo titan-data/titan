@@ -26,7 +26,7 @@ class Context : CliktCommand(help = "Manage titan contexts") {
 
 class ContextInstall : CliktCommand(help = "Install a new context", name = "install") {
     private val dependencies: Dependencies by requireObject()
-    private val type: String by option("-t", "--type", help = "Context type (local or kubernetes), defaults to local").default("local")
+    private val type: String by option("-t", "--type", help = "Context type (docker or kubernetes), defaults to docker").default("docker")
     private val name: String? by option("-n", "--name", help = "Context name, defaults to context type")
     private val parameters by option("-p", "--parameters", help = "Context specific parameters. key=value format.").multiple()
     private val verbose by option("-v", "--verbose", help = "Verbose logging").flag(default = false)
@@ -73,16 +73,23 @@ class ContextList : CliktCommand(help = "List available contexts", name = "ls") 
     private val n = System.lineSeparator()
 
     override fun run() {
-        System.out.printf("%-12s  %-12  %s$n", "CONTEXT", "TYPE", "CONFIGURATION")
-        for (providerEntry in dependencies.providers.list()) {
-            val context = providerEntry.key
-            val type = providerEntry.value.getType()
-            val config = if (providerEntry.value.getProperties().isEmpty()) {
-                "-"
-            } else {
-                providerEntry.value.getProperties().map { "${it.key}=${it.value}" }.joinToString(",")
+        System.out.printf("%-20s  %-12s  %s$n", "CONTEXT", "TYPE", "CONFIGURATION")
+        val providers = dependencies.providers.list()
+        if (!providers.isEmpty()) {
+            val defaultName = dependencies.providers.defaultName()
+            for (providerEntry in providers) {
+                var context = providerEntry.key
+                if (providerEntry.key == defaultName) {
+                    context += " (*)"
+                }
+                val type = providerEntry.value.getType()
+                val config = if (providerEntry.value.getProperties().isEmpty()) {
+                    "-"
+                } else {
+                    providerEntry.value.getProperties().map { "${it.key}=${it.value}" }.joinToString(",")
+                }
+                System.out.printf("%-20s  %-12s  %s$n", context, type, config)
             }
-            System.out.printf("%-12s  %-12  %s$n", context, type, config)
         }
     }
 }

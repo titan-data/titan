@@ -12,7 +12,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import org.kohsuke.randname.RandomNameGenerator
 
-class Docker(private val executor: CommandExecutor, val identity: String = "local", val port: Int = 5001) {
+class Docker(private val executor: CommandExecutor, val identity: String = "docker", val port: Int = 5001) {
 
     val logs = mutableMapOf<String, Boolean>()
 
