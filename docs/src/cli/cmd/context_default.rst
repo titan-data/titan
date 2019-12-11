@@ -3,7 +3,7 @@
 titan context default
 =====================
 
-Get or set the default titan context. For more information on managing contexts,
+Get or set the default Titan context. For more information on managing contexts,
 see the :ref:`lifecycle_context` section,
 
 Syntax
@@ -18,7 +18,7 @@ Arguments
 
 context
     Optional. If specified the named context is made the default context.
-    Otherwise, the current default context is returned.
+    Otherwise, the current default context is displayed.
 
 Example
 -------

@@ -19,7 +19,7 @@ data class TitanConfig(
 )
 
 /**
- * The provider factor is responsible for managing multiple providers (contexts to the user). We keep track of
+ * The provider factory is responsible for managing multiple providers (contexts to the user). We keep track of
  * providers in the ~/.titan/config file, which is a YAML file that contains a list of contexts and their
  * configuration. Each provider corresponds to an instance of 'titan-server' running somewhere (currently only
  * the user's laptop). The config file keeps track of:
@@ -40,7 +40,6 @@ data class TitanConfig(
 class ProviderFactory {
 
     private val configDir: String
-    private val gson = GsonBuilder().setPrettyPrinting().create()
     private val config: TitanConfig
     private val providers: Map<String, Provider>
 
@@ -160,7 +159,7 @@ class ProviderFactory {
             if (matching.size == 0) {
                 error("no such repository '$repoName'")
             } else if (matching.size > 1) {
-                error("more than one repository with matching")
+                error("more than one repository with matching name in different contexts")
             } else {
                 return matching.first() to repoName
             }

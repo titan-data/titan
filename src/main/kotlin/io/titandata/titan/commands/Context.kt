@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 by Delphix. All rights reserved.
+ * Copyright The Titan Project Contributors.
  */
 
 package io.titandata.titan.commands
@@ -29,16 +29,8 @@ class ContextInstall : CliktCommand(help = "Install a new context", name = "inst
     private val dependencies: Dependencies by requireObject()
     private val type: String by option("-t", "--type", help = "Context type (docker or kubernetes), defaults to docker").default("docker")
     private val name: String? by option("-n", "--name", help = "Context name, defaults to context type")
-    private val parameters by option("-p", "--parameters", help = "Context specific parameters. key=value format.").multiple()
+    private val parameters by option("-p", "--parameters", help = "Context specific parameters. key=value format").multiple()
     private val verbose by option("-v", "--verbose", help = "Verbose logging").flag(default = false)
-
-    private fun getAvailablePort(): Int {
-        val socket = ServerSocket(0)
-        socket.use {
-            socket.reuseAddress = true
-            return socket.localPort
-        }
-    }
 
     override fun run() {
         val contextName = name ?: type
@@ -50,8 +42,7 @@ class ContextInstall : CliktCommand(help = "Install a new context", name = "inst
             }
             params[split[0]] = split[1]
         }
-        val port = getAvailablePort()
-        val provider = dependencies.providers.create(contextName, type, port)
+        val provider = dependencies.providers.create(contextName, type)
         provider.install(params, verbose)
         dependencies.providers.addProvider(provider)
     }
@@ -74,7 +65,7 @@ class ContextList : CliktCommand(help = "List available contexts", name = "ls") 
     private val n = System.lineSeparator()
 
     override fun run() {
-        System.out.printf("%-20s  %-12s  %s$n", "NAME", "TYPE", "CONFIGURATION")
+        System.out.printf("%-20s  %-12s$n", "NAME", "TYPE")
         val providers = dependencies.providers.list()
         if (!providers.isEmpty()) {
             val defaultName = dependencies.providers.defaultName()
@@ -84,12 +75,7 @@ class ContextList : CliktCommand(help = "List available contexts", name = "ls") 
                     context += " (*)"
                 }
                 val type = providerEntry.value.getType()
-                val config = if (providerEntry.value.getProperties().isEmpty()) {
-                    "-"
-                } else {
-                    providerEntry.value.getProperties().map { "${it.key}=${it.value}" }.joinToString(",")
-                }
-                System.out.printf("%-20s  %-12s  %s$n", context, type, config)
+                System.out.printf("%-20s  %-12s$n", context, type)
             }
         }
     }

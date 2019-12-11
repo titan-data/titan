@@ -25,7 +25,7 @@ Example output::
     2019-09-30 16:18:28.561 [DefaultDispatcher-worker-6] DEBUG io.titandata.util.CommandExecutor - Success: zfs, list, -Hpo, io.titan-data:active, titan/repo/hello-world
     2019-09-30 16:18:28.640 [DefaultDispatcher-worker-6] DEBUG io.titandata.util.CommandExecutor - Success: umount, /var/lib/titan/mnt/hello-world/v0
 
-In particular, every REST call from the client is logged . Understanding the
+In particular, every REST call from the client is logged. Understanding the
 semantics of the behavior is beyond the scope of this section, but an important
 thing to note is that any unexpected error should result in a stack trace that
 is quite visible in the log. If you start at the end of the log and work your

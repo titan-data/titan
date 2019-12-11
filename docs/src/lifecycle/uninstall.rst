@@ -10,7 +10,7 @@ repositories in the process.
 
 The uninstall process first will uninstall all configured contexts. Once that
 is complete, it will remove the underlying titan container images, as well as
-the contents of the ``~/.titan`` directory. If you just want to uninstall a
+the ``.titan`` directory in your home directory. If you just want to uninstall a
 single context while leaving the Titan images and configuration intact, use
 the :ref:`cli_cmd_context_uninstall` command.
 

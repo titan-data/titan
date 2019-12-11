@@ -19,7 +19,8 @@ Titan requires a Kubernetes cluster with the following configuration options:
 
 * The there must be a CSI (Container Storage Interface) driver installed that
   supports the `alpha snapshot <https://kubernetes-csi.github.io/docs/snapshot-restore-feature.html>`
-  capabilities.
+  capabilities. Titan does not yet work with the
+  `beta snapshots apis <https://kubernetes.io/blog/2019/12/09/kubernetes-1-17-feature-cis-volume-snapshot-beta/>`.
 * The `VolumeSnapshotDataSource <https://v1-13.docs.kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`
   feature gate must be enabled.
 * The `VolumeSnapshot <https://kubernetes.io/docs/concepts/storage/volume-snapshots/>`
@@ -28,15 +29,15 @@ Titan requires a Kubernetes cluster with the following configuration options:
   snapshot capabilities.
 
 Titan currently uses the default Kubernetes config file, cluster and namespace
-as defined in your `~/.kube/config` file. Future versions will make these
+as defined the `.kube/config` file in your home directory. Future versions will make these
 configurable.
 
 The titan server still runs as a container on the local workstation. A local
 Docker installation is required, though no special privileges or operating
-support is necessary. This also means that all the metadata is local to the
+system support is necessary. This also means that all the metadata is local to the
 user, so two users cannot share titan repositories in a shared Kubernetes
-cluster. The pods themselves will be accessible, but there is no way to manage
-them as Titan repositories on a different system.
+cluster. The pods themselves will be accessible to any kubernetes user, but
+there is no way to manage them as Titan repositories on a different system.
 
 Each push or pull operation is run as a separate Job, requiring that the
 `titandata/titan` image be avaialble to the cluster.
@@ -50,7 +51,7 @@ A Kubernetes repository consists of:
   These are currently always hardcoded to be 1GiB, and always use the default
   StorageClass. Each is given a unique GUID and name.
 * A StatefulSet with the same name as the repository.
-* Within that StatefuleSet, all PersistentVolumeClaims mapped to the directories
+* Within that StatefulSet, all PersistentVolumeClaims mapped to the directories
   identified in the image metadata. The pod name is the same as the repository
   name.
 * A service that maps all exposed ports to the ports of the Pods within the
@@ -69,12 +70,12 @@ Limitations
 
 .. attention ::
 
-   Kubernetes support is currently in an _alpha_ state. Many elements of
+   Kubernetes support is currently in an _beta_ state. Many elements of
    configurability and reliability have not yet been fully fleshed out,
    and it may not work in all environments.
 
 In addition to the general immaturity of Kubernetes support, there are some
-specific known limitations with alpha:
+specific known limitations with beta:
 
 * There is no method to specify volume sizes. While the amount of data pushed
   and pulled will remain the logical size of the dataset, volumes must be

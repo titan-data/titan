@@ -22,7 +22,8 @@ Options
 -n, --name       name    Optional context name. Must be unique. Defaults to
                          the type of the context ("docker" or "kubernetes").
 
--p, --parameters string  Key=Value pair for provider specific options.
+-p, --parameters string  Key=Value pair for provider specific options. See
+                         the context-specific documentation for more information.
 
 -v, --verbose            Enable verbose logging. Some contexts can provide
                          additional information about the installation
