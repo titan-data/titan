@@ -39,14 +39,14 @@ import io.titandata.titan.utils.CommandExecutor
 import io.titandata.titan.utils.HttpHandler
 import kotlin.system.exitProcess
 
-class Kubernetes(val contextName: String = "kubernetes", val host: String = "localhost", val port: Int = 5002) : Provider {
+class Kubernetes(val contextName: String = "kubernetes", val host: String = "localhost", val portNum: Int = 5002) : Provider {
     private val titanServerVersion = "0.7.0"
     private val dockerRegistryUrl = "titandata"
-    private val uri = "http://$host:$port"
+    private val uri = "http://$host:$portNum"
 
     private val httpHandler = HttpHandler()
     private val commandExecutor = CommandExecutor()
-    private val docker = Docker(commandExecutor, contextName, port)
+    private val docker = Docker(commandExecutor, contextName, portNum)
     private val kubernetes = io.titandata.titan.clients.Kubernetes()
     private val repositoriesApi = RepositoriesApi(uri)
     private val operationsApi = OperationsApi(uri)
@@ -75,6 +75,14 @@ class Kubernetes(val contextName: String = "kubernetes", val host: String = "loc
 
     override fun getType(): String {
         return "kubernetes"
+    }
+
+    override fun getName(): String {
+        return contextName
+    }
+
+    override fun getPort(): Int {
+        return portNum
     }
 
     override fun getProperties(): Map<String, String> {

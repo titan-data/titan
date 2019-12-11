@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.google.gson.GsonBuilder
 import java.io.File
+import java.net.ServerSocket
 
 data class TitanProvider(
     val host: String = "localhost",
@@ -58,6 +59,14 @@ class ProviderFactory {
         providers = result.toMap()
     }
 
+    private fun getAvailablePort(): Int {
+        val socket = ServerSocket(0)
+        socket.use {
+            socket.reuseAddress = true
+            return socket.localPort
+        }
+    }
+
     private fun readConfig(): TitanConfig {
         try {
             val file = File("$configDir/config")
@@ -83,9 +92,10 @@ class ProviderFactory {
         mapper.writeValue(File("$configDir/config"), config)
     }
 
-    fun addProvider(name: String, type: String, port: Int) {
+    fun addProvider(provider: Provider) {
         val contexts = config.contexts.toMutableMap()
-        contexts[name] = TitanProvider(port = port, type = type, default = contexts.isEmpty())
+        contexts[provider.getName()] = TitanProvider(port = provider.getPort(), type = provider.getType(),
+                default = contexts.isEmpty())
         writeConfig(config.copy(contexts = contexts))
     }
 
@@ -110,7 +120,10 @@ class ProviderFactory {
         return providers.get(name) ?: error("no such context '$name'")
     }
 
-    fun create(contextName: String, providerType: String, port: Int): Provider {
+    fun create(contextName: String, providerType: String, port: Int = getAvailablePort()): Provider {
+        if (providers.containsKey(contextName)) {
+            error("context '$contextName' already exists")
+        }
         return when (providerType) {
             "docker" -> Local(contextName, providerType, port)
             "kubernetes" -> Kubernetes(contextName, providerType, port)
@@ -176,7 +189,7 @@ class ProviderFactory {
         writeConfig(config.copy(contexts = contexts))
     }
 
-    fun default(checkInstall: Boolean = true): Provider {
+    fun default(): Provider {
         val defaultName = defaultName()
         return providers[defaultName] ?: error("No such provider '$defaultName'")
     }

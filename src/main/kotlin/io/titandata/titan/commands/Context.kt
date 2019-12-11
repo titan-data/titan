@@ -53,7 +53,7 @@ class ContextInstall : CliktCommand(help = "Install a new context", name = "inst
         val port = getAvailablePort()
         val provider = dependencies.providers.create(contextName, type, port)
         provider.install(params, verbose)
-        dependencies.providers.addProvider(contextName, type, port)
+        dependencies.providers.addProvider(provider)
     }
 }
 

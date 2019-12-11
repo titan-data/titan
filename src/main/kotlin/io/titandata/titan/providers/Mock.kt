@@ -13,6 +13,14 @@ class Mock : Provider {
         return true
     }
 
+    override fun getName(): String {
+        return "mock"
+    }
+
+    override fun getPort(): Int {
+        return 0
+    }
+
     override fun pull(container: String, commit: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean) {
         println("Pulling from remote")
     }

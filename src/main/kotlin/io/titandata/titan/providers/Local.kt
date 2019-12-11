@@ -41,14 +41,14 @@ import io.titandata.titan.utils.CommandExecutor
 import io.titandata.titan.utils.HttpHandler
 import kotlin.system.exitProcess
 
-class Local(val contextName: String = "docker", val host: String = "localhost", val port: Int = 5001) : Provider {
+class Local(val contextName: String = "docker", val host: String = "localhost", val portNum: Int = 5001) : Provider {
     private val titanServerVersion = "0.7.0"
     private val dockerRegistryUrl = "titandata"
-    private val uri = "http://$host:$port"
+    private val uri = "http://$host:$portNum"
 
     private val httpHandler = HttpHandler()
     private val commandExecutor = CommandExecutor()
-    private val docker = Docker(commandExecutor, contextName, port)
+    private val docker = Docker(commandExecutor, contextName, portNum)
     private val repositoriesApi = RepositoriesApi(uri)
     private val operationsApi = OperationsApi(uri)
     private val remotesApi = RemotesApi(uri)
@@ -81,6 +81,14 @@ class Local(val contextName: String = "docker", val host: String = "localhost", 
 
     override fun getType(): String {
         return "docker"
+    }
+
+    override fun getName(): String {
+        return contextName
+    }
+
+    override fun getPort(): Int {
+        return portNum
     }
 
     override fun getProperties(): Map<String, String> {

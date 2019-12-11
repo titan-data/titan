@@ -3,6 +3,9 @@ package io.titandata.titan.providers
 interface Provider {
     fun getType(): String
     fun getProperties(): Map<String, String>
+    fun getName(): String
+    fun getPort(): Int
+
     fun repositoryExists(repository: String): Boolean
     fun pull(container: String, commit: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean)
     fun push(container: String, commit: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean)

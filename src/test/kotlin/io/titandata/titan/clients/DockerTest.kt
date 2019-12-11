@@ -57,20 +57,6 @@ Status: Downloaded newer image for titan:latest
     }
 
     @Test
-    fun `can check if titan images are downloaded`() {
-        assertTrue(docker.titanIsDownloaded())
-    }
-
-    @Test
-    fun `can check if titan images are not downloaded`() {
-        val falseExecutor = mock<CommandExecutor> {
-            on { exec(listOf("docker", "images", "titan", "--format", "\"{{.Repository}}\"")) } doReturn ""
-        }
-        val falseDocker = Docker(falseExecutor)
-        assertFalse(falseDocker.titanIsDownloaded())
-    }
-
-    @Test
     fun `can check if titan-launch is available`() {
         assertTrue(docker.titanLaunchIsAvailable())
     }

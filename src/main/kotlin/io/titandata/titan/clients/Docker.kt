@@ -45,11 +45,6 @@ class Docker(private val executor: CommandExecutor, val identity: String = "dock
         return executor.exec(listOf("docker", "-v")).trim()
     }
 
-    fun titanIsDownloaded(): Boolean {
-        val images = executor.exec(listOf("docker", "images", "titan", "--format", "\"{{.Repository}}\""))
-        return images.isNotEmpty()
-    }
-
     fun titanLatestIsDownloaded(titanServerVersion: Version): Boolean {
         val images = executor.exec(listOf("docker", "images", "titan", "--format", "\"{{.Tag}}\""))
         val tags = images.split(System.lineSeparator())
