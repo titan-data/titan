@@ -104,6 +104,8 @@ class Docker(private val executor: CommandExecutor, val identity: String = "dock
         titanLaunchArgs.removeAt(titanLaunchArgs.indexOf("--restart"))
         titanLaunchArgs.removeAt(titanLaunchArgs.indexOf("always"))
         titanLaunchArgs.removeAt(titanLaunchArgs.indexOf("--name=titan-$identity-launch"))
+        titanLaunchArgs.add("-e")
+        titanLaunchArgs.add("TITAN_IDENTITY=titan-$identity")
         titanLaunchArgs.add("--rm")
         return run("titan:latest", "/bin/bash /titan/teardown", titanLaunchArgs)
     }
