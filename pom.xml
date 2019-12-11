@@ -7,7 +7,7 @@
 	<artifactId>titan</artifactId>
 	<name>Titan CLI</name>
 	<description></description>
-	<version>0.4.0</version>
+	<version>0.4.1</version>
 
 	<properties>
 		<java.version>1.8</java.version>
