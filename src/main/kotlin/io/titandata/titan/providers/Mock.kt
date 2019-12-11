@@ -13,10 +13,6 @@ class Mock : Provider {
         return true
     }
 
-    override fun checkInstall() {
-        println("Mock Provider Installed")
-    }
-
     override fun pull(container: String, commit: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean) {
         println("Pulling from remote")
     }
@@ -65,7 +61,7 @@ class Mock : Provider {
         println("Running controlled image")
     }
 
-    override fun uninstall(force: Boolean) {
+    override fun uninstall(force: Boolean, removeImages: Boolean) {
         println("Tearing down containers")
     }
 

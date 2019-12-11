@@ -28,7 +28,6 @@ import io.titandata.titan.providers.generic.RuntimeStatus
 import io.titandata.titan.providers.generic.Status
 import io.titandata.titan.providers.generic.Tag
 import io.titandata.titan.providers.generic.Upgrade
-import io.titandata.titan.providers.kubernetes.CheckInstall
 import io.titandata.titan.providers.kubernetes.Checkout
 import io.titandata.titan.providers.kubernetes.Install
 import io.titandata.titan.providers.kubernetes.Remove
@@ -89,11 +88,6 @@ class Kubernetes(val contextName: String = "kubernetes", val host: String = "loc
             return false
         }
         return true
-    }
-
-    override fun checkInstall() {
-        val checkInstallCommand = CheckInstall(::exit, commandExecutor, docker)
-        return checkInstallCommand.checkInstall()
     }
 
     override fun pull(
@@ -175,9 +169,9 @@ class Kubernetes(val contextName: String = "kubernetes", val host: String = "loc
         return runCommand.run(image, repository, environments, arguments, disablePortMapping)
     }
 
-    override fun uninstall(force: Boolean) {
+    override fun uninstall(force: Boolean, removeImages: Boolean) {
         val uninstallCommand = Uninstall(titanServerVersion, ::exit, ::remove, commandExecutor, docker, repositoriesApi)
-        return uninstallCommand.uninstall(force)
+        return uninstallCommand.uninstall(force, removeImages)
     }
 
     override fun upgrade(force: Boolean, version: String, finalize: Boolean, path: String?) {

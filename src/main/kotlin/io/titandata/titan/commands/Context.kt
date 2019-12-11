@@ -64,7 +64,7 @@ class ContextUninstall : CliktCommand(help = "Uninstall a context", name = "unin
 
     override fun run() {
         val provider = dependencies.providers.byName(contextName)
-        provider.uninstall(force)
+        provider.uninstall(force, false)
         dependencies.providers.removeProvider(contextName)
     }
 }

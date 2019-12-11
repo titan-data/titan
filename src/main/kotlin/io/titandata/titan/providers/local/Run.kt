@@ -34,6 +34,11 @@ class Run(
             repository.isNullOrEmpty() -> container
             else -> repository
         }
+
+        if (docker.containerExists(containerName)) {
+            exit("Container '$containerName' already exists, name must be unique", 1)
+        }
+
         val image = when {
             container.contains(":") -> container.split(":")[0]
             else -> container

@@ -18,7 +18,7 @@ class Uninstall(
     private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
     private val track: (title: String, function: () -> Any) -> Unit = ProgressTracker()::track
 ) {
-    fun uninstall(force: Boolean) {
+    fun uninstall(force: Boolean, removeImages: Boolean) {
         if (docker.titanServerIsAvailable()) {
             val repositories = repositoriesApi.listRepositories()
             for (repo in repositories) {
@@ -31,6 +31,11 @@ class Uninstall(
         if (docker.titanServerIsAvailable()) docker.rm("titan-${docker.identity}-server", true)
         track("Removing Titan Docker volume") {
             docker.removeVolume("titan-${docker.identity}-data")
+        }
+        if (removeImages) {
+            track("Removing Titan Docker image") {
+                docker.removeTitanImages(titanServerVersion)
+            }
         }
         println("Uninstalled titan infrastructure")
     }

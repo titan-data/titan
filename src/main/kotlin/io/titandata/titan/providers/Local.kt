@@ -28,7 +28,6 @@ import io.titandata.titan.providers.generic.RuntimeStatus
 import io.titandata.titan.providers.generic.Status
 import io.titandata.titan.providers.generic.Tag
 import io.titandata.titan.providers.generic.Upgrade
-import io.titandata.titan.providers.local.CheckInstall
 import io.titandata.titan.providers.local.Checkout
 import io.titandata.titan.providers.local.Cp
 import io.titandata.titan.providers.local.Install
@@ -124,11 +123,6 @@ class Local(val contextName: String = "docker", val host: String = "localhost", 
         return pushCommand.push(container, commit, remoteName, tags, metadataOnly)
     }
 
-    override fun checkInstall() {
-        val checkInstallCommand = CheckInstall(::exit, commandExecutor, docker)
-        return checkInstallCommand.checkInstall()
-    }
-
     override fun install(properties: Map<String, String>, verbose: Boolean) {
         val regVal = properties.get("registry") ?: dockerRegistryUrl
         val installCommand = Install(titanServerVersion, regVal, verbose, commandExecutor, docker)
@@ -188,13 +182,13 @@ class Local(val contextName: String = "docker", val host: String = "localhost", 
 
     override fun list(context: String) {
         for (container in getContainersStatus()) {
-            System.out.printf("%-10s %-20s  %s$n", context, container.name, container.status)
+            System.out.printf("%-12s %-20s  %s$n", context, container.name, container.status)
         }
     }
 
-    override fun uninstall(force: Boolean) {
+    override fun uninstall(force: Boolean, removeImages: Boolean) {
         val uninstallCommand = Uninstall(titanServerVersion, ::exit, ::remove, commandExecutor, docker, repositoriesApi)
-        return uninstallCommand.uninstall(force)
+        return uninstallCommand.uninstall(force, removeImages)
     }
 
     override fun checkout(container: String, guid: String?, tags: List<String>) {

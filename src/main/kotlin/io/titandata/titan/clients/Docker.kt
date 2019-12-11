@@ -63,6 +63,11 @@ class Docker(private val executor: CommandExecutor, val identity: String = "dock
         return false
     }
 
+    fun containerExists(container: String): Boolean {
+        val result = executor.exec(listOf("docker", "ps", "-a", "-f", "name=$container", "--format", "\"{{.Names}}\""))
+        return result.isNotEmpty()
+    }
+
     fun containerIsRunning(container: String): Boolean {
         val result = executor.exec(listOf("docker", "ps", "-f", "name=$container", "--format", "\"{{.Names}}\""))
         return result.isNotEmpty()
