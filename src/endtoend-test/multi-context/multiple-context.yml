@@ -24,7 +24,7 @@ tests:
   - "can change default context":
       command: titan context default two
   - "default context is two":
-      command: titan context  default
+      command: titan context default
       stdout: two
   - "can get status of mongo-alt":
       command: titan status mongo-alt

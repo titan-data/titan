@@ -120,6 +120,10 @@ class ProviderFactory {
         return providers
     }
 
+    fun exists(name: String): Boolean {
+        return providers.containsKey(name)
+    }
+
     fun byName(name: String): Provider {
         return providers.get(name) ?: error("no such context '$name'")
     }

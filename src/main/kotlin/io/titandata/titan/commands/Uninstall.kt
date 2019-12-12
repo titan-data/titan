@@ -24,6 +24,7 @@ class Uninstall : CliktCommand(help = "Uninstall titan infrastructure") {
         for (provider in providerNames) {
             // This assumes that all providers share a common path to remove images, may not hold true in the future
             providers[provider]!!.uninstall(force, provider == providerNames.last())
+            dependencies.providers.removeProvider(provider)
         }
     }
 }

@@ -8,8 +8,8 @@ equivalent to ``titan context install -t docker``. Must be run prior to any
 other titan commands. For more information on how to install titan and what's
 required, see the :ref:`lifecycle_install` section. For more information on
 managing contexts, see the :ref:`lifecycle_context` section. If you want to
-install Titan for kubernetes, see the :ref:`lifecycle_kubernetes` section. This
-command will fail if the "docker" context already exists.
+install Titan for kubernetes, see the :ref:`lifecycle_kubernetes` section.
+Running this command will do nothing if the "docker" context already exists.
 
 Syntax
 ------

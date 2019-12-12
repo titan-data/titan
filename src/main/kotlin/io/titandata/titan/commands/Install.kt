@@ -23,9 +23,11 @@ class Install : CliktCommand(help = "Install titan infrastructure") {
         if (registry != null) {
             props["registry"] = registry!!
         }
-        val provider = dependencies.providers.create("docker", "docker")
-        provider.install(props, verbose)
-        dependencies.providers.addProvider(provider)
+        if (!dependencies.providers.exists("docker")) {
+            val provider = dependencies.providers.create("docker", "docker")
+            provider.install(props, verbose)
+            dependencies.providers.addProvider(provider)
+        }
     }
 }
 
