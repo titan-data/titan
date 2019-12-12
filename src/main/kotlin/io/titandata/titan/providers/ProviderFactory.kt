@@ -1,21 +1,21 @@
 package io.titandata.titan.providers
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
-import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.google.gson.GsonBuilder
 import java.io.File
 import java.net.ServerSocket
+import org.yaml.snakeyaml.DumperOptions
+import org.yaml.snakeyaml.Yaml
+import org.yaml.snakeyaml.constructor.Constructor
+import org.yaml.snakeyaml.nodes.Tag
 
 data class TitanProvider(
-    val host: String = "localhost",
-    val port: Int = 5001,
-    val type: String = "docker",
-    val default: Boolean = false
+    var host: String = "localhost",
+    var port: Int = 5001,
+    var type: String = "docker",
+    var default: Boolean = false
 )
 
 data class TitanConfig(
-    val contexts: Map<String, TitanProvider> = emptyMap()
+    var contexts: Map<String, TitanProvider> = emptyMap()
 )
 
 /**
@@ -70,9 +70,9 @@ class ProviderFactory {
         try {
             val file = File("$configDir/config")
             if (file.exists()) {
-                val mapper = ObjectMapper(YAMLFactory())
-                mapper.registerModule(KotlinModule())
-                return mapper.readValue(File("$configDir/config"), TitanConfig::class.java)
+                return file.bufferedReader().use {
+                    Yaml(Constructor(TitanConfig::class.java)).loadAs(it, TitanConfig::class.java)
+                }
             } else {
                 return TitanConfig()
             }
@@ -86,9 +86,14 @@ class ProviderFactory {
         if (!dir.exists()) {
             dir.mkdir()
         }
-        val mapper = ObjectMapper(YAMLFactory())
-        mapper.registerModule(KotlinModule())
-        mapper.writeValue(File("$configDir/config"), config)
+        val file = File("$configDir/config")
+        file.bufferedWriter().use {
+            val options = DumperOptions()
+            options.indent = 2
+            options.isPrettyFlow = true
+            options.defaultFlowStyle = DumperOptions.FlowStyle.BLOCK
+            it.write(Yaml(options).dumpAs(config, Tag.MAP, null))
+        }
     }
 
     fun addProvider(provider: Provider) {
