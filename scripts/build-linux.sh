@@ -3,9 +3,8 @@
 set -ex
 
 version=`cat VERSION`
-entry="docker run -v ${HOME}/.m2:/root/.m2 -v ${PWD}:/cli --workdir /cli gvm-native:19.0.0"
-docker build -t gvm-native:19.0.0 .
-${entry} ./mvnw jar:jar install:install -DgroupId=org.bouncycastle -DartifactId=bcprov-jdk15on -Dversion=1.62
+entry="docker run -v ${HOME}/.m2:/root/.m2 -v ${PWD}:/cli --workdir /cli gvm-native:19.3.0"
+docker build -t gvm-native:19.3.0 .
 ${entry} native-image -cp /cli/target/titan-$version.jar\
     -H:Name=titan\
     -H:Class=io.titandata.titan.Cli\
@@ -14,13 +13,10 @@ ${entry} native-image -cp /cli/target/titan-$version.jar\
     -H:ResourceConfigurationFiles=/cli/config/resource-config.json\
     -H:JNIConfigurationFiles=/cli/config/jni-config.json\
     -H:+AddAllCharsets\
-    --initialize-at-run-time=org.bouncycastle.crypto.prng.SP800SecureRandom\
-    --initialize-at-run-time=org.bouncycastle.jcajce.provider.drbg.DRBG$Default\
-    --initialize-at-run-time=org.bouncycastle.jcajce.provider.drbg.DRBG$NonceAndIV\
-    -J-Djava.security.properties=/cli/java.security.overrides\
     --allow-incomplete-classpath\
     --enable-http\
-    --enable-https
+    --enable-https\
+    --no-fallback
 
 ${entry} mkdir -p /cli/releases/
 ${entry} tar -cvf /cli/releases/titan-cli-$version-linux_amd64.tar titan
