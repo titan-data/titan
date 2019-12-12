@@ -42,7 +42,7 @@ import io.titandata.titan.utils.HttpHandler
 import kotlin.system.exitProcess
 
 class Local(val contextName: String = "docker", val host: String = "localhost", val portNum: Int = 5001) : Provider {
-    private val titanServerVersion = "0.7.0"
+    private val titanServerVersion = "0.8.0"
     private val dockerRegistryUrl = "titandata"
     private val uri = "http://$host:$portNum"
 

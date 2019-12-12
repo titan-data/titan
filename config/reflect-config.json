@@ -830,7 +830,7 @@
   "allDeclaredConstructors":true,
   "allPublicConstructors":true,
   "allDeclaredClasses":true,
-  "allPublicClasses":true
+  "allPublicClasses":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
@@ -840,7 +840,7 @@
   "allDeclaredConstructors":true,
   "allPublicConstructors":true,
   "allDeclaredClasses":true,
-  "allPublicClasses":true
+  "allPublicClasses":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
