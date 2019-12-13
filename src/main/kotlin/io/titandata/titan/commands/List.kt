@@ -19,9 +19,9 @@ class List : CliktCommand(help = "List repositories", name = "ls") {
     override fun run() {
         // Check that we have at least one context installed
         dependencies.providers.default()
-        System.out.printf("%-20s  %s$n", "REPOSITORY", "STATUS")
-        for (provider in dependencies.providers.list()) {
-            provider.list()
+        System.out.printf("%-12s %-20s  %s$n", "CONTEXT", "REPOSITORY", "STATUS")
+        for (providerEntry in dependencies.providers.list()) {
+            providerEntry.value.list(providerEntry.key)
         }
     }
 }

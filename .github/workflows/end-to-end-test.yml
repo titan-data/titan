@@ -47,6 +47,8 @@ jobs:
           curl -L https://github.com/mcred/vexrun/releases/download/v0.0.5/vexrun-0.0.5.jar -o vexrun.jar
       - name: Run Getting Started Tests
         run: java -jar vexrun.jar -d ./src/endtoend-test/getting-started
+      - name: Run Multiple Context tests
+        run: java -jar vexrun.jar -d ./src/endtoend-test/multi-context
       - name: Run S3 Workflow Tests
         run: java -jar vexrun.jar -f ./src/endtoend-test/remotes/s3/s3WorkflowTests.yml
         env:
@@ -55,7 +57,6 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
       - name: Run SSH Workflow Tests
         run: |
-          hostname -i >> localip
           ssh-keygen -b 2048 -t rsa -f ./sshKey -q -N ""
           java -jar vexrun.jar -f ./src/endtoend-test/remotes/ssh/sshWorkflowTests.yml
       - name: Run DB Matrix Tests

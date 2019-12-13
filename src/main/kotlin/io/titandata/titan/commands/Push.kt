@@ -25,8 +25,8 @@ class Push : CliktCommand(help = "Push data state to remote") {
     private val repository: String by argument()
 
     override fun run() {
-        val provider = dependencies.providers.byRepository(repository)
-        provider.push(repository, commit, remote, tags, metadataOnly)
+        val (provider, repoName) = dependencies.providers.byRepository(repository)
+        provider.push(repoName, commit, remote, tags, metadataOnly)
     }
 }
 

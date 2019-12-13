@@ -17,8 +17,6 @@ tests:
   - "can install titan":
       command: titan install
       wait: 30
-      stdout:
-        contains: Titan cli successfully installed, happy data versioning :)
   - "can clone hello-world/postgres":
       command: titan clone -n hello-world s3web://demo.titan-data.io/hello-world/postgres
       stdout:

@@ -17,8 +17,6 @@ tests:
   - "can install titan":
       command: titan install
       wait: 10
-      stdout:
-        contains: Titan cli successfully installed, happy data versioning :)
 files:
   - matrix-tests.yml:
       parameters:

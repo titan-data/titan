@@ -28,20 +28,20 @@ class Install(
             docker.tag("$dockerRegistryUrl/titan:$titanServerVersion", "titan")
         }
         if (docker.titanServerIsAvailable()) {
-            track("Removing stale titan-server container") {
-                docker.rm("titan-server", true)
+            track("Removing titan server ") {
+                docker.rm("titan-${docker.identity}-server", true)
             }
         }
         if (docker.titanLaunchIsAvailable()) {
             track("Removing stale titan-launch container") {
-                docker.rm("titan-launch", true)
+                docker.rm("titan-${docker.identity}-launch", true)
             }
         }
         track("Starting titan server docker containers") {
             docker.launchTitanServers()
         }
 
-        docker.fetchLogs("titan-launch")
+        docker.fetchLogs("titan-${docker.identity}-launch")
         var finished = false
         var output = false
         loop@ while (!finished) {
@@ -66,7 +66,7 @@ class Install(
                 }
             }
             Thread.sleep(2000)
-            docker.fetchLogs("titan-launch")
+            docker.fetchLogs("titan-${docker.identity}-launch")
         }
         println("Titan cli successfully installed, happy data versioning :)")
     }

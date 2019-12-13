@@ -11,16 +11,6 @@ class MockTest {
     private val mockProvider = MockProvider()
 
     @Test
-    fun `can check install`() {
-        val byteStream = ByteArrayOutputStream()
-        System.setOut(PrintStream(byteStream))
-        mockProvider.checkInstall()
-        byteStream.flush()
-        val expected = String(byteStream.toByteArray()).trim()
-        assertEquals(expected, "Mock Provider Installed")
-    }
-
-    @Test
     fun `can pull`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
@@ -54,10 +44,10 @@ class MockTest {
     fun `can install`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.install("registry", false)
+        mockProvider.install(emptyMap(), false)
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
-        assertEquals(expected, "Initializing new repository")
+        assertEquals(expected, "Installing infrastructure")
     }
 
     @Test
@@ -124,7 +114,7 @@ class MockTest {
     fun `can uninstall`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.uninstall(true)
+        mockProvider.uninstall(true, true)
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "Tearing down containers")
@@ -154,7 +144,7 @@ class MockTest {
     fun `can list`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.list()
+        mockProvider.list("mock")
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "List containers")

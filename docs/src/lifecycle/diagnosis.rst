@@ -13,7 +13,7 @@ engaging with the `Community <https://titan-data.io/community>`_.
 Docker Logs
 -----------
 The most important tool in the diagnosis tool belt is to look at the
-docker logs, specifically ``docker logs titan-server``. This will show the
+docker logs, specifically ``docker logs titan-<context>-server``. This will show the
 output of the server that is responding to requests from the CLI.
 Example output::
 
@@ -25,12 +25,11 @@ Example output::
     2019-09-30 16:18:28.561 [DefaultDispatcher-worker-6] DEBUG io.titandata.util.CommandExecutor - Success: zfs, list, -Hpo, io.titan-data:active, titan/repo/hello-world
     2019-09-30 16:18:28.640 [DefaultDispatcher-worker-6] DEBUG io.titandata.util.CommandExecutor - Success: umount, /var/lib/titan/mnt/hello-world/v0
 
-In particular, every REST call from the client is logged, along with
-every invocation of the zfs command. Understanding the semantics of the
-behavior is beyond the scope of this section, but an important thing to note
-is that any unexpected error should result in a stack trace that is quiet
-visible in the log. If you start at the end of the log and work your way
-backwards, if you find an exception that matches the behavior you're seeing,
+In particular, every REST call from the client is logged. Understanding the
+semantics of the behavior is beyond the scope of this section, but an important
+thing to note is that any unexpected error should result in a stack trace that
+is quite visible in the log. If you start at the end of the log and work your
+way backwards, if you find an exception that matches the behavior you're seeing,
 then it may contain more information that helps diagnose the problem.
 
 Docker State
@@ -54,7 +53,5 @@ Local Client Errors
 -------------------
 It's possible that there are errors in the client that don't manifest as calls
 to the container server. If this happens, and the problem is cannot be
-discerned from the error message, you'll need to reach out to the community
-for help. Once we have a better understanding of the problems that can
-occur client-side, we will look into building local debugging facilities
-within the command.
+discerned from the error message, try running with ``TITAN_DEBUG=true titan <cmd>``
+to get more detailed debugging output.

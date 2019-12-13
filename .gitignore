@@ -24,6 +24,5 @@ releases
 /docs/build
 
 # Testing Files
-localip
 sshKey
 sshKey.pub

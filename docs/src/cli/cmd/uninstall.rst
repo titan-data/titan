@@ -3,11 +3,12 @@
 titan uninstall
 ===============
 
-Uninstall all supporting titan infrastructure. This will remove the titan
-containers and clean up any resources on the docker or host VM, leaving
-the titan CLI binary in place. For more information on what exactly is
-cleaned up, see the :ref:`lifecycle_uninstall` section. This command will fail
-if any active repositories exist, unless the ``-f`` option is supplied.
+Uninstall all titan infrastructure. This will uninstall all contexts,
+equivalent to ``titan context uninstall``. It will then remove any titan images
+pulled locally, as well as the ``~/.titan`` directory. For more information on
+what exactly is cleaned up, see the :ref:`lifecycle_uninstall` section. This
+command will fail if any active repositories exist, unless the ``-f`` option is
+supplied.
 
 .. warning::
 

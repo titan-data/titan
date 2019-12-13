@@ -10,7 +10,10 @@ Coming Soon!
    :caption: Managing Titan Software
 
    install
-   supported
+   config
+   context
+   docker
+   kubernetes
    upgrade
    diagnosis
    uninstall

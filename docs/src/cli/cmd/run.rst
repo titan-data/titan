@@ -28,7 +28,8 @@ Options
                                 to localhost.
 
 -e, --env TEXT                  Environment variables for the container being run.
-                                Examples: PGPASSWORD,  MONGO_INITDB_ROO_PASSWORD
+                                Examples: ``PGPASSWORD``,
+                                ``MONGO_INITDB_ROOT_PASSWORD``.
 
 -n, --name TEXT                 Optional new container name. If not provided,
                                 container name will be the same as the IMAGE.

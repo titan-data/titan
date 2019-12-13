@@ -21,8 +21,8 @@ class Checkout : CliktCommand(help = "Checkout a specific commit") {
     private val commit by option("-c", "--commit", help = "Commit to checkout")
     private val tags by option("-t", "--tag", help = "Tag to filter latest commit, if commit is not specified").multiple()
     override fun run() {
-        val provider = dependencies.providers.byRepository(repository)
-        provider.checkout(repository, commit, tags)
+        val (provider, repoName) = dependencies.providers.byRepository(repository)
+        provider.checkout(repoName, commit, tags)
     }
 }
 

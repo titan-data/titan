@@ -1,9 +1,8 @@
 .. _local:
 
-Local Repositories
-==================
+Local Docker Repositories
+=========================
 
-Coming Soon!
 
 .. toctree::
    :maxdepth: 1
