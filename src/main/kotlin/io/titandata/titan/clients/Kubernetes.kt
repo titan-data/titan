@@ -4,26 +4,26 @@
 
 package io.titandata.titan.clients
 
-import io.kubernetes.client.ApiException
-import io.kubernetes.client.Configuration
-import io.kubernetes.client.apis.AppsV1Api
-import io.kubernetes.client.apis.CoreV1Api
 import io.kubernetes.client.custom.V1Patch
-import io.kubernetes.client.models.V1ContainerBuilder
-import io.kubernetes.client.models.V1ContainerPortBuilder
-import io.kubernetes.client.models.V1EnvVarBuilder
-import io.kubernetes.client.models.V1LabelSelectorBuilder
-import io.kubernetes.client.models.V1ObjectMetaBuilder
-import io.kubernetes.client.models.V1PersistentVolumeClaimVolumeSourceBuilder
-import io.kubernetes.client.models.V1PodSpecBuilder
-import io.kubernetes.client.models.V1PodTemplateSpecBuilder
-import io.kubernetes.client.models.V1ServiceBuilder
-import io.kubernetes.client.models.V1ServicePortBuilder
-import io.kubernetes.client.models.V1ServiceSpecBuilder
-import io.kubernetes.client.models.V1StatefulSetBuilder
-import io.kubernetes.client.models.V1StatefulSetSpecBuilder
-import io.kubernetes.client.models.V1VolumeBuilder
-import io.kubernetes.client.models.V1VolumeMountBuilder
+import io.kubernetes.client.openapi.ApiException
+import io.kubernetes.client.openapi.Configuration
+import io.kubernetes.client.openapi.apis.AppsV1Api
+import io.kubernetes.client.openapi.apis.CoreV1Api
+import io.kubernetes.client.openapi.models.V1ContainerBuilder
+import io.kubernetes.client.openapi.models.V1ContainerPortBuilder
+import io.kubernetes.client.openapi.models.V1EnvVarBuilder
+import io.kubernetes.client.openapi.models.V1LabelSelectorBuilder
+import io.kubernetes.client.openapi.models.V1ObjectMetaBuilder
+import io.kubernetes.client.openapi.models.V1PersistentVolumeClaimVolumeSourceBuilder
+import io.kubernetes.client.openapi.models.V1PodSpecBuilder
+import io.kubernetes.client.openapi.models.V1PodTemplateSpecBuilder
+import io.kubernetes.client.openapi.models.V1ServiceBuilder
+import io.kubernetes.client.openapi.models.V1ServicePortBuilder
+import io.kubernetes.client.openapi.models.V1ServiceSpecBuilder
+import io.kubernetes.client.openapi.models.V1StatefulSetBuilder
+import io.kubernetes.client.openapi.models.V1StatefulSetSpecBuilder
+import io.kubernetes.client.openapi.models.V1VolumeBuilder
+import io.kubernetes.client.openapi.models.V1VolumeMountBuilder
 import io.kubernetes.client.util.ClientBuilder
 import io.kubernetes.client.util.Config
 import io.titandata.models.Volume
@@ -104,14 +104,14 @@ class Kubernetes() {
 
     fun deleteStatefulSpec(repoName: String) {
         try {
-            appsApi.deleteNamespacedStatefulSet(repoName, defaultNamespace, null, null, null, 0, null, null)
+            appsApi.deleteNamespacedStatefulSet(repoName, defaultNamespace, null, null, 0, null, null, null)
         } catch (e: ApiException) {
             if (e.code != 404) {
                 throw e
             }
         }
         try {
-            coreApi.deleteNamespacedService(repoName, defaultNamespace, null, null, null, 0, null, null)
+            coreApi.deleteNamespacedService(repoName, defaultNamespace, null, null, 0, null, null, null)
         } catch (e: ApiException) {
             if (e.code != 404) {
                 throw e
@@ -135,15 +135,15 @@ class Kubernetes() {
         try {
             var set = appsApi.readNamespacedStatefulSet(repoName, defaultNamespace, null, null, null)
 
-            if (set.status.updateRevision != set.status.currentRevision) {
+            if (set.status?.updateRevision != set.status?.currentRevision) {
                 return "updating" to null
             }
 
-            if (set.status.replicas == 0) {
+            if (set.status?.replicas == 0) {
                 return "stopped" to null
             }
 
-            if (set.status.replicas == set.status.readyReplicas) {
+            if (set.status?.replicas == set.status?.readyReplicas) {
                 return "running" to null
             }
 
@@ -200,8 +200,11 @@ class Kubernetes() {
      */
     fun startPortForwarding(repoName: String) {
         val service = coreApi.readNamespacedService(repoName, defaultNamespace, null, null, null)
-        for (port in service.spec.ports) {
-            executor.exec(listOf("sh", "-c", "kubectl port-forward svc/$repoName ${port.port} > /dev/null 2>&1 &"))
+        val ports = service.spec?.ports
+        if (ports != null) {
+            for (port in ports) {
+                executor.exec(listOf("sh", "-c", "kubectl port-forward svc/$repoName ${port.port} > /dev/null 2>&1 &"))
+            }
         }
     }
 
@@ -210,13 +213,16 @@ class Kubernetes() {
      */
     fun stopPortFowarding(repoName: String) {
         val service = coreApi.readNamespacedService(repoName, defaultNamespace, null, null, null)
-        for (port in service.spec.ports) {
-            try {
-                val output = executor.exec(listOf("sh", "-c", "ps -ef | grep \"[k]ubectl port-forward svc/$repoName ${port.port}\""))
-                val pid = output.split("\\s+".toRegex())[2]
-                executor.exec(listOf("kill", pid))
-            } catch (e: CommandException) {
-                // Ignore errors in case port forwarding dies
+        val ports = service.spec?.ports
+        if (ports != null) {
+            for (port in ports) {
+                try {
+                    val output = executor.exec(listOf("sh", "-c", "ps -ef | grep \"[k]ubectl port-forward svc/$repoName ${port.port}\""))
+                    val pid = output.split("\\s+".toRegex())[2]
+                    executor.exec(listOf("kill", pid))
+                } catch (e: CommandException) {
+                    // Ignore errors in case port forwarding dies
+                }
             }
         }
     }
@@ -229,10 +235,13 @@ class Kubernetes() {
 
         val patches = mutableListOf<String>()
 
-        for ((volumeIdx, volumeDef) in set.spec.template.spec.volumes.withIndex()) {
-            for (vol in volumes) {
-                if (vol.name == volumeDef.name) {
-                    patches.add("{\"op\":\"replace\",\"path\":\"/spec/template/spec/volumes/$volumeIdx/persistentVolumeClaim/claimName\",\"value\":\"${vol.config["pvc"]}\"}")
+        val specVolumes = set.spec?.template?.spec?.volumes
+        if (specVolumes != null) {
+            for ((volumeIdx, volumeDef) in specVolumes.withIndex()) {
+                for (vol in volumes) {
+                    if (vol.name == volumeDef.name) {
+                        patches.add("{\"op\":\"replace\",\"path\":\"/spec/template/spec/volumes/$volumeIdx/persistentVolumeClaim/claimName\",\"value\":\"${vol.config["pvc"]}\"}")
+                    }
                 }
             }
         }
