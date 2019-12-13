@@ -8,592 +8,601 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1AWSElasticBlockStoreVolumeSource",
+  "name":"io.kubernetes.client.custom.Quantity$QuantityAdapter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.kubernetes.client.openapi.models.V1AWSElasticBlockStoreVolumeSource",
+  "allDeclaredFields":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.kubernetes.client.openapi.models.V1Affinity",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1Affinity",
+  "name":"io.kubernetes.client.openapi.models.V1AzureDiskVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1AzureDiskVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1AzureFileVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1AzureFileVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1CSIVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1CSIVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1Capabilities",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1Capabilities",
+  "name":"io.kubernetes.client.openapi.models.V1CephFSVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1CephFSVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1CinderVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1CinderVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1ClientIPConfig",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ClientIPConfig",
+  "name":"io.kubernetes.client.openapi.models.V1ConfigMapEnvSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ConfigMapEnvSource",
+  "name":"io.kubernetes.client.openapi.models.V1ConfigMapKeySelector",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ConfigMapKeySelector",
+  "name":"io.kubernetes.client.openapi.models.V1ConfigMapProjection",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ConfigMapProjection",
+  "name":"io.kubernetes.client.openapi.models.V1ConfigMapVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ConfigMapVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1Container",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1Container",
+  "name":"io.kubernetes.client.openapi.models.V1ContainerPort",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ContainerPort",
+  "name":"io.kubernetes.client.openapi.models.V1ContainerState",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ContainerState",
+  "name":"io.kubernetes.client.openapi.models.V1ContainerStateRunning",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ContainerStateRunning",
+  "name":"io.kubernetes.client.openapi.models.V1ContainerStateTerminated",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ContainerStateTerminated",
+  "name":"io.kubernetes.client.openapi.models.V1ContainerStateWaiting",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ContainerStateWaiting",
+  "name":"io.kubernetes.client.openapi.models.V1ContainerStatus",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ContainerStatus",
+  "name":"io.kubernetes.client.openapi.models.V1DownwardAPIProjection",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1DownwardAPIProjection",
+  "name":"io.kubernetes.client.openapi.models.V1DownwardAPIVolumeFile",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1DownwardAPIVolumeFile",
+  "name":"io.kubernetes.client.openapi.models.V1DownwardAPIVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1DownwardAPIVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1EmptyDirVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1EmptyDirVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1EnvFromSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1EnvFromSource",
+  "name":"io.kubernetes.client.openapi.models.V1EnvVar",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1EnvVar",
+  "name":"io.kubernetes.client.openapi.models.V1EnvVarSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1EnvVarSource",
+  "name":"io.kubernetes.client.openapi.models.V1ExecAction",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ExecAction",
+  "name":"io.kubernetes.client.openapi.models.V1FCVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1FCVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1FlexVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1FlexVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1FlockerVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1FlockerVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1GCEPersistentDiskVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1GCEPersistentDiskVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1GitRepoVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1GitRepoVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1GlusterfsVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1GlusterfsVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1HTTPGetAction",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1HTTPGetAction",
+  "name":"io.kubernetes.client.openapi.models.V1HTTPHeader",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1HTTPHeader",
+  "name":"io.kubernetes.client.openapi.models.V1Handler",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1Handler",
+  "name":"io.kubernetes.client.openapi.models.V1HostAlias",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1HostAlias",
+  "name":"io.kubernetes.client.openapi.models.V1HostPathVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1HostPathVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1ISCSIVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ISCSIVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1Initializer",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1Initializer",
+  "name":"io.kubernetes.client.openapi.models.V1Initializers",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1Initializers",
+  "name":"io.kubernetes.client.openapi.models.V1KeyToPath",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1KeyToPath",
+  "name":"io.kubernetes.client.openapi.models.V1LabelSelector",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1LabelSelector",
+  "name":"io.kubernetes.client.openapi.models.V1LabelSelectorRequirement",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1LabelSelectorRequirement",
+  "name":"io.kubernetes.client.openapi.models.V1Lifecycle",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1Lifecycle",
+  "name":"io.kubernetes.client.openapi.models.V1ListMeta",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ListMeta",
+  "name":"io.kubernetes.client.openapi.models.V1LoadBalancerIngress",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1LoadBalancerIngress",
+  "name":"io.kubernetes.client.openapi.models.V1LoadBalancerStatus",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1LoadBalancerStatus",
+  "name":"io.kubernetes.client.openapi.models.V1LocalObjectReference",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1LocalObjectReference",
+  "name":"io.kubernetes.client.openapi.models.V1ManagedFieldsEntry",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ManagedFieldsEntry",
+  "name":"io.kubernetes.client.openapi.models.V1NFSVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1NFSVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1NodeAffinity",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1NodeAffinity",
+  "name":"io.kubernetes.client.openapi.models.V1NodeSelector",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1NodeSelector",
+  "name":"io.kubernetes.client.openapi.models.V1NodeSelectorRequirement",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1NodeSelectorRequirement",
+  "name":"io.kubernetes.client.openapi.models.V1NodeSelectorTerm",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1NodeSelectorTerm",
+  "name":"io.kubernetes.client.openapi.models.V1ObjectFieldSelector",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ObjectFieldSelector",
+  "name":"io.kubernetes.client.openapi.models.V1ObjectMeta",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ObjectMeta",
+  "name":"io.kubernetes.client.openapi.models.V1OwnerReference",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1OwnerReference",
+  "name":"io.kubernetes.client.openapi.models.V1PersistentVolumeClaim",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PersistentVolumeClaim",
+  "name":"io.kubernetes.client.openapi.models.V1PersistentVolumeClaimCondition",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PersistentVolumeClaimCondition",
+  "name":"io.kubernetes.client.openapi.models.V1PersistentVolumeClaimSpec",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PersistentVolumeClaimSpec",
+  "name":"io.kubernetes.client.openapi.models.V1PersistentVolumeClaimStatus",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PersistentVolumeClaimStatus",
+  "name":"io.kubernetes.client.openapi.models.V1PersistentVolumeClaimVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PersistentVolumeClaimVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1PhotonPersistentDiskVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PhotonPersistentDiskVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1Pod",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1Pod",
+  "name":"io.kubernetes.client.openapi.models.V1PodAffinity",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PodAffinity",
+  "name":"io.kubernetes.client.openapi.models.V1PodAffinityTerm",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PodAffinityTerm",
+  "name":"io.kubernetes.client.openapi.models.V1PodAntiAffinity",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PodAntiAffinity",
+  "name":"io.kubernetes.client.openapi.models.V1PodCondition",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PodCondition",
+  "name":"io.kubernetes.client.openapi.models.V1PodDNSConfig",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PodDNSConfig",
+  "name":"io.kubernetes.client.openapi.models.V1PodDNSConfigOption",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PodDNSConfigOption",
+  "name":"io.kubernetes.client.openapi.models.V1PodReadinessGate",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PodReadinessGate",
+  "name":"io.kubernetes.client.openapi.models.V1PodSecurityContext",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PodSecurityContext",
+  "name":"io.kubernetes.client.openapi.models.V1PodSpec",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PodSpec",
+  "name":"io.kubernetes.client.openapi.models.V1PodStatus",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PodStatus",
+  "name":"io.kubernetes.client.openapi.models.V1PodTemplateSpec",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PodTemplateSpec",
+  "name":"io.kubernetes.client.openapi.models.V1PortworxVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PortworxVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1PreferredSchedulingTerm",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1PreferredSchedulingTerm",
+  "name":"io.kubernetes.client.openapi.models.V1Probe",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1Probe",
+  "name":"io.kubernetes.client.openapi.models.V1ProjectedVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ProjectedVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1QuobyteVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1QuobyteVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1RBDVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1RBDVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1ResourceFieldSelector",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ResourceFieldSelector",
+  "name":"io.kubernetes.client.openapi.models.V1ResourceRequirements",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ResourceRequirements",
+  "name":"io.kubernetes.client.openapi.models.V1RollingUpdateStatefulSetStrategy",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1RollingUpdateStatefulSetStrategy",
+  "name":"io.kubernetes.client.openapi.models.V1SELinuxOptions",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1SELinuxOptions",
+  "name":"io.kubernetes.client.openapi.models.V1ScaleIOVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ScaleIOVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1SecretEnvSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1SecretEnvSource",
+  "name":"io.kubernetes.client.openapi.models.V1SecretKeySelector",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1SecretKeySelector",
+  "name":"io.kubernetes.client.openapi.models.V1SecretProjection",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1SecretProjection",
+  "name":"io.kubernetes.client.openapi.models.V1SecretVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1SecretVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1SecurityContext",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1SecurityContext",
+  "name":"io.kubernetes.client.openapi.models.V1Service",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1Service",
+  "name":"io.kubernetes.client.openapi.models.V1ServiceAccountTokenProjection",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ServiceAccountTokenProjection",
+  "name":"io.kubernetes.client.openapi.models.V1ServicePort",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ServicePort",
+  "name":"io.kubernetes.client.openapi.models.V1ServiceSpec",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ServiceSpec",
+  "name":"io.kubernetes.client.openapi.models.V1ServiceStatus",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1ServiceStatus",
+  "name":"io.kubernetes.client.openapi.models.V1SessionAffinityConfig",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1SessionAffinityConfig",
+  "name":"io.kubernetes.client.openapi.models.V1StatefulSet",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1StatefulSet",
+  "name":"io.kubernetes.client.openapi.models.V1StatefulSetCondition",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1StatefulSetCondition",
+  "name":"io.kubernetes.client.openapi.models.V1StatefulSetSpec",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1StatefulSetSpec",
+  "name":"io.kubernetes.client.openapi.models.V1StatefulSetStatus",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1StatefulSetStatus",
+  "name":"io.kubernetes.client.openapi.models.V1StatefulSetUpdateStrategy",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1StatefulSetUpdateStrategy",
+  "name":"io.kubernetes.client.openapi.models.V1Status",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1Status",
+  "name":"io.kubernetes.client.openapi.models.V1StatusCause",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1StatusCause",
+  "name":"io.kubernetes.client.openapi.models.V1StatusDetails",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1StatusDetails",
+  "name":"io.kubernetes.client.openapi.models.V1StorageOSVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1StorageOSVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1Sysctl",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1Sysctl",
+  "name":"io.kubernetes.client.openapi.models.V1TCPSocketAction",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1TCPSocketAction",
+  "name":"io.kubernetes.client.openapi.models.V1Toleration",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1Toleration",
+  "name":"io.kubernetes.client.openapi.models.V1TypedLocalObjectReference",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1TypedLocalObjectReference",
+  "name":"io.kubernetes.client.openapi.models.V1Volume",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1Volume",
+  "name":"io.kubernetes.client.openapi.models.V1VolumeDevice",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1VolumeDevice",
+  "name":"io.kubernetes.client.openapi.models.V1VolumeMount",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1VolumeMount",
+  "name":"io.kubernetes.client.openapi.models.V1VolumeProjection",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1VolumeProjection",
+  "name":"io.kubernetes.client.openapi.models.V1VsphereVirtualDiskVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1VsphereVirtualDiskVolumeSource",
+  "name":"io.kubernetes.client.openapi.models.V1WeightedPodAffinityTerm",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"io.kubernetes.client.models.V1WeightedPodAffinityTerm",
+  "name":"io.kubernetes.client.openapi.models.V1WindowsSecurityContextOptions",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
@@ -830,8 +839,7 @@
   "allDeclaredConstructors":true,
   "allPublicConstructors":true,
   "allDeclaredClasses":true,
-  "allPublicClasses":true,
-  "methods":[{"name":"<init>","parameterTypes":[] }]
+  "allPublicClasses":true
 },
 {
   "name":"io.titandata.titan.providers.TitanProvider",
@@ -840,8 +848,7 @@
   "allDeclaredConstructors":true,
   "allPublicConstructors":true,
   "allDeclaredClasses":true,
-  "allPublicClasses":true,
-  "methods":[{"name":"<init>","parameterTypes":[] }]
+  "allPublicClasses":true
 },
 {
   "name":"io.titandata.titan.providers.Volume",
