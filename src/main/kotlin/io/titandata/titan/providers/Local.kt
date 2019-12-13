@@ -4,7 +4,13 @@
 
 package io.titandata.titan.providers
 
+import io.titandata.client.apis.CommitsApi
+import io.titandata.client.apis.ContextApi
+import io.titandata.client.apis.OperationsApi
+import io.titandata.client.apis.RemotesApi
 import io.titandata.client.apis.RepositoriesApi
+import io.titandata.client.apis.VolumesApi
+import io.titandata.serialization.RemoteUtil
 import io.titandata.titan.clients.Docker
 import io.titandata.titan.exceptions.CommandException
 import io.titandata.titan.providers.generic.Abort
@@ -22,7 +28,6 @@ import io.titandata.titan.providers.generic.RuntimeStatus
 import io.titandata.titan.providers.generic.Status
 import io.titandata.titan.providers.generic.Tag
 import io.titandata.titan.providers.generic.Upgrade
-import io.titandata.titan.providers.local.CheckInstall
 import io.titandata.titan.providers.local.Checkout
 import io.titandata.titan.providers.local.Cp
 import io.titandata.titan.providers.local.Install
@@ -36,15 +41,20 @@ import io.titandata.titan.utils.CommandExecutor
 import io.titandata.titan.utils.HttpHandler
 import kotlin.system.exitProcess
 
-class Local : Provider {
-    private val titanServerVersion = "0.7.0"
+class Local(val contextName: String = "docker", val host: String = "localhost", val portNum: Int = 5001) : Provider {
+    private val titanServerVersion = "0.8.1"
     private val dockerRegistryUrl = "titandata"
+    private val uri = "http://$host:$portNum"
 
     private val httpHandler = HttpHandler()
     private val commandExecutor = CommandExecutor()
-    private val docker = Docker(commandExecutor)
-    private val repositoriesApi = RepositoriesApi()
-
+    private val docker = Docker(commandExecutor, contextName, portNum)
+    private val repositoriesApi = RepositoriesApi(uri)
+    private val operationsApi = OperationsApi(uri)
+    private val remotesApi = RemotesApi(uri)
+    private val commitsApi = CommitsApi(uri)
+    private val volumesApi = VolumesApi(uri)
+    private val contextApi = ContextApi(uri)
     private val n = System.lineSeparator()
 
     private fun exit(message: String, code: Int = 1) {
@@ -69,6 +79,31 @@ class Local : Provider {
         return returnList
     }
 
+    override fun getType(): String {
+        return "docker"
+    }
+
+    override fun getName(): String {
+        return contextName
+    }
+
+    override fun getPort(): Int {
+        return portNum
+    }
+
+    override fun getProperties(): Map<String, String> {
+        return contextApi.getContext().properties
+    }
+
+    override fun repositoryExists(repository: String): Boolean {
+        try {
+            repositoriesApi.getRepository(repository)
+        } catch (t: Throwable) {
+            return false
+        }
+        return true
+    }
+
     override fun upgrade(force: Boolean, version: String, finalize: Boolean, path: String?) {
         val upgradeCommand = Upgrade(::start, ::stop, ::exit, ::getContainersStatus, commandExecutor, httpHandler)
         return upgradeCommand.upgrade(force, version, finalize, path)
@@ -81,7 +116,7 @@ class Local : Provider {
         tags: List<String>,
         metadataOnly: Boolean
     ) {
-        val pullCommand = Pull(::exit)
+        val pullCommand = Pull(::exit, remotesApi, operationsApi)
         return pullCommand.pull(container, commit, remoteName, tags, metadataOnly)
     }
 
@@ -92,30 +127,21 @@ class Local : Provider {
         tags: List<String>,
         metadataOnly: Boolean
     ) {
-        val pushCommand = Push(::exit)
+        val pushCommand = Push(::exit, commitsApi, remotesApi, operationsApi, RemoteUtil(), repositoriesApi)
         return pushCommand.push(container, commit, remoteName, tags, metadataOnly)
     }
 
-    override fun checkInstall() {
-        val checkInstallCommand = CheckInstall(::exit, commandExecutor, docker)
-        return checkInstallCommand.checkInstall()
-    }
-
-    override fun install(registry: String?, verbose: Boolean) {
-        val regVal = if (registry.isNullOrEmpty()) {
-            dockerRegistryUrl
-        } else {
-            registry
-        }
+    override fun install(properties: Map<String, String>, verbose: Boolean) {
+        val regVal = properties.get("registry") ?: dockerRegistryUrl
         val installCommand = Install(titanServerVersion, regVal, verbose, commandExecutor, docker)
-        return installCommand.install()
+        installCommand.install()
     }
 
     override fun commit(container: String, message: String, tags: List<String>) {
         try {
             val user = commandExecutor.exec(listOf("git", "config", "user.name")).trim()
             val email = commandExecutor.exec(listOf("git", "config", "user.email")).trim()
-            val commitCommand = Commit(user, email)
+            val commitCommand = Commit(user, email, repositoriesApi, commitsApi)
             return commitCommand.commit(container, message, tags)
         } catch (e: CommandException) {
             exit("Git not configured.")
@@ -123,63 +149,63 @@ class Local : Provider {
     }
 
     override fun abort(container: String) {
-        val abortCommand = Abort(::exit)
+        val abortCommand = Abort(::exit, operationsApi)
         return abortCommand.abort(container)
     }
 
     override fun status(container: String) {
-        val statusCommand = Status(::getContainersStatus)
+        val statusCommand = Status(::getContainersStatus, repositoriesApi, volumesApi)
         return statusCommand.status(container)
     }
 
     override fun remoteAdd(container: String, uri: String, remoteName: String?, params: Map<String, String>) {
-        val remoteAddCommand = RemoteAdd(::exit)
+        val remoteAddCommand = RemoteAdd(::exit, repositoriesApi, remotesApi)
         return remoteAddCommand.remoteAdd(container, uri, remoteName, params)
     }
 
     override fun remoteLog(container: String, remoteName: String?, tags: List<String>) {
-        val remoteLogCommand = RemoteLog(::exit)
+        val remoteLogCommand = RemoteLog(::exit, remotesApi)
         return remoteLogCommand.remoteLog(container, remoteName, tags)
     }
 
     override fun remoteList(container: String) {
-        val remoteListCommand = RemoteList()
+        val remoteListCommand = RemoteList(remotesApi)
         return remoteListCommand.list(container)
     }
 
     override fun remoteRemove(container: String, remote: String) {
-        val remoteRemoveCommand = RemoteRemove()
+        val remoteRemoveCommand = RemoteRemove(remotesApi)
         return remoteRemoveCommand.remove(container, remote)
     }
 
     override fun migrate(container: String, name: String) {
-        val migrateCommand = Migrate(::exit, ::commit, commandExecutor, docker)
+        val migrateCommand = Migrate(::exit, ::commit, commandExecutor, docker, repositoriesApi, volumesApi)
         return migrateCommand.migrate(container, name)
     }
 
     override fun run(image: String, repository: String?, environments: List<String>, arguments: List<String>, disablePortMapping: Boolean) {
-        val runCommand = Run(::exit, commandExecutor, docker)
+        val runCommand = Run(::exit, commandExecutor, docker, repositoriesApi)
         return runCommand.run(image, repository, environments, arguments, disablePortMapping)
     }
 
-    override fun list() {
+    override fun list(context: String) {
         for (container in getContainersStatus()) {
-            System.out.printf("%-20s  %s$n", container.name, container.status)
+            System.out.printf("%-12s %-20s  %s$n", context, container.name, container.status)
         }
     }
 
-    override fun uninstall(force: Boolean) {
-        val uninstallCommand = Uninstall(titanServerVersion, ::exit, ::remove, commandExecutor, docker)
-        return uninstallCommand.uninstall(force)
+    override fun uninstall(force: Boolean, removeImages: Boolean) {
+        val uninstallCommand = Uninstall(titanServerVersion, ::exit, ::remove, commandExecutor, docker, repositoriesApi)
+        return uninstallCommand.uninstall(force, removeImages)
     }
 
     override fun checkout(container: String, guid: String?, tags: List<String>) {
-        val checkoutCommand = Checkout(commandExecutor, docker)
+        val checkoutCommand = Checkout(commandExecutor, docker, commitsApi, repositoriesApi)
         return checkoutCommand.checkout(container, guid, tags)
     }
 
     override fun log(container: String, tags: List<String>) {
-        val logCommand = Log()
+        val logCommand = Log(commitsApi)
         return logCommand.log(container, tags)
     }
 
@@ -194,23 +220,23 @@ class Local : Provider {
     }
 
     override fun remove(container: String, force: Boolean) {
-        val removeCommand = Remove(::exit, commandExecutor, docker)
+        val removeCommand = Remove(::exit, commandExecutor, docker, repositoriesApi, volumesApi)
         return removeCommand.remove(container, force)
     }
 
     override fun cp(container: String, driver: String, source: String, path: String) {
-        val cpCommand = Cp(::exit, ::start, ::stop, commandExecutor, docker)
+        val cpCommand = Cp(::exit, ::start, ::stop, commandExecutor, docker, volumesApi)
         return cpCommand.cp(container, driver, source, path)
     }
 
     override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>, arguments: List<String>, disablePortMapping: Boolean) {
-        val runCommand = Run(::exit, commandExecutor, docker)
-        val cloneCommand = Clone(::remoteAdd, ::pull, ::checkout, runCommand::run, ::remove, commandExecutor, docker)
+        val runCommand = Run(::exit, commandExecutor, docker, repositoriesApi)
+        val cloneCommand = Clone(::remoteAdd, ::pull, ::checkout, runCommand::run, ::remove, commandExecutor, docker, remotesApi, repositoriesApi)
         return cloneCommand.clone(uri, container, commit, params, arguments, disablePortMapping)
     }
 
     override fun delete(repository: String, commit: String?, tags: List<String>) {
-        val deleteCommand = Delete()
+        val deleteCommand = Delete(commitsApi)
         if (!commit.isNullOrEmpty()) {
             if (!tags.isEmpty()) {
                 return deleteCommand.deleteTags(repository, commit, tags)
@@ -222,7 +248,7 @@ class Local : Provider {
     }
 
     override fun tag(repository: String, commit: String, tags: List<String>) {
-        val tagCommand = Tag()
+        val tagCommand = Tag(commitsApi)
         return tagCommand.tagCommit(repository, commit, tags)
     }
 }

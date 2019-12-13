@@ -37,6 +37,10 @@ Subcommands
    cmd/checkout
    cmd/clone
    cmd/commit
+   cmd/context_default
+   cmd/context_install
+   cmd/context_ls
+   cmd/context_uninstall
    cmd/delete
    cmd/cp
    cmd/install

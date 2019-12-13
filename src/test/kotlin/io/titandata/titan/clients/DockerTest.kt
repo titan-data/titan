@@ -20,8 +20,8 @@ class DockerTest {
     private val executor = mock<CommandExecutor> {
         on { exec(listOf("docker", "-v")) } doReturn "Docker version 18.09.2, build 6247962"
         on { exec(listOf("docker", "images", "titan", "--format", "\"{{.Repository}}\"")) } doReturn "titan"
-        on { exec(listOf("docker", "ps", "-f", "name=titan-launch", "--format", "\"{{.Names}}\"")) } doReturn "titan-launch"
-        on { exec(listOf("docker", "ps", "-f", "name=titan-server", "--format", "\"{{.Names}}\"")) } doReturn "titan-server"
+        on { exec(listOf("docker", "ps", "-f", "name=titan-docker-launch", "--format", "\"{{.Names}}\"")) } doReturn "titan-docker-launch"
+        on { exec(listOf("docker", "ps", "-f", "name=titan-docker-server", "--format", "\"{{.Names}}\"")) } doReturn "titan-docker-server"
         on { exec(listOf("docker", "pull", "titan")) } doReturn """Using default tag: latest
 latest: Pulling from titan
 Digest: sha256:bc6f593df26c0631a1ce3a06afdd5a4a8fda703b071fb18805091e2372c68201
@@ -40,34 +40,20 @@ Status: Downloaded newer image for titan:latest
         "Id": "48a93f6ac01c054dc8eb02313dc28450b48e4368cf29d8a8366200368f0e7789",
     }
 ]"""
-        on { exec(listOf("docker", "volume", "create", "-d", "titan", "-o", "path=path", "volume")) } doReturn "volume"
+        on { exec(listOf("docker", "volume", "create", "-d", "titan-docker", "-o", "path=path", "volume")) } doReturn "volume"
         on { exec(listOf("docker", "volume", "rm", "volume")) } doReturn "volume"
-        on { exec(listOf("docker", "cp", "-a", "source/.", "titan-server:/var/lib/titan/mnt/target")) } doReturn ""
+        on { exec(listOf("docker", "cp", "-a", "source/.", "titan-docker-server:/var/lib/titan/mnt/target")) } doReturn ""
         on { exec(listOf("docker", "rm", "-f", "container")) } doReturn ""
         on { exec(listOf("docker", "rm", "container")) } doReturn ""
         on { exec(listOf("docker", "run", "--name", "name", "image", "entry.sh")) } doReturn "entry output string"
         on { exec(listOf("docker", "run", "--name", "name", "image")) } doReturn "no entry output string"
-        on { exec(listOf("docker", "run", "--privileged", "--pid=host", "--network=host", "-d", "--restart", "always", "--name=titan-launch", "-v", "/var/lib:/var/lib", "-v", "/run/docker:/run/docker", "-v", "/lib:/var/lib/titan/system", "-v", "titan-data:/var/lib/titan/data", "-v", "/var/run/docker.sock:/var/run/docker.sock", "-e", "TITAN_IMAGE=titan:latest", "-e", "TITAN_IDENTITY=titan", "titan:latest", "/bin/bash", "/titan/launch")) } doReturn ""
+        on { exec(listOf("docker", "run", "--privileged", "--pid=host", "--network=host", "-d", "--restart", "always", "--name=titan-docker-launch", "-v", "/var/lib:/var/lib", "-v", "/run/docker:/run/docker", "-v", "/lib:/var/lib/titan-docker/system", "-v", "titan-docker-data:/var/lib/titan-docker/data", "-v", "/var/run/docker.sock:/var/run/docker.sock", "-e", "TITAN_PORT=5001", "-e", "TITAN_IMAGE=titan:latest", "-e", "TITAN_IDENTITY=titan-docker", "titan:latest", "/bin/bash", "/titan/launch")) } doReturn ""
     }
     private val docker = Docker(executor)
 
     @Test
     fun `can get version`() {
         assertEquals("Docker version 18.09.2, build 6247962", docker.version())
-    }
-
-    @Test
-    fun `can check if titan images are downloaded`() {
-        assertTrue(docker.titanIsDownloaded())
-    }
-
-    @Test
-    fun `can check if titan images are not downloaded`() {
-        val falseExecutor = mock<CommandExecutor> {
-            on { exec(listOf("docker", "images", "titan", "--format", "\"{{.Repository}}\"")) } doReturn ""
-        }
-        val falseDocker = Docker(falseExecutor)
-        assertFalse(falseDocker.titanIsDownloaded())
     }
 
     @Test
@@ -78,7 +64,7 @@ Status: Downloaded newer image for titan:latest
     @Test
     fun `can check if titan-launch is not available`() {
         val falseExecutor = mock<CommandExecutor> {
-            on { exec(listOf("docker", "ps", "-f", "name=titan-launch", "--format", "\"{{.Names}}\"")) } doReturn ""
+            on { exec(listOf("docker", "ps", "-f", "name=titan-docker-launch", "--format", "\"{{.Names}}\"")) } doReturn ""
         }
         val falseDocker = Docker(falseExecutor)
         assertFalse(falseDocker.titanLaunchIsAvailable())
@@ -98,7 +84,7 @@ Status: Downloaded newer image for titan:latest
     @Test
     fun `can check if titan is not running`() {
         val falseExecutor = mock<CommandExecutor> {
-            on { exec(listOf("docker", "ps", "-f", "name=titan-server", "--format", "\"{{.Names}}\"")) } doReturn ""
+            on { exec(listOf("docker", "ps", "-f", "name=titan-docker-server", "--format", "\"{{.Names}}\"")) } doReturn ""
         }
         val falseDocker = Docker(falseExecutor)
         assertFalse(falseDocker.titanServerIsAvailable())

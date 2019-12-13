@@ -199,6 +199,9 @@ class Kubernetes() {
      * as: https://github.com/pixel-point/kube-forwarder
      */
     fun startPortForwarding(repoName: String) {
+        // There can be a race condition where even though the pod is listed as ready port forwarding fails
+        Thread.sleep(500)
+
         val service = coreApi.readNamespacedService(repoName, defaultNamespace, null, null, null)
         for (port in service.spec.ports) {
             executor.exec(listOf("sh", "-c", "kubectl port-forward svc/$repoName ${port.port} > /dev/null 2>&1 &"))

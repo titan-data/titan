@@ -18,7 +18,7 @@ intact.
 
 .. warning::
 
-   As of version ``0.3.1``, upgrade is not currently working. This will be
+   As of version ``0.4.0``, upgrade is not currently working. This will be
    addressed in a future release.
 
 .. note::

@@ -6,16 +6,16 @@ package io.titandata.titan.providers.kubernetes
 
 import io.titandata.titan.Version
 import io.titandata.titan.clients.Docker
-import io.titandata.titan.providers.Kubernetes
 import io.titandata.titan.utils.CommandExecutor
 import io.titandata.titan.utils.ProgressTracker
 
 class Install(
+    private val contextName: String,
     private val titanServerVersion: String,
     private val dockerRegistryUrl: String,
     private val verbose: Boolean = false,
     private val commandExecutor: CommandExecutor = CommandExecutor(),
-    private val docker: Docker = Docker(commandExecutor, Kubernetes.Identity),
+    private val docker: Docker = Docker(commandExecutor, contextName),
     private val track: (title: String, function: () -> Any) -> Unit = ProgressTracker()::track
 ) {
     fun install() {

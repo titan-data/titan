@@ -1,5 +1,9 @@
 [
 {
+  "name":"com.google.gson.internal.LinkedTreeMap",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"io.kubernetes.client.custom.IntOrString$IntOrStringAdapter",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
@@ -590,10 +594,7 @@
 },
 {
   "name":"io.kubernetes.client.models.V1WeightedPodAffinityTerm",
-  "allDeclaredFields":true
-},
-{
-  "name":"com.google.gson.internal.LinkedTreeMap",
+  "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
@@ -823,12 +824,36 @@
   "allDeclaredFields":true
 },
 {
+  "name":"io.titandata.titan.providers.TitanConfig",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.titandata.titan.providers.TitanProvider",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true,
+  "allPublicConstructors":true,
+  "allDeclaredClasses":true,
+  "allPublicClasses":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"io.titandata.titan.providers.Volume",
   "allDeclaredFields":true
 },
 {
   "name":"java.io.File",
   "methods":[{"name":"toPath","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.Object",
+  "allDeclaredFields":true
 },
 {
   "name":"java.lang.String"

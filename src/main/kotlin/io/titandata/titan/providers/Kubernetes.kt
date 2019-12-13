@@ -5,6 +5,7 @@
 package io.titandata.titan.providers
 
 import io.titandata.client.apis.CommitsApi
+import io.titandata.client.apis.ContextApi
 import io.titandata.client.apis.OperationsApi
 import io.titandata.client.apis.RemotesApi
 import io.titandata.client.apis.RepositoriesApi
@@ -27,7 +28,6 @@ import io.titandata.titan.providers.generic.RuntimeStatus
 import io.titandata.titan.providers.generic.Status
 import io.titandata.titan.providers.generic.Tag
 import io.titandata.titan.providers.generic.Upgrade
-import io.titandata.titan.providers.kubernetes.CheckInstall
 import io.titandata.titan.providers.kubernetes.Checkout
 import io.titandata.titan.providers.kubernetes.Install
 import io.titandata.titan.providers.kubernetes.Remove
@@ -39,26 +39,23 @@ import io.titandata.titan.utils.CommandExecutor
 import io.titandata.titan.utils.HttpHandler
 import kotlin.system.exitProcess
 
-class Kubernetes : Provider {
-    private val titanServerVersion = "0.7.0"
+class Kubernetes(val contextName: String = "kubernetes", val host: String = "localhost", val portNum: Int = 5002) : Provider {
+    private val titanServerVersion = "0.8.1"
     private val dockerRegistryUrl = "titandata"
+    private val uri = "http://$host:$portNum"
 
     private val httpHandler = HttpHandler()
     private val commandExecutor = CommandExecutor()
-    private val docker = Docker(commandExecutor, Identity)
+    private val docker = Docker(commandExecutor, contextName, portNum)
     private val kubernetes = io.titandata.titan.clients.Kubernetes()
-    private val repositoriesApi = RepositoriesApi("http://localhost:$Port")
-    private val operationsApi = OperationsApi("http://localhost:$Port")
-    private val remotesApi = RemotesApi("http://localhost:$Port")
-    private val commitsApi = CommitsApi("http://localhost:$Port")
-    private val volumesApi = VolumesApi("http://localhost:$Port")
+    private val repositoriesApi = RepositoriesApi(uri)
+    private val operationsApi = OperationsApi(uri)
+    private val remotesApi = RemotesApi(uri)
+    private val commitsApi = CommitsApi(uri)
+    private val volumesApi = VolumesApi(uri)
+    private val contextApi = ContextApi(uri)
 
     private val n = System.lineSeparator()
-
-    companion object {
-        val Identity = "titan-k8s"
-        val Port = 5002
-    }
 
     private fun exit(message: String, code: Int = 1) {
         if (message != "") {
@@ -76,9 +73,29 @@ class Kubernetes : Provider {
         return returnList
     }
 
-    override fun checkInstall() {
-        val checkInstallCommand = CheckInstall(::exit, commandExecutor, docker)
-        return checkInstallCommand.checkInstall()
+    override fun getType(): String {
+        return "kubernetes"
+    }
+
+    override fun getName(): String {
+        return contextName
+    }
+
+    override fun getPort(): Int {
+        return portNum
+    }
+
+    override fun getProperties(): Map<String, String> {
+        return contextApi.getContext().properties
+    }
+
+    override fun repositoryExists(repository: String): Boolean {
+        try {
+            repositoriesApi.getRepository(repository)
+        } catch (t: Throwable) {
+            return false
+        }
+        return true
     }
 
     override fun pull(
@@ -114,14 +131,11 @@ class Kubernetes : Provider {
         }
     }
 
-    override fun install(registry: String?, verbose: Boolean) {
-        val regVal = if (registry.isNullOrEmpty()) {
-            dockerRegistryUrl
-        } else {
-            registry
-        }
-        val installCommand = Install(titanServerVersion, regVal, verbose, commandExecutor, docker)
-        return installCommand.install()
+    override fun install(properties: Map<String, String>, verbose: Boolean) {
+        val regVal = properties.get("registry") ?: dockerRegistryUrl
+        val config = properties.filterKeys { it != "registry" }
+        val installCommand = Install(contextName, titanServerVersion, regVal, verbose, commandExecutor, docker)
+        installCommand.install()
     }
 
     override fun abort(container: String) {
@@ -163,9 +177,9 @@ class Kubernetes : Provider {
         return runCommand.run(image, repository, environments, arguments, disablePortMapping)
     }
 
-    override fun uninstall(force: Boolean) {
+    override fun uninstall(force: Boolean, removeImages: Boolean) {
         val uninstallCommand = Uninstall(titanServerVersion, ::exit, ::remove, commandExecutor, docker, repositoriesApi)
-        return uninstallCommand.uninstall(force)
+        return uninstallCommand.uninstall(force, removeImages)
     }
 
     override fun upgrade(force: Boolean, version: String, finalize: Boolean, path: String?) {
@@ -195,9 +209,9 @@ class Kubernetes : Provider {
         return tagCommand.tagCommit(repository, commit, tags)
     }
 
-    override fun list() {
+    override fun list(context: String) {
         for (container in getRuntimeStatus()) {
-            System.out.printf("%-20s  %s$n", container.name, container.status)
+            System.out.printf("%-12s  %-20s  %s$n", context, container.name, container.status)
         }
     }
 

@@ -1,23 +1,35 @@
-.. _lifecycle_supported:
+.. _lifecycle_docker:
 
-Supported Operating Systems
-===========================
+Titan with Docker
+=================
 
-Titan is designed to run on any system that supported docker, but there are
-some dependencies that limit the set of supported operation systems,
+Titan for docker is designed to run on any system that supports docker, but
+there are some dependencies that limit the set of supported operation systems,
 especially on Linux.
 
-To help understand why this is necessary, it helps to understand a bit about
-the architecture of Titan. To make titan possible, there is a container
-(``titan-server``) running in the background that provides data versioning
-capabilities on top of `ZFS <http://openzfs.org>`_. This requires that ZFS
-be installed on the host operating system, but because of how out-of-tree
-kernel modules work, this needs to be done by the titan software (a
-container named ``titan-launch`` in particular). Titan attempts to provide
-pre-built versions for common OSes, as well as a means to build them on the
-fly for new versions, but there are limits to this system. If you are not
-on a supported operating system, you may find ``titan install`` taking
-a long time to build binaries, or failing outright.
+To help understand why this is necessary, it helps to understand a bit about the
+architecture of Titan. To make titan possible, there is a container
+(``titan-<context>-server``) running in the background that provides data
+versioning capabilities on top of `ZFS <http://openzfs.org>`_. This requires
+that ZFS be installed on the host operating system, but because of how
+out-of-tree kernel modules work, this needs to be done by the titan software (a
+container named ``titan-<context>-launch`` in particular). Titan attempts to provide
+pre-built versions for common OSes, as well as a means to build them on the fly
+for new versions, but there are limits to this system. If you are not on a
+supported operating system, you may find ``titan install`` taking a long time to
+build binaries, or failing outright.
+
+If we do not have a pre-built version of the ZFS binaries, we will attempt to
+build them on the fly. For Linux, we are still limited to the set of supported
+distributions, but we can built for slightly different variations or versions
+if needed. If you are running a Linux system other than a supported
+distribution, you can also compile and install ZFS yourself, provided it's
+version `0.8.1`, and Titan will use that instead of trying to install its own.
+
+If the installation is taking a while, and you see a ``zfs-builder``
+container in ``docker ps`` output, then it's off building a custom version
+of ZFS. If you are running a supported operating system, then reach out to the
+community to see if new pre-built binaries need to be created.
 
 MacOS and Windows
 -----------------
@@ -40,10 +52,10 @@ Docker Desktop prior to using Titan.
 
 .. note::
 
-   Titan has not been tested and may or may not work with the new
-   `Docker for WSL <https://docs.docker.com/docker-for-windows/wsl-tech-preview/>`_.
-   This will be addressed shortly, but in the meantime only traditional
-   Docker Desktop is supported.
+   Titan does not work with the new
+   `Docker for WSL <https://docs.docker.com/docker-for-windows/wsl-tech-preview/>`_
+   due to limitations in Docker that prevent local volumes from working
+   properly.
 
 Linux
 -----

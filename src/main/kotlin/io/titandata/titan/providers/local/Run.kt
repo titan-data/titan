@@ -34,6 +34,11 @@ class Run(
             repository.isNullOrEmpty() -> container
             else -> repository
         }
+
+        if (docker.containerExists(containerName)) {
+            exit("Container '$containerName' already exists, name must be unique", 1)
+        }
+
         val image = when {
             container.contains(":") -> container.split(":")[0]
             else -> container
@@ -71,7 +76,7 @@ class Run(
             println("Creating docker volume $volumeName with path $path")
             docker.createVolume(volumeName, path)
             argList.add("--mount")
-            argList.add("type=volume,src=$volumeName,dst=$path,volume-driver=titan")
+            argList.add("type=volume,src=$volumeName,dst=$path,volume-driver=titan-${docker.identity}")
             val addVol = mapOf(
                 "name" to "v$index",
                 "path" to path

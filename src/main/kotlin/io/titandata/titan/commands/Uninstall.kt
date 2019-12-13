@@ -17,9 +17,14 @@ import org.kodein.di.generic.provider
 class Uninstall : CliktCommand(help = "Uninstall titan infrastructure") {
     private val force by option("-f", "--force", help = "Destroy all repositories").flag(default = false)
     private val dependencies: Dependencies by requireObject()
+
     override fun run() {
-        for (provider in dependencies.providers.list()) {
-            provider.uninstall(force)
+        val providers = dependencies.providers.list()
+        val providerNames = providers.keys.toList()
+        for (provider in providerNames) {
+            // This assumes that all providers share a common path to remove images, may not hold true in the future
+            providers[provider]!!.uninstall(force, provider == providerNames.last())
+            dependencies.providers.removeProvider(provider)
         }
     }
 }

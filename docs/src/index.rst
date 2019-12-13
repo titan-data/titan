@@ -7,8 +7,9 @@ of Titan, head over to `titan-data.io <https://titan-data.io>`_.
 
 .. attention::
 
-  This is the very beginning of the Titan documentation, and is likely
-  incomplete. Please bear with us as we build out the documentation.
+  Kubernetes support is currently available as an _alpha_ capability. You  can
+  read more about what is supported and what limitations exist in the
+  :ref:`lifecycle_kubernetes` section.
 
 .. ifconfig:: release_type in ('development')
 

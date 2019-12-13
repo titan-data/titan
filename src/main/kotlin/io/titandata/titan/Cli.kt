@@ -12,6 +12,7 @@ import io.titandata.titan.commands.abortModule
 import io.titandata.titan.commands.checkoutModule
 import io.titandata.titan.commands.cloneModule
 import io.titandata.titan.commands.commitModule
+import io.titandata.titan.commands.contextModule
 import io.titandata.titan.commands.cpModule
 import io.titandata.titan.commands.deleteModule
 import io.titandata.titan.commands.installModule
@@ -68,6 +69,7 @@ object Cli {
             import(installModule)
             import(runModule)
             import(cloneModule)
+            import(contextModule)
             import(migrateModule)
             import(cpModule)
             import(startModule)

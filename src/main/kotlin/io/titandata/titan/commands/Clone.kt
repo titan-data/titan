@@ -28,7 +28,7 @@ class Clone : CliktCommand(help = "Clone a remote repository to local repository
     private val arguments by argument().multiple()
 
     override fun run() {
-        val provider = dependencies.providers.byRepositoryName(repository)
+        val (provider, repoName) = dependencies.providers.byRepositoryName(repository)
         val params = mutableMapOf<String, String>()
         for (param in parameters) {
             val split = param.split("=")
@@ -37,7 +37,7 @@ class Clone : CliktCommand(help = "Clone a remote repository to local repository
             }
             params[split[0]] = split[1]
         }
-        provider.clone(uri, repository, commit, params, arguments, disablePortMapping)
+        provider.clone(uri, repoName, commit, params, arguments, disablePortMapping)
     }
 }
 

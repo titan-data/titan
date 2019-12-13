@@ -1,8 +1,24 @@
 package io.titandata.titan.providers
 
 class Mock : Provider {
-    override fun checkInstall() {
-        println("Mock Provider Installed")
+    override fun getType(): String {
+        return "mock"
+    }
+
+    override fun getProperties(): Map<String, String> {
+        return emptyMap()
+    }
+
+    override fun repositoryExists(repository: String): Boolean {
+        return true
+    }
+
+    override fun getName(): String {
+        return "mock"
+    }
+
+    override fun getPort(): Int {
+        return 0
     }
 
     override fun pull(container: String, commit: String?, remoteName: String?, tags: List<String>, metadataOnly: Boolean) {
@@ -17,8 +33,8 @@ class Mock : Provider {
         println("Committing new state")
     }
 
-    override fun install(registry: String?, verbose: Boolean) {
-        println("Initializing new repository")
+    override fun install(properties: Map<String, String>, verbose: Boolean) {
+        println("Installing infrastructure")
     }
 
     override fun abort(container: String) {
@@ -53,7 +69,7 @@ class Mock : Provider {
         println("Running controlled image")
     }
 
-    override fun uninstall(force: Boolean) {
+    override fun uninstall(force: Boolean, removeImages: Boolean) {
         println("Tearing down containers")
     }
 
@@ -65,7 +81,7 @@ class Mock : Provider {
         println("Checking out data set $guid")
     }
 
-    override fun list() {
+    override fun list(context: String) {
         println("List containers")
     }
 

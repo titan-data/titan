@@ -2,14 +2,14 @@ tests:
   - "get ssh test server":
       command: docker pull titandata/ssh-test-server:latest
   - "start ssh server":
-      command: docker run -v $PWD:/workdir --workdir /workdir -p 2022:22 -d --name sshHost titandata/ssh-test-server:latest
+      command: docker run -v $PWD:/workdir --workdir /workdir --network titan-docker -d --name sshHost titandata/ssh-test-server:latest
       env:
         get:
           - PWD
   - "create test directory in ssh server":
       command: docker exec sshHost mkdir -p /test
-  - "get localhost ip":
-      command: cat localip
+  - "get ssh host ip":
+      command: [docker, inspect, -f, "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}", sshHost]
       stdout:
         notEmpty: "true"
       env:
@@ -30,14 +30,14 @@ tests:
                 delimiter: " "
                 position: 1
   - "add ssh remote with password succeeds":
-      command: titan remote add ssh://root:root@$SSH_HOST:2022/test sshTest
+      command: titan remote add ssh://root:root@$SSH_HOST/test sshTest
       env:
         get:
           - SSH_HOST
   - "repo has ssh remote with password":
       command: titan remote ls sshTest
       stdout:
-        contains: ssh://root:*****@$SSH_HOST:2022/test
+        contains: ssh://root:*****@$SSH_HOST/test
       env:
         get:
           - SSH_HOST
@@ -117,7 +117,7 @@ tests:
   - "add private ssh key to ssh server":
       command: [docker, exec, sshHost, sh, -c, cat sshKey.pub > /root/.ssh/authorized_keys]
   - "add remote with ssh key succeeds":
-      command: [titan, remote, add, -p, keyFile=$PWD/sshKey, ssh://root@$SSH_HOST:2022/sshtest, sshTest]
+      command: [titan, remote, add, -p, keyFile=$PWD/sshKey, ssh://root@$SSH_HOST/sshtest, sshTest]
       env:
         get:
           - PWD
@@ -125,7 +125,7 @@ tests:
   - "repo has ssh remote with ssh key":
       command: titan remote ls sshTest
       stdout:
-        contains: ssh://root@$SSH_HOST:2022/sshtest
+        contains: ssh://root@$SSH_HOST/sshtest
       env:
         get:
           - SSH_HOST
@@ -192,9 +192,6 @@ tests:
       stdout: Removed origin from sshTest
   - "remove sshTest succeeds":
       command: titan rm -f sshTest
-      stdout: |-
-        Removing container sshTest
-        sshTest removed
   - "stop ssh server":
       command: docker rm -f sshHost
       stdout: sshHost

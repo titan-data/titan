@@ -117,7 +117,7 @@
 		<dependency>
 			<groupId>io.titandata</groupId>
 			<artifactId>titan-client</artifactId>
-			<version>0.7.0</version>
+			<version>0.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>me.tongfei</groupId>
@@ -129,7 +129,6 @@
 			<artifactId>client-java</artifactId>
 			<version>6.0.1</version>
 		</dependency>
-		<!-- kuberentes uses a stale version of SnakeYAML that doesn't work with native-image -->
 		<dependency>
 			<groupId>org.yaml</groupId>
 			<artifactId>snakeyaml</artifactId>

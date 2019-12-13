@@ -17,8 +17,8 @@ tests:
   - "can list hello-world/postgres":
       command: titan ls
       stdout: |-
-        REPOSITORY            STATUS
-        hello-world           running
+        CONTEXT      REPOSITORY            STATUS
+        docker       hello-world           running
   - "can get contents of hello-world/postgres":
       command: [docker, exec, hello-world, psql, postgres://postgres:postgres@localhost/postgres, -t, -c, SELECT * FROM messages;]
       stdout: Hello, World!
@@ -26,6 +26,7 @@ tests:
       command: titan rm -f hello-world
       stdout: |-
         Removing container hello-world
+        Deleting volume v0
         hello-world removed
   - "can run mongo-test":
       command: titan run -n mongo-test mongo
@@ -79,6 +80,8 @@ tests:
       command: titan rm -f mongo-test
       stdout: |-
         Removing container mongo-test
+        Deleting volume v0
+        Deleting volume v1
         mongo-test removed
   - "can uninstall titan":
       command: titan uninstall
