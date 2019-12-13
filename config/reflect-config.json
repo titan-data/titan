@@ -12,6 +12,10 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
+  "name":"io.kubernetes.client.custom.V1Patch$V1PatchAdapter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"io.kubernetes.client.openapi.models.V1AWSElasticBlockStoreVolumeSource",
   "allDeclaredFields":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]

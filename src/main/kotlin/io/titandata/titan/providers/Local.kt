@@ -190,7 +190,7 @@ class Local(val contextName: String = "docker", val host: String = "localhost", 
 
     override fun list(context: String) {
         for (container in getContainersStatus()) {
-            System.out.printf("%-12s %-20s  %s$n", context, container.name, container.status)
+            System.out.printf("%-12s  %-20s  %s$n", context, container.name, container.status)
         }
     }
 
