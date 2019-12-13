@@ -839,8 +839,7 @@
   "allDeclaredConstructors":true,
   "allPublicConstructors":true,
   "allDeclaredClasses":true,
-  "allPublicClasses":true,
-  "methods":[{"name":"<init>","parameterTypes":[] }]
+  "allPublicClasses":true
 },
 {
   "name":"io.titandata.titan.providers.TitanProvider",
@@ -849,8 +848,7 @@
   "allDeclaredConstructors":true,
   "allPublicConstructors":true,
   "allDeclaredClasses":true,
-  "allPublicClasses":true,
-  "methods":[{"name":"<init>","parameterTypes":[] }]
+  "allPublicClasses":true
 },
 {
   "name":"io.titandata.titan.providers.Volume",
