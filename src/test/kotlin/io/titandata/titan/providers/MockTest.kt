@@ -204,7 +204,7 @@ class MockTest {
     fun `can clone`() {
         val byteStream = ByteArrayOutputStream()
         System.setOut(PrintStream(byteStream))
-        mockProvider.clone("http://user:pass@path", "container", null, emptyMap(), emptyList(), false)
+        mockProvider.clone("http://user:pass@path", "container", null, emptyMap(), emptyList(), false, emptyList())
         byteStream.flush()
         val expected = String(byteStream.toByteArray()).trim()
         assertEquals(expected, "cloning container from http://user:pass@path")

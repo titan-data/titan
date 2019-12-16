@@ -17,8 +17,8 @@ tests:
   - "can list hello-world/postgres":
       command: titan ls
       stdout: |-
-        CONTEXT      REPOSITORY            STATUS
-        docker       hello-world           running
+        CONTEXT       REPOSITORY            STATUS
+        docker        hello-world           running
   - "can get contents of hello-world/postgres":
       command: [docker, exec, hello-world, psql, postgres://postgres:postgres@localhost/postgres, -t, -c, SELECT * FROM messages;]
       stdout: Hello, World!
