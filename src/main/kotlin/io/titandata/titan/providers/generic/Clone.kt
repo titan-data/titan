@@ -50,7 +50,9 @@ class Clone(
         val repository = Repository(repoName, emptyMap())
         val plainUri = "${parsedUri.scheme}://${parsedUri.authority}${parsedUri.path}"
         val allTags = tags.toMutableList()
-        allTags.addAll(HttpUrl.parse(uri)?.queryParameterValues("tag") ?: emptyList())
+        if (parsedUri.query != null) {
+            allTags.addAll(HttpUrl.parse("http://host?${parsedUri.query}")?.queryParameterValues("tag") ?: emptyList())
+        }
         var cleanup = false
         try {
             repositoriesApi.createRepository(repository)

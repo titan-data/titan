@@ -59,6 +59,12 @@ jobs:
         run: |
           ssh-keygen -b 2048 -t rsa -f ./sshKey -q -N ""
           java -jar vexrun.jar -f ./src/endtoend-test/remotes/ssh/sshWorkflowTests.yml
+      - name: Run Tag Tests
+        run: java -jar vexrun.jar -d ./src/endtoend-test/tags
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
       - name: Run DB Matrix Tests
         run: java -jar vexrun.jar -f ./src/endtoend-test/db-matrix/databases.yml
         env:
