@@ -15,7 +15,7 @@ Syntax
 
 ::
 
-    titan clone [-c id] [-p key=value ...] [-n repository] <uri> -- [additional context specific arguments]...
+    titan clone [-c id] [-p key=value ...] [-t key=value ...] [-n repository] <uri> -- [additional context specific arguments]...
 
 Arguments
 ---------
@@ -23,7 +23,9 @@ Arguments
 uri
     *Required*. The URI of the remote to clone from. For more information on
     remotes, the URI format, and different remote providers, see the
-    :ref:`remote` section.
+    :ref:`remote` section. Note that due to current limitations, when using a URL
+    with query parameters (for tags), it must be passed after the "--" delimeter,
+    otherwise you will get an error of "no such option".
 
 
 Options
@@ -36,6 +38,11 @@ Options
 -P, --disable-port-mapping      Default: false. Disable the automatic specific
                                 port mapping of exposed ports from the container
                                 to localhost.
+
+-t, --tag       key=value       Optional tags to filter commits when finding the
+                                latest commit. Generates an error if no matching
+                                commit is found, or if an explicit commit ID
+                                is specified.
 
 -n, --name      TEXT            Optional. Name of the new repository to create.
                                 If not specified, then the name of the original

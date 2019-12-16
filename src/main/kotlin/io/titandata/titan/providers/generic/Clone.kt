@@ -13,7 +13,9 @@ import io.titandata.titan.clients.Docker
 import io.titandata.titan.exceptions.CommandException
 import io.titandata.titan.providers.Metadata
 import io.titandata.titan.utils.CommandExecutor
+import java.net.URI
 import kotlin.system.exitProcess
+import okhttp3.HttpUrl
 
 class Clone(
     private val remoteAdd: (container: String, uri: String, remoteName: String?, params: Map<String, String>) -> Unit,
@@ -27,25 +29,45 @@ class Clone(
     private val repositoriesApi: RepositoriesApi = RepositoriesApi(),
     private val remoteUtil: RemoteUtil = RemoteUtil()
 ) {
-    fun clone(uri: String, container: String?, guid: String?, params: Map<String, String>, arguments: List<String>, disablePortMapping: Boolean) {
+    fun clone(
+        uri: String,
+        container: String?,
+        guid: String?,
+        params: Map<String, String>,
+        arguments: List<String>,
+        disablePortMapping: Boolean,
+        tags: List<String>
+    ) {
+        val parsedUri = URI(uri)
         val repoName = when (container) {
-            null -> uri.split("/").last().substringBefore('#')
+            null -> parsedUri.path.split("/").last()
             else -> container
         }
         val commitId = when {
-            guid.isNullOrEmpty() && uri.contains('#') -> uri.split("#").last()
+            guid.isNullOrEmpty() && parsedUri.fragment != null -> parsedUri.fragment
             else -> guid
         }
         val repository = Repository(repoName, emptyMap())
+        val plainUri = "${parsedUri.scheme}://${parsedUri.authority}${parsedUri.path}"
+        val allTags = tags.toMutableList()
+        allTags.addAll(HttpUrl.parse(uri)?.queryParameterValues("tag") ?: emptyList())
+        var cleanup = false
         try {
             repositoriesApi.createRepository(repository)
-            remoteAdd(repoName, uri.substringBefore('#'), null, params)
+            cleanup = true
+            remoteAdd(repoName, plainUri, null, params)
             val remote = remotesApi.getRemote(repoName, "origin")
             var commit = Commit("id", emptyMap())
             if (commitId.isNullOrEmpty()) {
-                val remoteCommits = remotesApi.listRemoteCommits(repoName, remote.name, remoteUtil.getParameters(remote))
+                val remoteCommits = remotesApi.listRemoteCommits(repoName, remote.name, remoteUtil.getParameters(remote), allTags)
+                if (remoteCommits.isEmpty()) {
+                    error("unable to find any matching commits in remote repository")
+                }
                 commit = remoteCommits.first()
             } else {
+                if (!tags.isEmpty()) {
+                    error("tags cannot be specified with commit ID")
+                }
                 commit = remotesApi.getRemoteCommit(repoName, remote.name, commitId, remoteUtil.getParameters(remote))
             }
             val metadata = Metadata.load(commit.properties)
@@ -66,10 +88,20 @@ class Clone(
             run(metadata.image.digest, repoName, metadata.environment, arguments, disablePortMapping, false)
             pull(repoName, commit.id, null, listOf(), false)
             checkout(repoName, commit.id, listOf())
-        } catch (e: CommandException) {
-            println(e.message)
-            println(e.output)
-            remove(repository.name, true)
+            cleanup = false
+        } catch (t: Throwable) {
+            // We explicitly handle the exception so that the error message appears before the remove messages
+            println(t.message)
+            if (t is CommandException) {
+                println(t.output)
+            }
+            if (cleanup) {
+                try {
+                    remove(repository.name, true)
+                } catch (t: Throwable) {
+                    // Ignore
+                }
+            }
             exitProcess(1)
         }
     }

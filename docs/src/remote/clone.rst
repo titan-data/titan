@@ -16,7 +16,16 @@ for more details.
 
 .. note::
 
-   The clone command currently always uses the latest commit by default. To clone a specific
+   The clone command uses the latest commit by default. To clone a specific
    commit, add the commit GUID to the URI with a `#` tag. Example::
 
     $ titan clone -n hello-world s3web://demo.titan-data.io/hello-world/postgres#0f53a6a4-90ff-4f8c-843a-a6cce36f4f4f
+
+.. note::
+
+   The clone command supports filtering the latest commit by tag, which can be done
+   via the command line or as part of the URL. To specify tags in the URL, provide
+   them as one or more "tag" query parameter. Note that due to a current limitation,
+   this must be provided after the "--" delimiteer.
+
+   $ titan clone -- s3://my-bucket/hello-world?tag=label=nightly

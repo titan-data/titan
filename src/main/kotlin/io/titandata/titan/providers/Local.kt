@@ -229,10 +229,10 @@ class Local(val contextName: String = "docker", val host: String = "localhost", 
         return cpCommand.cp(container, driver, source, path)
     }
 
-    override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>, arguments: List<String>, disablePortMapping: Boolean) {
+    override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>, arguments: List<String>, disablePortMapping: Boolean, tags: List<String>) {
         val runCommand = Run(::exit, commandExecutor, docker, repositoriesApi)
         val cloneCommand = Clone(::remoteAdd, ::pull, ::checkout, runCommand::run, ::remove, commandExecutor, docker, remotesApi, repositoriesApi)
-        return cloneCommand.clone(uri, container, commit, params, arguments, disablePortMapping)
+        return cloneCommand.clone(uri, container, commit, params, arguments, disablePortMapping, tags)
     }
 
     override fun delete(repository: String, commit: String?, tags: List<String>) {

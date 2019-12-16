@@ -239,10 +239,10 @@ class Kubernetes(val contextName: String = "kubernetes", val host: String = "loc
         throw NotImplementedError("cp is not supported in kubernetes context")
     }
 
-    override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>, arguments: List<String>, disablePortMapping: Boolean) {
+    override fun clone(uri: String, container: String?, commit: String?, params: Map<String, String>, arguments: List<String>, disablePortMapping: Boolean, tags: List<String>) {
         val runCommand = Run(::exit, commandExecutor, docker, kubernetes, repositoriesApi, volumesApi)
         val cloneCommand = Clone(::remoteAdd, ::pull, ::checkout, runCommand::run, ::remove, commandExecutor, docker,
                 remotesApi, repositoriesApi)
-        return cloneCommand.clone(uri, container, commit, params, arguments, disablePortMapping)
+        return cloneCommand.clone(uri, container, commit, params, arguments, disablePortMapping, tags)
     }
 }

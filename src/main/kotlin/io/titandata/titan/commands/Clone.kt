@@ -25,6 +25,7 @@ class Clone : CliktCommand(help = "Clone a remote repository to local repository
     private val commit by option("-c", "--commit", help = "Commit GUID to pull from, defaults to latest")
     private val parameters by option("-p", "--parameters", help = "Provider specific parameters. key=value format.").multiple()
     private val disablePortMapping by option("-P", "--disable-port-mapping", help = "Disable default port mapping from container to localhost.").flag(default = false)
+    private val tags by option("-t", "--tag", help = "Filter latest commit by tags").multiple()
     private val arguments by argument().multiple()
 
     override fun run() {
@@ -37,7 +38,7 @@ class Clone : CliktCommand(help = "Clone a remote repository to local repository
             }
             params[split[0]] = split[1]
         }
-        provider.clone(uri, repoName, commit, params, arguments, disablePortMapping)
+        provider.clone(uri, repoName, commit, params, arguments, disablePortMapping, tags)
     }
 }
 
