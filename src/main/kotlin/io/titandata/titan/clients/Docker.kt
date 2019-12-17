@@ -59,17 +59,17 @@ class Docker(private val executor: CommandExecutor, val identity: String = "dock
     }
 
     fun containerExists(container: String): Boolean {
-        val result = executor.exec(listOf("docker", "ps", "-a", "-f", "name=$container", "--format", "\"{{.Names}}\""))
+        val result = executor.exec(listOf("docker", "ps", "-a", "-f", "name=^/$container\$", "--format", "\"{{.Names}}\""))
         return result.isNotEmpty()
     }
 
     fun containerIsRunning(container: String): Boolean {
-        val result = executor.exec(listOf("docker", "ps", "-f", "name=$container", "--format", "\"{{.Names}}\""))
+        val result = executor.exec(listOf("docker", "ps", "-f", "name=^/$container\$", "--format", "\"{{.Names}}\""))
         return result.isNotEmpty()
     }
 
     fun containerIsStopped(container: String): Boolean {
-        val result = executor.exec(listOf("docker", "ps", "-f", "status=exited", "|", "grep", "\"$container\""))
+        val result = executor.exec(listOf("docker", "ps", "-f", "status=exited", "-f", "name=^/$container\$"))
         return result.isNotEmpty()
     }
 
@@ -143,7 +143,7 @@ class Docker(private val executor: CommandExecutor, val identity: String = "dock
     }
 
     fun rmStopped(container: String): String {
-        val containerId = executor.exec(listOf("docker", "ps", "-a", "-f", "name=$container", "--format", "{{.ID}}")).trim()
+        val containerId = executor.exec(listOf("docker", "ps", "-a", "-f", "name=^/$container\$", "--format", "{{.ID}}")).trim()
         return executor.exec(listOf("docker", "container", "rm", containerId))
     }
 
