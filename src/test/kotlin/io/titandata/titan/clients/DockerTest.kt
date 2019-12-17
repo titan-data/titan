@@ -20,8 +20,8 @@ class DockerTest {
     private val executor = mock<CommandExecutor> {
         on { exec(listOf("docker", "-v")) } doReturn "Docker version 18.09.2, build 6247962"
         on { exec(listOf("docker", "images", "titan", "--format", "\"{{.Repository}}\"")) } doReturn "titan"
-        on { exec(listOf("docker", "ps", "-f", "name=titan-docker-launch", "--format", "\"{{.Names}}\"")) } doReturn "titan-docker-launch"
-        on { exec(listOf("docker", "ps", "-f", "name=titan-docker-server", "--format", "\"{{.Names}}\"")) } doReturn "titan-docker-server"
+        on { exec(listOf("docker", "ps", "-f", "name=^/titan-docker-launch$", "--format", "\"{{.Names}}\"")) } doReturn "titan-docker-launch"
+        on { exec(listOf("docker", "ps", "-f", "name=^/titan-docker-server$", "--format", "\"{{.Names}}\"")) } doReturn "titan-docker-server"
         on { exec(listOf("docker", "pull", "titan")) } doReturn """Using default tag: latest
 latest: Pulling from titan
 Digest: sha256:bc6f593df26c0631a1ce3a06afdd5a4a8fda703b071fb18805091e2372c68201
@@ -64,7 +64,7 @@ Status: Downloaded newer image for titan:latest
     @Test
     fun `can check if titan-launch is not available`() {
         val falseExecutor = mock<CommandExecutor> {
-            on { exec(listOf("docker", "ps", "-f", "name=titan-docker-launch", "--format", "\"{{.Names}}\"")) } doReturn ""
+            on { exec(listOf("docker", "ps", "-f", "name=^/titan-docker-launch$", "--format", "\"{{.Names}}\"")) } doReturn ""
         }
         val falseDocker = Docker(falseExecutor)
         assertFalse(falseDocker.titanLaunchIsAvailable())
@@ -84,7 +84,7 @@ Status: Downloaded newer image for titan:latest
     @Test
     fun `can check if titan is not running`() {
         val falseExecutor = mock<CommandExecutor> {
-            on { exec(listOf("docker", "ps", "-f", "name=titan-docker-server", "--format", "\"{{.Names}}\"")) } doReturn ""
+            on { exec(listOf("docker", "ps", "-f", "name=^/titan-docker-server$", "--format", "\"{{.Names}}\"")) } doReturn ""
         }
         val falseDocker = Docker(falseExecutor)
         assertFalse(falseDocker.titanServerIsAvailable())
