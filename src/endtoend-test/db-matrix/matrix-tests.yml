@@ -142,6 +142,28 @@ tests:
           - DB
           - VERSION
           - URI
+  - "$DB > $VERSION > duplicate clone fails":
+      command: titan clone -n $DB-test2 $URI
+      exitValue: 1
+      stdout:
+        contains:
+          - Command failed
+          - Removing container $DB-test2
+          - $DB-test2 removed
+      env:
+        get:
+          - DB
+          - VERSION
+          - URI
+  - "$DB > $VERSION > failed container removed":
+      command: docker ps -a -f name=$DB-test2
+      stdout:
+        excludes: $DB-test2
+      env:
+        get:
+          - DB
+          - VERSION
+          - URI
   - "$DB > $VERSION > log > has commit":
       command: titan log $DB-test
       stdout:
