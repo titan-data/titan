@@ -16,6 +16,16 @@ Titan is written with Kotlin for JVM and binaries are compiled using GraalVM.
 *  Set JAVA_HOME to be the openjdk include with GraalVM
 *  Add the GraalVM bin directory to your PATH
 
+###Setting up Documentation Building
+Please read the details in /docs/README.md. As a prerequisite, you must:
+
+* Ensure that Python3 is installed
+* Ensure that virtualenv is installed, if not, execute the following:
+
+```bash
+pip install virtualenv
+```
+
 ## Building
 ```bash
 ./mvnw clean install
