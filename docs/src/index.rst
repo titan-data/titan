@@ -7,7 +7,7 @@ of Titan, head over to `titan-data.io <https://titan-data.io>`_.
 
 .. attention::
 
-  Kubernetes support is currently available as an _alpha_ capability. You  can
+  Kubernetes support is currently available as an *alpha* capability. You  can
   read more about what is supported and what limitations exist in the
   :ref:`lifecycle_kubernetes` section.
 

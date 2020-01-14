@@ -5,7 +5,7 @@ titan commit
 
 Commits the current data state of the container. When creating commits, titan
 will use your git configuration to determine the name and email address to use
-by running ``git config user.name`` and ```git config user.email``. If
+by running ``git config user.name`` and ``git config user.email``. If
 you have not configured git before, you can run
 ``git config --global user.name <name>`` and
 ``git config --global user.email <email>`` to set these values.

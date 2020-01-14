@@ -1,4 +1,4 @@
-:: _lifecycle_config
+.. _lifecycle_config:
 
 Repository Configuration
 ========================
@@ -19,18 +19,19 @@ Image Configuration
 -------------------
 
 Whenever Titan creates a new container from a commit, Titan will attempt to use
-the identical image that was used to create the commit. For images that have been
-pushed to a registry, this is accomplished through the image digest, which ensures that
-an exact match is used. There are cases where the digest doesn't exist, such as
-when using images built locally that have not been pushed to a registry, or
-when the image came from a private registry that is no longer available. In these cases,
-the image name and tag is used instead. For example, if the ``postgres:11`` image
-is specified, Titan will prefer the digest of that image, as new images (corresponding to
-Postgres minor releases) may be pushed under that tag. But in the event that
-digest can't be found, Titan will attempt to use whatever image corresponds to
-``postgres::11`` at that point in time. Radically changing the image
-configuration (most notably volume mappings) can have unintended consequences
-and cause the repository to fail to be created.
+the identical image that was used to create the commit. For images that have
+been pushed to a registry, this is accomplished through the image digest, which
+ensures that an exact match is used. There are cases where the digest doesn't
+exist, such as when using images built locally that have not been pushed to a
+registry, or when the image came from a private registry that is no longer
+available. In these cases, the image name and tag is used instead. For example,
+if the ``postgres:11`` image is specified, Titan will prefer the digest of that
+image, as new images (corresponding to Postgres minor releases) may be pushed
+under that tag. But in the event that digest can't be found, Titan will
+attempt to use whatever image corresponds to ``postgres::11`` at that point in
+time. Radically changing the image configuration (most notably volume mappings)
+can have unintended consequences and cause the repository to fail to be
+created.
 
 .. attention::
 
