@@ -13,7 +13,8 @@ via your distribution-specific mechanism.
 
 If you can run a basic Linux docker container you're ready for the next step::
 
-    docker run --rm busybox:latest echo ready
+    $ docker run --rm busybox:latest echo ready
+    ready
 
 Downloading Titan
 -----------------
@@ -25,7 +26,7 @@ is part of your ``PATH`` such as ``~/bin`` or ``/usr/local/bin``.
 If you can get the current Titan version you're ready for the next step::
 
     $ titan --version
-    titan version 0.3.0
+    titan version 0.4.1
 
 Installing Titan
 ----------------
@@ -33,12 +34,28 @@ While Titan is delivered as a standalone executable, it relies on a
 containerized service to do a lot of the heavy lifting. The ``titan install``
 command will download and run these containers. It may take some time
 to download the titan image, but once complete you should be able to see
-two containers running named ``titan-docker-launch`` and ``titan-docker-server``::
+two containers running named ``titan-docker-launch`` and
+``titan-docker-server``:
+
+.. note::
+
+   **For MacOS users:** By default, MacOS will block unverified binaries (which
+   this is). You may receive an error similar to "'titan' cannot be opened
+   because the developer cannot be verified."
+
+   To resolve this, click "cancel," then navigate to "System Preferences"->
+   "Security and Privacy">"General" where you will see something like:
+   "'Titan' was blocked from use because it's not from an identified developer."
+
+   Click "Open Anyway,"
+   return to the terminal and re-run ``titan install``
+
+::
 
     $ titan install
     Initializing titan infrastructure ...
-    	√ Checking docker installation
-    	√ Starting titan server docker containers
+        √ Checking docker installation
+        √ Starting titan server docker containers
     Titan cli successfully installed, happy data versioning :)
     $ docker ps
     CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
@@ -53,12 +70,12 @@ environment without access to the main docker registry, you can manually load
 the ```titandata/titan`` image into a private registry and use the ``-r
 registry`` option to ``titan install`` to pull from there instead.
 
-When using the local docker context, the ``titan-<context>-launch`` container is
-responsible for installing ZFS on the Docker or host VM. For more information
-on how this works and supported configurations, see the :ref:`lifecycle_docker`
-section.
+When using the local docker context, the ``titan-<context>-launch`` container
+is responsible for installing ZFS on the Docker or host VM. For more
+information on how this works and supported configurations, see the
+:ref:`lifecycle_docker` section.
 
 If you can successfully run ``titan ls``, then you should be all set::
 
     $ titan ls
-    CONTAINER             STATUS
+    CONTEXT             REPOSITORY             STATUS

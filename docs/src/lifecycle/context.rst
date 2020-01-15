@@ -49,10 +49,10 @@ context is in place, repositories can simply be referenced by their name,
 and any new repository is created within that context.
 
 Repositories can also be referenced by their fully qualified name,
-``<context>/<repository>``. This can be used to uniquely identify any repository,
-even when there are multiple contexts are configured. This can also be used to
-select which context to use when creating a new repository, such as
-``titan run mongo -n contextone/mongo``.
+``<context>/<repository>``. This can be used to uniquely identify any
+repository, even when there are multiple contexts are configured. This can
+also be used to select which context to use when creating a new repository,
+such as ``titan run mongo -n contextone/mongo``.
 
 If the context is not specified, but there is more than one context configured,
 Titan will attempt to determine the appropriate context in one of two ways:

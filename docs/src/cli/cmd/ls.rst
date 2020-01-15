@@ -3,7 +3,7 @@
 titan ls
 ========
 
-List all repositories on the system. This displays the repository name and
+List all repositories. This displays the repository name, context and
 status for each. The status can be one of:
 
 * ``running`` - The associated docker container is currently running. It can
@@ -17,7 +17,7 @@ status for each. The status can be one of:
 Syntax
 ------
 
- ::
+::
 
     titan ls
 
@@ -27,6 +27,6 @@ Example
 ::
 
     $ titan ls
-    REPOSITORY            STATUS
-    myrepo                running
-    myrepo2               exited
+    CONTEXT            REPOSITORY            STATUS
+    docker             myrepo                running
+    docker             myrepo2               exited
