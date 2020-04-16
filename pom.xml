@@ -82,7 +82,7 @@
 		<dependency>
 	        <groupId>org.kodein.di</groupId>
 	        <artifactId>kodein-di-generic-jvm</artifactId>
-	        <version>6.5.2</version>
+	        <version>6.5.5</version>
 	    </dependency>
 		<dependency>
 			<groupId>org.kohsuke</groupId>
