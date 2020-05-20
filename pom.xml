@@ -77,7 +77,7 @@
 		<dependency>
 			<groupId>com.github.ajalt</groupId>
 			<artifactId>clikt</artifactId>
-			<version>2.5.0</version>
+			<version>2.7.1</version>
 		</dependency>
 		<dependency>
 	        <groupId>org.kodein.di</groupId>
