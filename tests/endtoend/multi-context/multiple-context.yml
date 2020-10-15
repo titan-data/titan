@@ -1,0 +1,48 @@
+tests:
+  - "can install context one":
+      command: titan context install -n one -t docker
+      wait: 10
+      stdout:
+        contains: Titan CLI successfully installed, happy data versioning :)
+  - "can install context two":
+      command: titan context install -n two -t docker
+      wait: 10
+      stdout:
+        contains: Titan CLI successfully installed, happy data versioning :)
+  - "can run mongo":
+      command: titan run -P mongo
+      wait: 5
+      stdout:
+        contains: Running controlled container mongo
+  - "can get status of one/mongo":
+      command: titan status one/mongo
+  - "can run two/mongo-alt":
+      command: titan run -P -n two/mongo-alt mongo
+      wait: 5
+      stdout:
+        contains: Running controlled container mongo-alt
+  - "can change default context":
+      command: titan context default two
+  - "default context is two":
+      command: titan context default
+      stdout: two
+  - "can get status of mongo-alt":
+      command: titan status mongo-alt
+  - "can remove one/mongo":
+      command: titan rm -f one/mongo
+      stdout:
+        contains: mongo removed
+  - "can remove mongo-alt":
+      command: titan rm -f mongo-alt
+      stdout:
+        contains: mongo-alt removed
+  - "can uninstall context one":
+      command: titan context uninstall one
+      stdout:
+        contains: Uninstalled titan infrastructure
+  - "can uninstall context two":
+      command: titan context uninstall two
+      stdout:
+        contains: Uninstalled titan infrastructure
+after:
+  clearVars: true

@@ -1,0 +1,78 @@
+tests:
+  - "can clone hello-world/postgres":
+      command: titan clone -n hello-world s3web://demo.titan-data.io/hello-world/postgres
+      stdout:
+        contains:
+          - Running controlled container hello-world
+          - Starting container hello-world
+  - "can list hello-world/postgres":
+      command: titan ls
+      stdout: |-
+        CONTEXT       REPOSITORY            STATUS
+        docker        hello-world           running
+  - "can get contents of hello-world/postgres":
+      command: [docker, exec, hello-world, psql, postgres://postgres:postgres@localhost/postgres, -t, -c, SELECT * FROM messages;]
+      stdout: Hello, World!
+  - "can remove hello-world/postgres":
+      command: titan rm -f hello-world
+      stdout: |-
+        Removing repository hello-world
+        Deleting volume v0
+        hello-world removed
+  - "can run mongo-test":
+      command: titan run -n mongo-test mongo
+      wait: 5
+      stdout: |-
+        Creating repository mongo-test
+        Creating docker volume mongo-test/v0 with path /data/configdb
+        Creating docker volume mongo-test/v1 with path /data/db
+        Running controlled container mongo-test
+  - "can insert mongo-test Ada Lovelace":
+      command: [docker, exec, mongo-test, mongo, --quiet, --eval, "db.employees.insert({firstName:\"Ada\",lastName:\"Lovelace\"})"]
+      stdout: |-
+        WriteResult({ "nInserted" : 1 })
+  - "can commit mongo-test":
+      command: [titan, commit, -m, First Employee, mongo-test]
+      stdout:
+        contains: Commit
+      env:
+        set:
+          - COMMIT_GUID:
+              replace:
+                find: "Commit "
+                replace: ""
+  - "can insert mongo-test Grace Hopper":
+      command: [docker, exec, mongo-test, mongo, --quiet, --eval, "db.employees.insert({firstName:\"Grace\",lastName:\"Hopper\"})"]
+      stdout: |-
+        WriteResult({ "nInserted" : 1 })
+  - "can select employees from mongo-test":
+      command: [docker, exec, mongo-test, mongo, --quiet, --eval, 'db.employees.find()']
+      stdout:
+        contains:
+          - '"firstName" : "Ada", "lastName" : "Lovelace"'
+          - '"firstName" : "Grace", "lastName" : "Hopper"'
+  - "can checkout commit mongo-test":
+      command: [titan, checkout, --commit, $COMMIT_GUID, mongo-test]
+      wait: 10
+      stdout: |-
+        Stopping container mongo-test
+        Checkout $COMMIT_GUID
+        Starting container mongo-test
+        $COMMIT_GUID checked out
+      env:
+        get:
+         - COMMIT_GUID
+  - "mongo-test checkout was successful":
+      command: [docker, exec, mongo-test, mongo, --quiet, --eval, 'db.employees.find()']
+      stdout:
+        excludes:
+          - '"firstName" : "Grace", "lastName" : "Hopper"'
+  - "can remove mongo-test":
+      command: titan rm -f mongo-test
+      stdout: |-
+        Removing repository mongo-test
+        Deleting volume v0
+        Deleting volume v1
+        mongo-test removed
+after:
+  clearVars: true
