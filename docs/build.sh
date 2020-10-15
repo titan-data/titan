@@ -51,7 +51,7 @@ mkdir -p $OUT_DIR
 #
 if [[ -z $VIRTUAL_ENV ]]; then
   if [[ ! -d $VENV_DIR ]]; then
-    virtualenv $VENV_DIR --no-site-packages --python=python3
+    virtualenv $VENV_DIR --python=python3
   fi
   source $VENV_DIR/bin/activate
 fi

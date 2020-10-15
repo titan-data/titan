@@ -5,74 +5,28 @@ on:
     - cron: '30 3 * * *'
 
 jobs:
-  build-linux:
-    name: Build Linux
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '8.0.212'
-      - name: Setup Env
-        run: ./scripts/setup.sh ubuntu-18.04
-      - name: Build Jar
-        run: ./scripts/compile-maven.sh
-      - name: Compile Binary
-        run: ./scripts/build.sh ubuntu-18.04
-      - name: Upload Binary
-        uses: actions/upload-artifact@master
-        with:
-          name: titan-linux.zip
-          path: ./titan
   test-linux:
     name: Test Linux
     runs-on: ubuntu-18.04
-    needs: build-linux
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/download-artifact@master
-        with:
-          name: titan-linux.zip
-          path: ./
       - name: Config Git
         run: |
           git config --global user.name "test.runner"
           git config --global user.email "test@runner.com"
-      - name: Install Titan
+      - name: Output Kernel Info
         run: |
-          chmod +x titan
-          sudo cp ./titan /usr/local/bin/titan
-      - name: Install Vexrun
+         docker pull busybox
+         docker run busybox uname -a
+      - name: Build Titan
+        run: make build
+      - name: Setup Test Requirements
         run: |
-          curl -L https://github.com/mcred/vexrun/releases/download/v0.0.5/vexrun-0.0.5.jar -o vexrun.jar
-      - name: Run Getting Started Tests
-        run: java -jar vexrun.jar -d ./src/endtoend-test/getting-started
-      - name: Run Multiple Context tests
-        run: java -jar vexrun.jar -d ./src/endtoend-test/multi-context
-      - name: Run S3 Workflow Tests
-        run: java -jar vexrun.jar -f ./src/endtoend-test/remotes/s3/s3WorkflowTests.yml
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-      - name: Run SSH Workflow Tests
-        run: |
+          export PATH=$GITHUB_WORKSPACE/build:$PATH
           ssh-keygen -b 2048 -t rsa -f ./sshKey -q -N ""
-          java -jar vexrun.jar -f ./src/endtoend-test/remotes/ssh/sshWorkflowTests.yml
-      - name: Run Tag Tests
-        run: java -jar vexrun.jar -d ./src/endtoend-test/tags
+      - name: Run Test Suit
+        run: make e2e
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-      - name: Run DB Matrix Tests
-        run: java -jar vexrun.jar -f ./src/endtoend-test/db-matrix/databases.yml
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-      - name: Build Nginx Docker Container
-        working-directory: ./src/endtoend-test/context/docker
-        run: docker build -t nginx-test .
-      - name: Run Docker Context Tests
-        run: java -jar vexrun.jar -d ./src/endtoend-test/context/docker

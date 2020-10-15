@@ -36,9 +36,12 @@ MacOS and Windows
 MacOS and Windows operate in a similar fashion, with an embedded
 `HyperKit <https://github.com/moby/hyperkit>`_ VM running Linux behind the
 scenes. This VM runs `LinuxKit <https://github.com/linuxkit/linuxkit>`_.
-Titan supports the latest Docker Desktop releases. If you are running a very
-old distribution (for example, using the old ``boot2docker`` framework on
-Windows), you mileage may vary. You should update to the latest version of
+Titan supports Docker Desktop releases after Docker Community Edition 17.12.0-ce
+for both `Mac <https://docs.docker.com/docker-for-mac/release-notes/>`_ and
+`Windows <https://docs.docker.com/docker-for-windows/release-notes/>`_.
+This version, released on 2018-01-09, is the first one completely built with the LinuxKit VM.
+If you are running a very old distribution (for example, using the old ``boot2docker``
+framework on Windows), you mileage may vary. You should update to the latest version of
 Docker Desktop prior to using Titan.
 
 .. note::
@@ -46,7 +49,7 @@ Docker Desktop prior to using Titan.
    If a brand new Docker Desktop release comes out that ships with a new
    LinuxKit kernel, it may take some time for the community to update the
    pre-built packages for the newest versions. If you encounter titan
-   trying to build packags for a new ZFS kernel, head over to the
+   trying to build packages for a new ZFS kernel, head over to the
    `zfs-releases <https://github.com/titan-data/zfs-releases>`_ repository
    and open an issue (or PR) with the new version and ``uname -a`` output.
 
@@ -78,7 +81,7 @@ If you are running one of these flavors and not finding pre-built binaries
 available, it's likely just a matter of updating the
 `zfs-releases <https://github.com/titan-data/zfs-releases>`_ repository with
 the latest build information. If you are trying to use a different distribution
-alltogether, or are trying a new major version for the first time in the
+all together, or are trying a new major version for the first time in the
 community, you may need to update the
 `zfs-builder <https://github.com/titan-data/zfs-builder>`_ repository such that
 it knows how to build the new variant.

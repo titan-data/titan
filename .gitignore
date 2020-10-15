@@ -11,7 +11,8 @@ bin
 coverage
 /titan
 /titan*.zip
-releases
+release
+build
 
 # Development files
 /notes
@@ -26,3 +27,4 @@ releases
 # Testing Files
 sshKey
 sshKey.pub
+

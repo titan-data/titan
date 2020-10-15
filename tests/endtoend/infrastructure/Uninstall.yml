@@ -1,0 +1,27 @@
+tests:
+  - "can uninstall titan":
+      command: titan uninstall
+      stdout:
+        contains: Uninstalled titan infrastructure
+  - "titan server is not running":
+      command: docker inspect --type container --format='{{.State.Status}}' titan-docker-server
+      exitValue: 1
+      stderr: "Error: No such container: titan-docker-server"
+  - "titan launch is not running":
+      command: docker inspect --type container --format='{{.State.Status}}' titan-docker-launch
+      exitValue: 1
+      stderr: "Error: No such container: titan-docker-launch"
+  - "titan docker images not removed":
+      command: docker inspect --type image --format='{{.RepoTags}}' titan:latest
+      stdout:
+        contains: titan:latest
+  - "re-install titan":
+      command: titan install
+  - "can uninstall titan and remove docker images":
+      command: titan uninstall --remove-images
+      stdout:
+        contains: Removing Titan Docker image
+  - "titan docker images removed":
+      command: docker inspect --type image --format='{{.RepoTags}}' titan:latest
+      exitValue: 1
+      stderr: "Error: No such image: titan:latest"
