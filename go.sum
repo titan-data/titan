@@ -39,6 +39,7 @@ github.com/armon/go-metrics v0.0.0-20180917152333-f0300d1749da/go.mod h1:Q73ZrmV
 github.com/armon/go-radix v0.0.0-20180808171621-7fddfc383310/go.mod h1:ufUuZ+zHj4x4TnLV4JWEpy2hxWSpsRywHrMgIH9cCH8=
 github.com/aws/aws-sdk-go v1.27.0 h1:0xphMHGMLBrPMfxR2AmVjZKcMEESEgWF8Kru94BNByk=
 github.com/aws/aws-sdk-go v1.27.0/go.mod h1:KmX6BPdI08NWTb3/sm4ZGu5ShLoqVDhKgpiN924inxo=
+github.com/aws/aws-sdk-go v1.28.13/go.mod h1:KmX6BPdI08NWTb3/sm4ZGu5ShLoqVDhKgpiN924inxo=
 github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973/go.mod h1:Dwedo/Wpr24TaqPxmxbtue+5NUziq4I4S80YR8gNf3Q=
 github.com/beorn7/perks v1.0.0/go.mod h1:KWe93zE9D1o94FZ5RNwFwVgaQK1VOXiVxmqh+CedLV8=
 github.com/bgentry/speakeasy v0.1.0/go.mod h1:+zsyZBPWlz7T6j88CTgSN5bM796AkVf0kBD4zp0CCIs=
@@ -154,6 +155,7 @@ github.com/hashicorp/go-cleanhttp v0.5.1/go.mod h1:JpRdi6/HCYpAwUzNwuwqhbovhLtng
 github.com/hashicorp/go-hclog v0.0.0-20180709165350-ff2cf002a8dd/go.mod h1:9bjs9uLqI8l75knNv3lV1kA55veR+WUPSiKIWcQHudI=
 github.com/hashicorp/go-hclog v0.10.1 h1:uyt/l0dWjJ879yiAu+T7FG3/6QX+zwm4bQ8P7XsYt3o=
 github.com/hashicorp/go-hclog v0.10.1/go.mod h1:whpDNt7SSdeAju8AWKIWsul05p54N/39EeqMAyrmvFQ=
+github.com/hashicorp/go-hclog v0.11.0/go.mod h1:whpDNt7SSdeAju8AWKIWsul05p54N/39EeqMAyrmvFQ=
 github.com/hashicorp/go-immutable-radix v1.0.0/go.mod h1:0y9vanUI8NX6FsYoO3zeMjhV/C5i9g4Q3DwcSNZ4P60=
 github.com/hashicorp/go-msgpack v0.5.3/go.mod h1:ahLV/dePpqEmjfWmKiqvPkv/twdG7iPBM1vqhUKIvfM=
 github.com/hashicorp/go-multierror v1.0.0/go.mod h1:dHtQlpGsu+cZNNAkkCN/P3hoUDHhCYQXV3UM06sGGrk=
@@ -308,8 +310,10 @@ github.com/titan-data/nop-remote-go v0.1.0 h1:1s2gkkE91YWHLERQW13f5ew07LExbpYNfp
 github.com/titan-data/nop-remote-go v0.1.0/go.mod h1:HVEo7ldAD3afuGZ/hl7MxyJfhjPfh7vS5OMmnOl+6IE=
 github.com/titan-data/remote-sdk-go v0.1.0 h1:Xab4sduqyGdo04eJ5mQ2lIfAYZDjHJ4AzlK4oJ5EqqE=
 github.com/titan-data/remote-sdk-go v0.1.0/go.mod h1:u7w3Olu3EtjoFcHzxUOzelxedey4q2nveuKLvgRO7tg=
+github.com/titan-data/remote-sdk-go v0.2.1/go.mod h1:IYCrMWL1hFGoYusrTHgseG/bLVuY72LpQSSdGOrcHb4=
 github.com/titan-data/s3-remote-go v0.1.1 h1:LOzN1qGPxSWeoD02W4KmHxZ6dg572twlzWM9sVuBfM0=
 github.com/titan-data/s3-remote-go v0.1.1/go.mod h1:/DxmQF26nM2+Mt8IFm4qe0AgRw2D2eeV00fZmk2GdGw=
+github.com/titan-data/s3-remote-go v0.2.1/go.mod h1:YO/ixE9a/YQ2w7V2kGu8+8irjylpa58UiaUnfjdWdd8=
 github.com/titan-data/s3web-remote-go v0.1.0 h1:TOdqt9f4SaQTvFvtPIsGO31ZqcWEpKmYIh9OTYyAhsE=
 github.com/titan-data/s3web-remote-go v0.1.0/go.mod h1:Z+HEuweH81amh3ooZ2L7xGqY5cZilqbdBxfInu/E0Hw=
 github.com/titan-data/ssh-remote-go v0.1.0 h1:SL1okEt3mmVLqTC0KpbGTBOWGgbwu83UG/sBdw4rJa4=
