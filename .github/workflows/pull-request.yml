@@ -15,6 +15,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Test Build
         run: make build
+        shell: bash
   docs:
     name: Build Documentation
     runs-on: ubuntu-18.04
