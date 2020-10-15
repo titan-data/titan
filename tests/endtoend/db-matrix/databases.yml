@@ -1,0 +1,21 @@
+files:
+  - matrix-tests.yml:
+      parameters:
+        DB: postgres
+        VERSION: 12.0
+        URI: s3://titan-data-testdata/e2etest
+  - matrix-tests.yml:
+      parameters:
+        DB: postgres
+        VERSION: 11.5
+        URI: s3://titan-data-testdata/e2etest
+  - matrix-tests.yml:
+      parameters:
+        DB: mongo
+        VERSION: 4
+        URI: s3://titan-data-testdata/e2etest
+  - matrix-tests.yml:
+      parameters:
+        DB: mongo
+        VERSION: 3.6.14
+        URI: s3://titan-data-testdata/e2etest

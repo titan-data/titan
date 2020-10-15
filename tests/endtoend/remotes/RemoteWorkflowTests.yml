@@ -1,0 +1,62 @@
+tests:
+  - "$REMOTE > remote > add":
+      command: titan remote add -r $REMOTE $URI $REPO
+      env:
+        get:
+          - URI
+          - REPO
+          - REMOTE
+  - "$REMOTE > remote > ls > has $REMOTE":
+      command: titan remote ls $REPO
+      stdout:
+        contains: $URI
+      env:
+        get:
+          - URI
+          - REPO
+          - REMOTE
+  - "$REMOTE > commit":
+      command: [titan, commit, -m, Test $REMOTE Commit, $REPO]
+      stdout:
+        contains: Commit
+      env:
+        get:
+          - REPO
+          - REMOTE
+        set:
+          - COMMIT_GUID:
+              split:
+                delimiter: " "
+                position: 1
+  - "$REMOTE > remote > log > missing commit":
+      command: titan remote log $REPO
+      stdout:
+        excludes: Commit $COMMIT_GUID
+      env:
+        get:
+          - COMMIT_GUID
+          - REPO
+          - REMOTE
+  - "$REMOTE > push":
+      command: [titan, push, -r, $REMOTE, -c, $COMMIT_GUID, $REPO]
+      stdout:
+        contains:
+          - Pushing $COMMIT_GUID to '$REMOTE'
+          - Push completed successfully
+      env:
+        get:
+          - COMMIT_GUID
+          - REPO
+          - REMOTE
+  - "$REMOTE > remote > log > has commit":
+      command: titan remote log $REPO
+      stdout:
+        contains: Commit $COMMIT_GUID
+      env:
+        get:
+          - COMMIT_GUID
+          - URI
+          - REPO
+          - REMOTE
+after:
+  clearVars: true
