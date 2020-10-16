@@ -59,4 +59,4 @@ test-ssh-workflow:
 test-multi-context:
 	$(VEXRUN) -d $(PWD)/tests/endtoend/multi-context
 
-e2e: test-setup test-install test-getting-started test-tags test-docker-context test-s3-workflow test-ssh-workflow test-uninstall test-multi-context
+e2e: test-setup test-install test-getting-started test-tags test-docker-context test-s3-workflow test-ssh-workflow test-uninstall
