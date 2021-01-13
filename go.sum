@@ -369,6 +369,7 @@ github.com/titan-data/ssh-remote-go v0.1.0 h1:SL1okEt3mmVLqTC0KpbGTBOWGgbwu83UG/
 github.com/titan-data/ssh-remote-go v0.1.0/go.mod h1:YIr/HOh5bXopNLxFLcrcbyoy7UBC8+pOB1rtlkR2UkM=
 github.com/titan-data/titan-client-go v0.0.3 h1:SSZVo+i3O+M7Z8O2zbHTih3UPWJZxBRSR/zartB1ckM=
 github.com/titan-data/titan-client-go v0.0.3/go.mod h1:VW6HbA12IPKqS5+UsS7kLNKWEAv3jPvHTgezcVOMMgg=
+github.com/titan-data/titan-client-go v0.1.1/go.mod h1:VW6HbA12IPKqS5+UsS7kLNKWEAv3jPvHTgezcVOMMgg=
 github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=
 github.com/ugorji/go v1.1.4/go.mod h1:uQMGLiO92mf5W77hV/PUCpI3pbzQx3CRekS0kk+RGrc=
 github.com/ugorji/go/codec v0.0.0-20181204163529-d75b2dcb6bc8/go.mod h1:VFNgLljTbGfSG7qAOspJ7OScBnGdDN/yBr0sguwnwf0=
