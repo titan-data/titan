@@ -156,6 +156,7 @@ github.com/hashicorp/go-cleanhttp v0.5.1/go.mod h1:JpRdi6/HCYpAwUzNwuwqhbovhLtng
 github.com/hashicorp/go-hclog v0.0.0-20180709165350-ff2cf002a8dd/go.mod h1:9bjs9uLqI8l75knNv3lV1kA55veR+WUPSiKIWcQHudI=
 github.com/hashicorp/go-hclog v0.10.1 h1:uyt/l0dWjJ879yiAu+T7FG3/6QX+zwm4bQ8P7XsYt3o=
 github.com/hashicorp/go-hclog v0.10.1/go.mod h1:whpDNt7SSdeAju8AWKIWsul05p54N/39EeqMAyrmvFQ=
+github.com/hashicorp/go-hclog v0.11.0/go.mod h1:whpDNt7SSdeAju8AWKIWsul05p54N/39EeqMAyrmvFQ=
 github.com/hashicorp/go-immutable-radix v1.0.0/go.mod h1:0y9vanUI8NX6FsYoO3zeMjhV/C5i9g4Q3DwcSNZ4P60=
 github.com/hashicorp/go-msgpack v0.5.3/go.mod h1:ahLV/dePpqEmjfWmKiqvPkv/twdG7iPBM1vqhUKIvfM=
 github.com/hashicorp/go-multierror v1.0.0/go.mod h1:dHtQlpGsu+cZNNAkkCN/P3hoUDHhCYQXV3UM06sGGrk=
@@ -312,8 +313,10 @@ github.com/subosito/gotenv v1.2.0 h1:Slr1R9HxAlEKefgq5jn9U+DnETlIUa6HfgEzj0g5d7s
 github.com/subosito/gotenv v1.2.0/go.mod h1:N0PQaV/YGNqwC0u51sEeR/aUtSLEXKX9iv69rRypqCw=
 github.com/titan-data/nop-remote-go v0.1.0 h1:1s2gkkE91YWHLERQW13f5ew07LExbpYNfpS8k8nyFVU=
 github.com/titan-data/nop-remote-go v0.1.0/go.mod h1:HVEo7ldAD3afuGZ/hl7MxyJfhjPfh7vS5OMmnOl+6IE=
+github.com/titan-data/nop-remote-go v0.2.1/go.mod h1:b3N7JEq31oIi7o155W1kO12c2KuG0s5LGVOpcDfNjlA=
 github.com/titan-data/remote-sdk-go v0.1.0 h1:Xab4sduqyGdo04eJ5mQ2lIfAYZDjHJ4AzlK4oJ5EqqE=
 github.com/titan-data/remote-sdk-go v0.1.0/go.mod h1:u7w3Olu3EtjoFcHzxUOzelxedey4q2nveuKLvgRO7tg=
+github.com/titan-data/remote-sdk-go v0.2.1/go.mod h1:IYCrMWL1hFGoYusrTHgseG/bLVuY72LpQSSdGOrcHb4=
 github.com/titan-data/s3-remote-go v0.1.1 h1:LOzN1qGPxSWeoD02W4KmHxZ6dg572twlzWM9sVuBfM0=
 github.com/titan-data/s3-remote-go v0.1.1/go.mod h1:/DxmQF26nM2+Mt8IFm4qe0AgRw2D2eeV00fZmk2GdGw=
 github.com/titan-data/s3web-remote-go v0.1.0 h1:TOdqt9f4SaQTvFvtPIsGO31ZqcWEpKmYIh9OTYyAhsE=
