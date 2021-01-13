@@ -7,7 +7,7 @@ require (
 	github.com/briandowns/spinner v1.11.1
 	github.com/buger/jsonparser v0.0.0-20191204142016-1a29609e0929
 	github.com/google/gofuzz v1.2.0 // indirect
-	github.com/google/uuid v1.1.2
+	github.com/google/uuid v1.1.4
 	github.com/googleapis/gnostic v0.5.1 // indirect
 	github.com/imdario/mergo v0.3.11 // indirect
 	github.com/magiconair/properties v1.8.3 // indirect
