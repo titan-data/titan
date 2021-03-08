@@ -100,4 +100,7 @@ func init() {
 	remoteListCmd.Flags().StringVarP(&remote, "remote", "r", "origin", "name of the remote provider, defaults to origin")
 	remoteListCmd.Flags().StringSliceVarP(&tags, "tags", "t", nil, "tag to filter latest commit, if commit is not specified")
 	remoteListCmd.Flags().SortFlags = false
+
+	remoteLogCmd.Flags().StringSliceVarP(&tags, "tags", "t", nil, "tag to filter latest commit, if commit is not specified")
+	remoteListCmd.Flags().SortFlags = false
 }
