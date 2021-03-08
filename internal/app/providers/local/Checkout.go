@@ -2,6 +2,8 @@ package local
 
 import (
 	"fmt"
+	"github.com/antihax/optional"
+	titanclient "github.com/titan-data/titan-client-go"
 	"os"
 	"strconv"
 	"titan/internal/app/clients"
@@ -14,7 +16,9 @@ func Checkout(repo string, guid string, tags[]string, port int, context string) 
 	var sourceCommit string
 	if guid == "" {
 		if len(tags) > 0 {
-			commits, _, _ := commitsApi.ListCommits(ctx, repo, nil)//TODO pass tags
+			o := optional.NewInterface(tags)
+			opts := titanclient.ListCommitsOpts{Tag: o}
+			commits, _, _ := commitsApi.ListCommits(ctx, repo, &opts)
 			if len(commits) == 0 {
 				fmt.Println("no matching commits found")
 				os.Exit(1)

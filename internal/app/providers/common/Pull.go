@@ -39,10 +39,11 @@ func Pull(repoName string, guid string, remoteName string, tags []string, metada
 			fmt.Println("tags cannot be specified when commit is also specified")
 			os.Exit(1)
 		}
-
 		commit, _, _ = remotesApi.GetRemoteCommit(ctx, repoName, remote.Name, guid, params)
 	} else {
-		remoteCommits, _, _ := remotesApi.ListRemoteCommits(ctx, repoName, remote.Name, params, nil) //TODO fix tags
+		o := optional.NewInterface(tags)
+		opts := titanclient.ListRemoteCommitsOpts{Tag: o}
+		remoteCommits, _, _ := remotesApi.ListRemoteCommits(ctx, repoName, remote.Name, params, &opts)
 		if len(remoteCommits) == 0 {
 			fmt.Println("no matching commits found in remote, unable to pull latest")
 			os.Exit(1)
