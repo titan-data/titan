@@ -19,7 +19,7 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/viper v1.7.1
 	github.com/titan-data/nop-remote-go v0.1.0
-	github.com/titan-data/remote-sdk-go v0.1.0
+	github.com/titan-data/remote-sdk-go v0.2.1
 	github.com/titan-data/s3-remote-go v0.1.1
 	github.com/titan-data/s3web-remote-go v0.1.0
 	github.com/titan-data/ssh-remote-go v0.1.0
