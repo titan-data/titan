@@ -2,16 +2,28 @@ package common
 
 import (
 	"fmt"
+	"github.com/antihax/optional"
 	"github.com/titan-data/remote-sdk-go/remote"
 	client "github.com/titan-data/titan-client-go"
 	"os"
 	"strconv"
 )
 
+func getRemotes(repo string, remoteName string) []client.Remote {
+	var remotes []client.Remote
+	if remoteName != "" {
+		r, _, _ := remotesApi.GetRemote(ctx, repo, remoteName)
+		remotes = append(remotes, r)
+	} else {
+		remotes, _, _ = remotesApi.ListRemotes(ctx, repo)
+	}
+	return remotes
+}
+
 func RemoteLog(repo string, remoteName string, tags []string, port int) {
 	cfg.BasePath = "http://localhost:" + strconv.Itoa(port)
 
-	remotes, _, _ := remotesApi.ListRemotes(ctx, repo)
+	remotes := getRemotes(repo, remoteName)
 	if len(remotes) == 0 {
 		fmt.Println("remote is not set, run 'remote add' first")
 		os.Exit(1)
@@ -23,7 +35,9 @@ func RemoteLog(repo string, remoteName string, tags []string, port int) {
 			Provider:   r.Provider,
 			Properties: gp,
 		}
-		commits, _, err := remotesApi.ListRemoteCommits(ctx, repo, r.Name, p, nil) //TODO proper tags
+		o := optional.NewInterface(tags)
+		opts := client.ListRemoteCommitsOpts{Tag:o}
+		commits, _, err := remotesApi.ListRemoteCommits(ctx, repo, r.Name, p, &opts)
 		if err == nil {
 			for _, c := range commits {
 				if !first {
@@ -36,25 +50,17 @@ func RemoteLog(repo string, remoteName string, tags []string, port int) {
 				ifContainsPrint(c.Properties, "user")
 				ifContainsPrint(c.Properties, "email")
 				ifContainsPrint(c.Properties, "timestamp")
-				v, ok := c.Properties["tags"]
+				remoteTags, ok := c.Properties["tags"].(map[string]interface{})
 				if ok {
-					//TODO proper tags
-					fmt.Println(v)
-					//if (commit.properties.containsKey("tags")) {
-					//	val tagInfo = commit.properties.get("tags") as Map<String, String>
-					//	if (!tagInfo.isEmpty()) {
-					//		print("Tags:")
-					//		for ((key, value) in tagInfo) {
-					//			print(" ")
-					//			if (value != "") {
-					//				print("$key=$value")
-					//			} else {
-					//				print(key)
-					//			}
-					//		}
-					//		println("")
-					//	}
-					//}
+					fmt.Print("Tags: ")
+					for t, v := range remoteTags {
+						if len(v.(string)) > 0 {
+							fmt.Printf("%v=%v ", t, v)
+						} else  {
+							fmt.Printf("%v ", t)
+						}
+					}
+					fmt.Println()
 				}
 				ifContainsPrint(c.Properties, "message")
 			}
