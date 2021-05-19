@@ -6,6 +6,8 @@ require (
 	github.com/antihax/optional v1.0.0
 	github.com/briandowns/spinner v1.11.1
 	github.com/buger/jsonparser v0.0.0-20191204142016-1a29609e0929
+	github.com/docker/spdystream v0.0.0-20160310174837-449fdfce4d96 // indirect
+	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/uuid v1.1.4
 	github.com/googleapis/gnostic v0.5.1 // indirect
@@ -25,8 +27,8 @@ require (
 	github.com/titan-data/ssh-remote-go v0.1.0
 	github.com/titan-data/titan-client-go v0.0.3
 	gopkg.in/ini.v1 v1.61.0 // indirect
-	k8s.io/api v0.20.1
-	k8s.io/apimachinery v0.20.1
-	k8s.io/client-go v0.20.1
+	k8s.io/api v0.21.1
+	k8s.io/apimachinery v0.21.1
+	k8s.io/client-go v0.21.1
 	k8s.io/klog v1.0.0 // indirect
 )
