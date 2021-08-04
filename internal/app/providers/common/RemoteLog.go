@@ -9,21 +9,10 @@ import (
 	"strconv"
 )
 
-func getRemotes(repo string, remoteName string) []client.Remote {
-	var remotes []client.Remote
-	if remoteName != "" {
-		r, _, _ := remotesApi.GetRemote(ctx, repo, remoteName)
-		remotes = append(remotes, r)
-	} else {
-		remotes, _, _ = remotesApi.ListRemotes(ctx, repo)
-	}
-	return remotes
-}
-
 func RemoteLog(repo string, remoteName string, tags []string, port int) {
 	cfg.BasePath = "http://localhost:" + strconv.Itoa(port)
 
-	remotes := getRemotes(repo, remoteName)
+	remotes, _, _ := remotesApi.ListRemotes(ctx, repo)
 	if len(remotes) == 0 {
 		fmt.Println("remote is not set, run 'remote add' first")
 		os.Exit(1)
