@@ -24,7 +24,7 @@ build them on the fly. For Linux, we are still limited to the set of supported
 distributions, but we can build for slightly different variations or versions
 if needed. If you are running a Linux system other than a supported
 distribution, you can also compile and install ZFS yourself, provided it's
-version `0.8.1`, and Titan will use that instead of trying to install its own.
+version `0.8.1`, `0.8.2`, or `2.0.*`, and Titan will use that instead of trying to install its own.
 
 If the installation is taking a while, and you see a ``zfs-builder``
 container in ``docker ps`` output, then it's off building a custom version
@@ -59,6 +59,22 @@ Docker Desktop prior to using Titan.
    `Docker for WSL <https://docs.docker.com/docker-for-windows/wsl-tech-preview/>`_
    due to limitations in Docker that prevent local volumes from working
    properly.
+
+System Specific Setup
+`````````````````````
+On Windows, disable "Use the WSL2 Based Engine" in your Docker settings on Windows. We currently do not support Docker running via WSL2. You can always change this setting back later.
+
+.. figure:: ../_static/img/docker_wsl2_settings.png
+   :align: center
+
+   *Disable WSL2*
+
+On Mac, disable "Use gRPC FUSE for file sharing".
+
+.. figure:: ../_static/img/docker_mac_settings.jpg
+   :align: center
+
+   *Disable gRPC Fuse*
 
 Linux
 -----
