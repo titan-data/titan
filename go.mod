@@ -12,12 +12,12 @@ require (
 	github.com/imdario/mergo v0.3.11 // indirect
 	github.com/spf13/cobra v0.0.7
 	github.com/spf13/viper v1.8.1
-	github.com/titan-data/nop-remote-go v0.1.0
-	github.com/titan-data/remote-sdk-go v0.1.0
-	github.com/titan-data/s3-remote-go v0.1.1
-	github.com/titan-data/s3web-remote-go v0.1.0
-	github.com/titan-data/ssh-remote-go v0.1.0
-	github.com/titan-data/titan-client-go v0.0.3
+	github.com/titan-data/nop-remote-go v0.2.1
+	github.com/titan-data/remote-sdk-go v0.2.1
+	github.com/titan-data/s3-remote-go v0.2.1
+	github.com/titan-data/s3web-remote-go v0.2.0
+	github.com/titan-data/ssh-remote-go v0.2.0
+	github.com/titan-data/titan-client-go v0.1.1
 	k8s.io/api v0.20.1
 	k8s.io/apimachinery v0.20.1
 	k8s.io/client-go v0.20.1

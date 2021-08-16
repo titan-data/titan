@@ -65,9 +65,8 @@ func Push(repoName string, guid string, remoteName string, tags []string, metada
 	}
 	pushOpts := &titanclient.PushOpts{
 		MetadataOnly:     optional.NewBool(metadataOnly),
-		RemoteParameters: optional.NewInterface(params),
 	}
-	op, _, err := operationsApi.Push(ctx, repoName, remote.Name, commit.Id, pushOpts)
+	op, _, err := operationsApi.Push(ctx, repoName, remote.Name, commit.Id, params, pushOpts)
 	if err != nil {
 		if e, ok := err.(titanclient.GenericOpenAPIError); ok {
 			m := e.Model().(titanclient.ApiError)
