@@ -20,7 +20,7 @@ tests:
         Deleting volume v0
         hello-world removed
   - "can run mongo-test":
-      command: titan run -n mongo-test mongo
+      command: titan run -n mongo-test mongo:4
       wait: 5
       stdout: |-
         Creating repository mongo-test
