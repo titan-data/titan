@@ -56,9 +56,8 @@ func Pull(repoName string, guid string, remoteName string, tags []string, metada
 	}
 	pullOpts := &titanclient.PullOpts{
 		MetadataOnly:     optional.NewBool(metadataOnly),
-		RemoteParameters: optional.NewInterface(params),
 	}
-	op, _, _ := operationsApi.Pull(ctx, repoName, remote.Name, commit.Id, pullOpts)
+	op, _, _ := operationsApi.Pull(ctx, repoName, remote.Name, commit.Id, params, pullOpts)
 
 	monitor := util.OperationMonitor(repoName, op)
 	if !monitor.Monitor(port) {

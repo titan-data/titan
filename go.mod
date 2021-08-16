@@ -5,19 +5,19 @@ go 1.13
 require (
 	github.com/antihax/optional v1.0.0
 	github.com/briandowns/spinner v1.16.0
-	github.com/buger/jsonparser v0.0.0-20191204142016-1a29609e0929
+	github.com/buger/jsonparser v1.0.0
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/uuid v1.3.0
 	github.com/googleapis/gnostic v0.5.1 // indirect
 	github.com/imdario/mergo v0.3.11 // indirect
 	github.com/spf13/cobra v0.0.7
 	github.com/spf13/viper v1.8.1
-	github.com/titan-data/nop-remote-go v0.1.0
-	github.com/titan-data/remote-sdk-go v0.1.0
-	github.com/titan-data/s3-remote-go v0.1.1
-	github.com/titan-data/s3web-remote-go v0.1.0
-	github.com/titan-data/ssh-remote-go v0.1.0
-	github.com/titan-data/titan-client-go v0.0.3
+	github.com/titan-data/nop-remote-go v0.2.1
+	github.com/titan-data/remote-sdk-go v0.2.1
+	github.com/titan-data/s3-remote-go v0.2.1
+	github.com/titan-data/s3web-remote-go v0.2.0
+	github.com/titan-data/ssh-remote-go v0.2.0
+	github.com/titan-data/titan-client-go v0.1.1
 	k8s.io/api v0.20.1
 	k8s.io/apimachinery v0.20.1
 	k8s.io/client-go v0.20.1
