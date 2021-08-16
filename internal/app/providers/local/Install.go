@@ -3,16 +3,23 @@ package local
 import (
 	"fmt"
 	"github.com/briandowns/spinner"
+	"os"
+	"runtime"
 	"strconv"
 	"strings"
 	"time"
 	"titan/internal/app"
 	"titan/internal/app/clients"
+	"titan/internal/app/utils"
 )
+
+
+var ce = utils.CommandExecutor(60, false)
 
 func Install(latest string, registry string, verbose bool, port int, context string) {
 	cfg.BasePath = "http://localhost:" + strconv.Itoa(port)
 	docker := clients.Docker(context, port)
+
 
 	s := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
 	s.HideCursor = true
@@ -20,8 +27,22 @@ func Install(latest string, registry string, verbose bool, port int, context str
 	fmt.Println("Initializing titan infrastructure")
 	fmt.Println("Checking docker installation")
 
+	// Make sure Docker is running or panic
 	docker.Version()
-	if !docker.TitanLatestIsDownloaded(app.Version{}.FromString(latest)) {
+
+	// Install ZFS for Docker Desktop
+	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
+		if !zfsInstalled() {
+			tag := getTag(getKernel())
+			installZFS(tag)
+			if !zfsInstalled() {
+				fmt.Println("ZFS was not installed.")
+				os.Exit(1)
+			}
+		}
+	}
+
+	if !docker.TitanLatestIsDownloaded(registry, app.Version{}.FromString(latest)) {
 		s.Prefix = "Pulling titan docker image (may take a while) "
 		s.FinalMSG = "Latest docker image downloaded"
 		s.Start()

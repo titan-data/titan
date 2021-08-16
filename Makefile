@@ -9,12 +9,15 @@ OS := "macos-latest"
 
 windows:
 	GOOS=windows GOARCH=amd64 go build -o $(RELEASE_DIR)/windows/titan.exe $(PWD)/cmd/titan/titan.go
+	cd $(RELEASE_DIR)/windows && zip titan-cli-$(VERSION)-windows_amd64.zip titan.exe
 
 linux:
 	GOOS=linux GOARCH=amd64 go build -o $(RELEASE_DIR)/linux/titan $(PWD)/cmd/titan/titan.go
+	cd $(RELEASE_DIR)/linux && tar -cvf titan-cli-$(VERSION)-linux_amd64.tar titan
 
 darwin:
 	GOOS=darwin GOARCH=amd64 go build -o $(RELEASE_DIR)/darwin/titan $(PWD)/cmd/titan/titan.go
+	cd $(RELEASE_DIR)/darwin && zip titan-cli-$(VERSION)-darwin_amd64.zip titan
 
 release: darwin linux windows
 

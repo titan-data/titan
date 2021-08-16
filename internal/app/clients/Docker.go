@@ -169,8 +169,8 @@ func (d docker) FetchLogs (container string) []string  {
 	return lines
 }
 
-func (d docker) TitanLatestIsDownloaded(latest app.Version) bool {
-	out, _ := ce.Exec("docker", "images", "titan", "--format", `"{{.Tag}}"`)
+func (d docker) TitanLatestIsDownloaded(registry string, latest app.Version) bool {
+	out, _ := ce.Exec("docker", "images", registry + "/titan", "--format", `"{{.Tag}}"`)
 	tags := strings.Split(string(out), EOL)
 	for _, item := range tags {
 		tag := strings.Trim(item,"\"")

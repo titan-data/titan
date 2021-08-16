@@ -7,7 +7,7 @@ import sphinx_rtd_theme
 # -- Project information -----------------------------------------------------
 
 project = u'titan'
-copyright = u'2019, Titan Project Contributors'
+copyright = u'2021, Titan Project Contributors'
 author = u'Titan Project Contributors'
 
 # -- Project configuration ---------------------------------------------------

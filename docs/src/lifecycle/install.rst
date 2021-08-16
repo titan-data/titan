@@ -7,8 +7,8 @@ Installing Docker
 -----------------
 Before installing Titan, you must have docker configured on your system and
 permission to run privileged Linux containers. For MacOS and Windows, this
-means installing `Docker Desktop <https://www.docker.com/products/docker-desktop>`_.
-For Linux, this means `installing docker <https://docs.docker.com/v17.12/install>`_
+means installing `Docker Desktop <https://docs.docker.com/desktop>`_.
+For Linux, this means `installing docker <https://docs.docker.com/get-docker>`_
 via your distribution-specific mechanism.
 
 If you can run a basic Linux docker container you're ready for the next step::
@@ -26,7 +26,7 @@ is part of your ``PATH`` such as ``~/bin`` or ``/usr/local/bin``.
 If you can get the current Titan version you're ready for the next step::
 
     $ titan --version
-    titan version 0.4.1
+    titan version 0.5.2
 
 Installing Titan
 ----------------
