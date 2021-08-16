@@ -21,7 +21,7 @@ func Install(latest string, registry string, verbose bool, port int, context str
 	fmt.Println("Checking docker installation")
 
 	docker.Version()
-	if !docker.TitanLatestIsDownloaded(app.Version{}.FromString(latest)) {
+	if !docker.TitanLatestIsDownloaded(registry, app.Version{}.FromString(latest)) {
 		s.Prefix = "Pulling titan docker image (may take a while) "
 		s.FinalMSG = "Latest docker image downloaded"
 		s.Start()
