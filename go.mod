@@ -7,7 +7,7 @@ require (
 	github.com/briandowns/spinner v1.16.0
 	github.com/buger/jsonparser v0.0.0-20191204142016-1a29609e0929
 	github.com/google/gofuzz v1.2.0 // indirect
-	github.com/google/uuid v1.1.4
+	github.com/google/uuid v1.3.0
 	github.com/googleapis/gnostic v0.5.1 // indirect
 	github.com/imdario/mergo v0.3.11 // indirect
 	github.com/magiconair/properties v1.8.3 // indirect
@@ -28,5 +28,4 @@ require (
 	k8s.io/api v0.20.1
 	k8s.io/apimachinery v0.20.1
 	k8s.io/client-go v0.20.1
-	k8s.io/klog v1.0.0 // indirect
 )
