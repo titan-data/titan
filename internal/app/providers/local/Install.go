@@ -3,8 +3,6 @@ package local
 import (
 	"fmt"
 	"github.com/briandowns/spinner"
-	"os"
-	"runtime"
 	"strconv"
 	"strings"
 	"time"
@@ -29,18 +27,6 @@ func Install(latest string, registry string, verbose bool, port int, context str
 
 	// Make sure Docker is running or panic
 	docker.Version()
-
-	// Install ZFS for Docker Desktop
-	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
-		if !zfsInstalled() {
-			tag := getTag(getKernel())
-			installZFS(tag)
-			if !zfsInstalled() {
-				fmt.Println("ZFS was not installed.")
-				os.Exit(1)
-			}
-		}
-	}
 
 	if !docker.TitanLatestIsDownloaded(registry, app.Version{}.FromString(latest)) {
 		s.Prefix = "Pulling titan docker image (may take a while) "
