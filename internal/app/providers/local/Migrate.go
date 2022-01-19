@@ -82,6 +82,11 @@ func Migrate(container string, name string, user string, email string, commit Co
 		args = append(args, "--mount", "type=volume,src="+volName+",dst="+path+",volume-driver=titan-"+docker.GetIdentity())
 	}
 
+	e := docker.GetSliceFromContainer(container, "Config", "Env")
+	for _, env := range e {
+		args = append(args, "-e", strings.Trim(env, "\""))
+	}
+
 	p, _ := docker.GetValFromContainer(container, "HostConfig", "PortBindings")
 	var ports map[string][]map[string]string
 	json.Unmarshal([]byte(p), &ports)
