@@ -11,7 +11,7 @@ require (
 	github.com/googleapis/gnostic v0.5.1 // indirect
 	github.com/imdario/mergo v0.3.11 // indirect
 	github.com/spf13/cobra v1.4.0
-	github.com/spf13/viper v1.10.1
+	github.com/spf13/viper v1.11.0
 	github.com/titan-data/nop-remote-go v0.2.1
 	github.com/titan-data/remote-sdk-go v0.2.1
 	github.com/titan-data/s3-remote-go v0.2.1
