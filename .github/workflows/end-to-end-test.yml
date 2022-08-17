@@ -29,7 +29,9 @@ jobs:
         run: |
           export PATH=$GITHUB_WORKSPACE/build:$PATH
           titan install
+          sleep 30
           docker ps
+          docker logs titan-docker-launch
 #          make e2e
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
