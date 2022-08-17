@@ -3,6 +3,7 @@ name: End to End Test
 on:
   schedule:
     - cron: '30 3 * * *'
+  workflow_dispatch:
 
 jobs:
   test-linux:
