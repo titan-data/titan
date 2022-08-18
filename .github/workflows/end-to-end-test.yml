@@ -32,6 +32,8 @@ jobs:
           sleep 30
           docker ps
           docker logs titan-docker-launch
+          docker run titan-docker-launch zpool list
+          docker run titan-docker-launch zfs list
 #          make e2e
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
