@@ -13,12 +13,12 @@ var ce = utils.CommandExecutor(60, false)
 var user, _ = ce.Exec("git", "config", "user.name")
 var email, _ = ce.Exec("git", "config", "user.email")
 
-type local struct{
-	contextName string
-	host string
-	portNum int
+type local struct {
+	contextName        string
+	host               string
+	portNum            int
 	titanServerVersion string
-	dockerRegistryUrl string
+	dockerRegistryUrl  string
 }
 
 func (l local) GetType() string {
@@ -106,7 +106,7 @@ func (l local) RemoteRemove(repo string, remote string) {
 	cmn.RemoteRemove(repo, remote, l.portNum)
 }
 
-func (l local) Remove (repo string, force bool) {
+func (l local) Remove(repo string, force bool) {
 	lcl.Remove(repo, force, l.portNum, l.contextName)
 }
 
@@ -144,10 +144,10 @@ func (l local) Upgrade(force bool, version string, finalize bool, path string) {
 
 func Local(contextName string, host string, port int) Provider {
 	return local{
-		contextName:contextName,
-		host:host,
-		portNum:port,
-		titanServerVersion: "0.8.5",
-		dockerRegistryUrl: "titandata",
+		contextName:        contextName,
+		host:               host,
+		portNum:            port,
+		titanServerVersion: "0.8.7",
+		dockerRegistryUrl:  "titandata",
 	}
 }
