@@ -9,7 +9,7 @@ on:
 jobs:
   test-linux:
     name: Test Linux
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v1
       - name: Config Git
@@ -28,7 +28,6 @@ jobs:
       - name: Run Test Suit
         run: |
           export PATH=$GITHUB_WORKSPACE/build:$PATH
-          sudo apt-get install -y libssl3
           titan install
           sleep 30
           docker ps
