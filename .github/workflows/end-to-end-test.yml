@@ -28,6 +28,7 @@ jobs:
       - name: Run Test Suit
         run: |
           export PATH=$GITHUB_WORKSPACE/build:$PATH
+          sudo apt-get install -y libssl3
           titan install
           sleep 30
           docker ps
