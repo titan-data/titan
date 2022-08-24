@@ -16,76 +16,74 @@ limitations under the License.
 package commands
 
 import (
-  "fmt"
-  "github.com/spf13/cobra"
-  "os"
-  "os/user"
-  "titan/internal/app/providers"
+	"fmt"
+	"github.com/spf13/cobra"
+	"os"
+	"os/user"
+	"titan/internal/app/providers"
 )
 
-var  (
-  context string
-  provider providers.Provider
-  version string
-  verbose bool
-  force bool
-  guid string
-  tags []string
-  params []string
-  envVars []string
-  name string
-  source string
-  remote string
-  updateOnly bool
-  removeImages bool
+var (
+	context      string
+	provider     providers.Provider
+	version      string
+	verbose      bool
+	force        bool
+	guid         string
+	tags         []string
+	params       []string
+	envVars      []string
+	name         string
+	source       string
+	remote       string
+	updateOnly   bool
+	removeImages bool
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-  Use:   "titan",
-  Short: "Titan CLI",
-  Long: `Titan CLI`,
+	Use:   "titan",
+	Short: "Titan CLI",
+	Long:  `Titan CLI`,
 }
-
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-  if err := rootCmd.Execute(); err != nil {
-    fmt.Println(err)
-    os.Exit(1)
-  }
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }
 
 func init() {
-  cobra.OnInitialize(initConfig)
+	cobra.OnInitialize(initConfig)
 
-  //Global params
-  rootCmd.PersistentFlags().StringVar(&context, "context","", "Titan Provider Context")
-  rootCmd.Version = "0.5.4"
+	//Global params
+	rootCmd.PersistentFlags().StringVar(&context, "context", "", "Titan Provider Context")
+	rootCmd.Version = "0.6.0"
 }
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-  u, _ := user.Current()
-  titanConfig := u.HomeDir + "/.titan/config"
-  if _, err := os.Stat(titanConfig); os.IsNotExist(err) {
-    os.Create(titanConfig)
-  }
-  isInstall := false
-  for _, item := range os.Args {
-    if item == "install" || item == "ls" {
-      isInstall = true
-    }
-  }
-  if context != "" {
-    provider, name = providers.ByName(context)
-  } else if os.Getenv("TITAN_CONTEXT") != "" {
-    provider, name = providers.ByName(os.Getenv("TITAN_CONTEXT"))
-  } else if isInstall {
-    context = "docker" //TODO confirm valid
-  } else {
-    provider = providers.Default()
-  }
+	u, _ := user.Current()
+	titanConfig := u.HomeDir + "/.titan/config"
+	if _, err := os.Stat(titanConfig); os.IsNotExist(err) {
+		os.Create(titanConfig)
+	}
+	isInstall := false
+	for _, item := range os.Args {
+		if item == "install" || item == "ls" {
+			isInstall = true
+		}
+	}
+	if context != "" {
+		provider, name = providers.ByName(context)
+	} else if os.Getenv("TITAN_CONTEXT") != "" {
+		provider, name = providers.ByName(os.Getenv("TITAN_CONTEXT"))
+	} else if isInstall {
+		context = "docker" //TODO confirm valid
+	} else {
+		provider = providers.Default()
+	}
 }
-

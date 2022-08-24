@@ -18,7 +18,7 @@ tests:
       command: curl -L http://localhost
       exitValue: 7
       stderr:
-        contains: "Failed to connect to localhost port 80: Connection refused"
+        contains: "Connection refused"
   - "can remove nginx-test without port mapping":
       command: titan rm -f nginx-test
 after:
