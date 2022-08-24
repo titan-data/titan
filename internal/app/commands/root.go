@@ -61,7 +61,7 @@ func init() {
 
 	//Global params
 	rootCmd.PersistentFlags().StringVar(&context, "context", "", "Titan Provider Context")
-	rootCmd.Version = "0.5.6"
+	rootCmd.Version = "0.6.0"
 }
 
 // initConfig reads in config file and ENV variables if set.
