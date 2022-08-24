@@ -5,15 +5,19 @@ TITAN_BIN := /usr/local/bin/titan
 RELEASE_DIR := $(PWD)/release
 OS := "macos-latest"
 
-.PHONY: build release darwin-amd64 darwin-arm64 linux windows
+.PHONY: build release darwin-amd64 darwin-arm64 linux-amd64 linux-arm64 windows
 
 windows:
 	GOOS=windows GOARCH=amd64 go build -o $(RELEASE_DIR)/windows/titan.exe $(PWD)/cmd/titan/titan.go
 	cd $(RELEASE_DIR)/windows && zip titan-cli-$(VERSION)-windows_amd64.zip titan.exe
 
-linux:
-	GOOS=linux GOARCH=amd64 go build -o $(RELEASE_DIR)/linux/titan $(PWD)/cmd/titan/titan.go
-	cd $(RELEASE_DIR)/linux && tar -cvf titan-cli-$(VERSION)-linux_amd64.tar titan
+linux-amd64:
+	GOOS=linux GOARCH=amd64 go build -o $(RELEASE_DIR)/linux-amd64/titan $(PWD)/cmd/titan/titan.go
+	cd $(RELEASE_DIR)/linux-amd64 && zip titan-cli-$(VERSION)-linux_amd64.zip titan
+
+linux-arm64:
+	GOOS=linux GOARCH=arm64 go build -o $(RELEASE_DIR)/linux-arm64/titan $(PWD)/cmd/titan/titan.go
+	cd $(RELEASE_DIR)/linux-arm64 && zip titan-cli-$(VERSION)-linux_arm64.zip titan
 
 darwin-amd64:
 	GOOS=darwin GOARCH=amd64 go build -o $(RELEASE_DIR)/darwin-amd64/titan $(PWD)/cmd/titan/titan.go
@@ -23,7 +27,7 @@ darwin-arm64:
 	GOOS=darwin GOARCH=arm64 go build -o $(RELEASE_DIR)/darwin-arm64/titan $(PWD)/cmd/titan/titan.go
 	cd $(RELEASE_DIR)/darwin-arm64 && zip titan-cli-$(VERSION)-darwin_arm64.zip titan
 
-release: darwin-amd64 darwin-arm64 linux windows
+release: darwin-amd64 darwin-arm64 linux-amd64 linux-arm64 windows
 
 build:
 	go build -o $(TITAN_TARGET) $(PWD)/cmd/titan/titan.go
