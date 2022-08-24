@@ -28,13 +28,7 @@ jobs:
       - name: Run Test Suit
         run: |
           export PATH=$GITHUB_WORKSPACE/build:$PATH
-          titan install
-          sleep 30
-          docker ps
-          docker logs titan-docker-launch
-          docker run --rm titandata/titan:0.8.7 zpool list
-          docker run --rm titandata/titan:0.8.7 zfs list
-#          make e2e
+          make e2e
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
