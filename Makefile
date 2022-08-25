@@ -13,11 +13,11 @@ windows:
 
 linux-amd64:
 	GOOS=linux GOARCH=amd64 go build -o $(RELEASE_DIR)/linux-amd64/titan $(PWD)/cmd/titan/titan.go
-	cd $(RELEASE_DIR)/linux-amd64 && zip titan-cli-$(VERSION)-linux_amd64.zip titan
+	cd $(RELEASE_DIR)/linux-amd64 && tar -cvf titan-cli-$(VERSION)-linux_amd64.tar titan
 
 linux-arm64:
 	GOOS=linux GOARCH=arm64 go build -o $(RELEASE_DIR)/linux-arm64/titan $(PWD)/cmd/titan/titan.go
-	cd $(RELEASE_DIR)/linux-arm64 && zip titan-cli-$(VERSION)-linux_arm64.zip titan
+	cd $(RELEASE_DIR)/linux-arm64 && tar -cvf titan-cli-$(VERSION)-linux_arm64.tar titan
 
 darwin-amd64:
 	GOOS=darwin GOARCH=amd64 go build -o $(RELEASE_DIR)/darwin-amd64/titan $(PWD)/cmd/titan/titan.go
