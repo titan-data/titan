@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/antihax/optional v1.0.0
-	github.com/briandowns/spinner v1.20.0
+	github.com/briandowns/spinner v1.21.0
 	github.com/buger/jsonparser v1.1.1
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/uuid v1.3.0
