@@ -12,7 +12,7 @@ require (
 	github.com/imdario/mergo v0.3.11 // indirect
 	github.com/mitchellh/go-testing-interface v1.0.0 // indirect
 	github.com/spf13/cobra v1.6.1
-	github.com/spf13/viper v1.15.0
+	github.com/spf13/viper v1.16.0
 	github.com/titan-data/nop-remote-go v0.2.1
 	github.com/titan-data/remote-sdk-go v0.2.1
 	github.com/titan-data/s3-remote-go v0.2.1
